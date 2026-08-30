@@ -1,0 +1,45 @@
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
+import { db } from "@/prisma/db";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+
+export default async function AdminDashboard() {
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    redirect("/admin/login");
+  }
+
+  const projects = await db.orm.public.Project.findMany();
+  const skills = await db.orm.public.Skill.findMany();
+  const experiences = await db.orm.public.Experience.findMany();
+  const blogs = await db.orm.public.BlogPost.findMany();
+
+  return (
+    <div className="space-y-8">
+      <div>
+        <h2 className="text-2xl font-bold mb-4">Welcome, {session.user?.name}</h2>
+        <p className="text-gray-600">This is your admin dashboard where you can manage your portfolio content.</p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="bg-white p-4 shadow rounded-md">
+          <h3 className="font-semibold text-lg text-blue-600">Projects</h3>
+          <p className="text-2xl font-bold">{projects.length}</p>
+        </div>
+        <div className="bg-white p-4 shadow rounded-md">
+          <h3 className="font-semibold text-lg text-teal-600">Skills</h3>
+          <p className="text-2xl font-bold">{skills.length}</p>
+        </div>
+        <div className="bg-white p-4 shadow rounded-md">
+          <h3 className="font-semibold text-lg text-amber-600">Experiences</h3>
+          <p className="text-2xl font-bold">{experiences.length}</p>
+        </div>
+        <div className="bg-white p-4 shadow rounded-md">
+          <h3 className="font-semibold text-lg text-purple-600">Blog Posts</h3>
+          <p className="text-2xl font-bold">{blogs.length}</p>
+        </div>
+      </div>
+    </div>
+  );
+}

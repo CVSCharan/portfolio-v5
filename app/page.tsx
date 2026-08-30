@@ -1,69 +1,106 @@
-import Image from "next/image";
+import Image from "next/image"
+import Link from "next/link"
+{/* SEO Metadata generated dynamically in generateMetadata below */}
 
-export default function Home() {
+export const generateMetadata = {
+  title: "CVS CHARAN - Portfolio",
+  description:
+    "Portfolio of CVS CHARAN, frontend developer specializing in Next.js, React, and Tailwind CSS. View projects, skills, and blog posts.",
+  keywords:
+    "CVS CHARAN, portfolio, next.js, react, tailwind css, frontend developer, web development",
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    title: "CVS CHARAN - Portfolio",
+    description:
+      "Portfolio of CVS CHARAN, frontend developer specializing in Next.js, React, and Tailwind CSS.",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "CVS CHARAN Portfolio Cover",
+      },
+    ],
+    siteName: "CVS CHARAN Portfolio",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "CVS CHARAN - Portfolio",
+    description:
+      "Portfolio of CVS CHARAN, frontend developer specializing in Next.js, React, and Tailwind CSS.",
+    images: ["/og-image.jpg"],
+    creator: "@cvs_charan",
+  },
+}
+
+import { db } from "@/prisma/db"
+
+export default async function Home() {
+  const projectsCount = await db.orm.public.Project.count();
+  const skillsCount = await db.orm.public.Skill.count();
+  const expCount = await db.orm.public.Experience.count();
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
+    <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-primary to-secondary text-white py-12 px-6 font-sans">
+      <div className="max-w-4xl w-full text-center">
+        {/* Avatar */}
         <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
+          src="/favicon.ico"
+          alt="CVS CHARAN avatar"
+          width={180}
+          height={180}
+          className="rounded-full mb-8 object-cover"
           priority
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+
+        {/* Hero Title */}
+        <h1 className="text-5xl md:text-6xl font-bold tracking-tight mb-4">
+          Hi, I&apos;m CVS CHARAN
+        </h1>
+
+        <h2 className="text-4xl md:text-5xl font-light text-zinc-100 mb-8">
+          Frontend Developer & Portfolio Designer
+        </h2>
+
+        {/* CTA Buttons */}
+        <div className="flex gap-4 justify-center sm:gap-6">
+          <Link
+            href="/projects"
+            className="bg-accent text-primary px-8 py-4 rounded-full font-medium transition-colors hover:bg-accent/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
           >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            View Projects
+          </Link>
+          <Link
+            href="/about"
+            className="bg-white/10 text-zinc-100 px-8 py-4 rounded-full font-medium transition-colors hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
           >
-            Documentation
-          </a>
+            About Me
+          </Link>
         </div>
-      </main>
-    </div>
-  );
+
+        {/* Brief Stats */}
+        <div className="grid grid-cols-2 gap-6 md:grid-cols-4 mt-12 max-w-2xl mx-auto">
+          <div className="group hover:bg-white/10 transition-colors rounded-lg p-6">
+            <div className="text-3xl font-bold text-accent mb-2">{projectsCount}</div>
+            <div className="text-zinc-300">Projects</div>
+          </div>
+          <div className="group hover:bg-white/10 transition-colors rounded-lg p-6">
+            <div className="text-3xl font-bold text-accent mb-2">{skillsCount}</div>
+            <div className="text-zinc-300">Skills</div>
+          </div>
+          <div className="group hover:bg-white/10 transition-colors rounded-lg p-6">
+            <div className="text-3xl font-bold text-accent mb-2">{expCount}</div>
+            <div className="text-zinc-300">Experience</div>
+          </div>
+          <div className="group hover:bg-white/10 transition-colors rounded-lg p-6">
+            <div className="text-3xl font-bold text-accent mb-2">1</div>
+            <div className="text-zinc-300">CMS</div>
+          </div>
+        </div>
+      </div>
+    </main>
+  )
 }
