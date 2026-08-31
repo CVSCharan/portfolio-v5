@@ -1,4 +1,5 @@
 import React from "react";
+import { Button } from "@/components/ui/button";
 
 interface Project {
   id: number;
@@ -13,73 +14,57 @@ interface Project {
 }
 
 export default function ProjectsGrid({ projects }: { projects: Project[] }) {
-
   return (
-    <section className="py-24 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-6">
-        <h2 className="text-4xl font-bold text-primary mb-10 text-center">
-          My Projects
-        </h2>
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {projects.map((proj) => (
-            <article
-              key={proj.id}
-              className="bg-white rounded-lg shadow-sm border border-gray-100 hover:shadow-lg transition-shadow"
-            >
-              {proj.imageUrl ? (
-                <img
-                  src={proj.imageUrl}
-                  alt={proj.title}
-                  className="h-48 w-full object-cover rounded-t-lg"
-                  loading="lazy"
-                />
-              ) : (
-                <div
-                  className="h-48 w-full bg-zinc-200 rounded-t-lg flex items-center justify-center text-zinc-50 text-sm"
+    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {projects.map((proj) => (
+        <article
+          key={proj.id}
+          className="bg-card text-card-foreground rounded-lg border shadow-sm hover:shadow-md transition-shadow overflow-hidden flex flex-col"
+        >
+          {proj.imageUrl ? (
+            <img
+              src={proj.imageUrl}
+              alt={proj.title}
+              className="h-48 w-full object-cover"
+              loading="lazy"
+            />
+          ) : (
+            <div className="h-48 w-full bg-muted flex items-center justify-center text-muted-foreground text-sm font-medium">
+              No image
+            </div>
+          )}
+          <div className="p-6 flex-1 flex flex-col">
+            <h3 className="text-xl font-bold mb-2">{proj.title}</h3>
+            <p className="text-muted-foreground text-sm mb-4 flex-1">{proj.description}</p>
+            <div className="flex flex-wrap gap-2 mb-6">
+              {proj.techStack.map((tech) => (
+                <span
+                  key={tech}
+                  className="inline-flex items-center rounded-md bg-secondary px-2 py-1 text-xs font-semibold text-secondary-foreground"
                 >
-                  No image
-                </div>
+                  {tech}
+                </span>
+              ))}
+            </div>
+            <div className="flex gap-3">
+              {proj.githubUrl && (
+                <Button className="flex-1" variant="outline" asChild>
+                  <a href={proj.githubUrl} target="_blank" rel="noopener noreferrer">
+                    GitHub
+                  </a>
+                </Button>
               )}
-              <div className="p-6">
-                <h3 className="text-xl font-medium text-primary mb-1">{proj.title}</h3>
-                <p className="text-zinc-600 text-sm mb-4">{proj.description}</p>
-                <div className="flex flex-wrap gap-2">
-                  {proj.techStack.map((tech) => (
-                    <span
-                      key={tech}
-                      className="inline-block rounded-md bg-primary/10 text-primary text-sm px-2 py-1"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-                <div className="mt-4 flex gap-3">
-                  {proj.githubUrl && (
-                    <a
-                      href={proj.githubUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1 bg-primary text-white px-4 py-2 rounded-md font-medium hover:bg-primary/90 transition-colors"
-                    >
-                      GitHub
-                    </a>
-                  )}
-                  {proj.demoUrl && (
-                    <a
-                      href={proj.demoUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1 bg-white/10 text-zinc-100 px-4 py-2 rounded-md font-medium hover:bg-white/20 transition-colors"
-                    >
-                      Demo
-                    </a>
-                  )}
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
-      </div>
-    </section>
+              {proj.demoUrl && (
+                <Button className="flex-1" asChild>
+                  <a href={proj.demoUrl} target="_blank" rel="noopener noreferrer">
+                    Demo
+                  </a>
+                </Button>
+              )}
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
   )
 }

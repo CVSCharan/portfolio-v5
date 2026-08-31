@@ -1,27 +1,73 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
+@theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* Light Theme (Jira Inspired) */
+    --background: #ffffff;
+    --foreground: #172b4d;
+    
+    --card: #ffffff;
+    --card-foreground: #172b4d;
+
+    --muted: #f4f5f7;
+    --muted-foreground: #5e6c84;
+
+    --primary: #0052cc;
+    --primary-foreground: #ffffff;
+
+    --accent: #deebff;
+    --accent-foreground: #0052cc;
+
+    --border: #dfe1e6;
+  }
+
+  .dark {
+    /* Dark Theme (OpenRouter Inspired) */
+    --background: #09090b;
+    --foreground: #fafafa;
+    
+    --card: #121214;
+    --card-foreground: #fafafa;
+
+    --muted: #27272a;
+    --muted-foreground: #a1a1aa;
+
+    /* Neon Green */
+    --primary: #39FF14;
+    --primary-foreground: #09090b;
+
+    --accent: #27272a;
+    --accent-foreground: #39FF14;
+
+    --border: #27272a;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: Arial, Helvetica, sans-serif;
+  }
 }
