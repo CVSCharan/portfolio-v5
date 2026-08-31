@@ -23,15 +23,13 @@ function ThemeToggle() {
   const [mounted, setMounted] = React.useState(false);
   React.useEffect(() => setMounted(true), []);
 
-  if (!mounted) return <div className="w-8 h-8" />;
-
   return (
     <button
       onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
       aria-label="Toggle theme"
       className="btn btn-ghost w-8 h-8 rounded-full p-0 flex items-center justify-center shrink-0"
     >
-      {resolvedTheme === "dark" ? (
+      {mounted && resolvedTheme === "dark" ? (
         <Sun className="w-4 h-4" />
       ) : (
         <Moon className="w-4 h-4" />
@@ -40,7 +38,7 @@ function ThemeToggle() {
   );
 }
 
-/* ─── Nav Link with active dot ─── */
+/* ─── Nav Link ─── */
 function NavLink({ href, label, onClick }: { href: string; label: string; onClick?: () => void }) {
   const pathname = usePathname();
   const isActive = pathname === href || (href !== "/" && pathname.startsWith(href));
@@ -50,18 +48,10 @@ function NavLink({ href, label, onClick }: { href: string; label: string; onClic
       href={href}
       onClick={onClick}
       className={`relative flex flex-col items-center gap-1 text-sm font-medium transition-colors duration-150 whitespace-nowrap ${
-        isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground"
+        isActive ? "text-primary" : "text-muted-foreground hover:text-foreground"
       }`}
     >
       {label}
-      {/* Active dot */}
-      {isActive && (
-        <motion.span
-          layoutId="nav-dot"
-          className="absolute -bottom-1.5 w-1 h-1 rounded-full bg-primary"
-          transition={{ type: "spring", stiffness: 380, damping: 30 }}
-        />
-      )}
     </Link>
   );
 }
@@ -108,7 +98,6 @@ function MobileDrawer({ open, onClose }: { open: boolean; onClose: () => void })
                     }`}
                   >
                     {label}
-                    {isActive && <div className="w-1.5 h-1.5 rounded-full bg-primary" />}
                   </Link>
                 );
               })}
@@ -183,11 +172,9 @@ export function DynamicIslandNav() {
           {/* Controls */}
           <div className="flex items-center gap-1 shrink-0">
             <ThemeToggle />
-            {/* Hamburger menu: Show on mobile ALWAYS. Show on desktop ONLY WHEN collapsed (isExpanded is false) */}
+            {/* Hamburger menu: Show on mobile ALWAYS. Hidden on desktop. */}
             <button
-              className={`btn btn-ghost w-8 h-8 rounded-full p-0 flex items-center justify-center ${
-                isExpanded ? "md:hidden" : "flex"
-              }`}
+              className="btn btn-ghost w-8 h-8 rounded-full p-0 flex items-center justify-center md:hidden"
               onClick={() => setMobileOpen((o) => !o)}
               aria-label="Open menu"
             >
