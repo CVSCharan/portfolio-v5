@@ -41,27 +41,27 @@
 /* ─── Light/Dark Colour Tokens ─── */
 @layer base {
   :root {
-    --background:          #ffffff;
-    --foreground:          #0a0a0a;
+    --background:          #fdfcfa;
+    --foreground:          #1a1815;
 
-    --card:                #f7f7f8;
-    --card-foreground:     #0a0a0a;
+    --card:                #f5f3ef;
+    --card-foreground:     #1a1815;
     --card-elevated:       #ffffff;
 
-    --muted:               #f1f1f3;
-    --muted-foreground:    #52525b;
+    --muted:               #ede9e2;
+    --muted-foreground:    #6b6559;
 
-    --primary:             #000000;
-    --primary-foreground:  #ffffff;
+    --primary:             #1a1815;
+    --primary-foreground:  #fdfcfa;
 
-    --secondary:           #f1f1f3;
-    --secondary-foreground:#0a0a0a;
+    --secondary:           #ede9e2;
+    --secondary-foreground:#1a1815;
 
-    --accent:              #ececee;
-    --accent-foreground:   #0a0a0a;
+    --accent:              #e7e2d8;
+    --accent-foreground:   #1a1815;
 
-    --border:              #dcdce0;
-    --ring:                #0a0a0a;
+    --border:              #e0dbd0;
+    --ring:                #1a1815;
   }
 
   .dark {
