@@ -91,7 +91,7 @@ export function HomeClient({
       </div>
 
       {/* ── SECTION A: HUD HERO (100svh) ── */}
-      <div className="relative z-10 w-full min-h-[calc(100svh-180px)] flex flex-col justify-between pointer-events-none mb-32">
+      <div className="relative z-10 w-full min-h-[calc(100svh-180px)] flex flex-col justify-between pointer-events-none mb-32 max-w-6xl mx-auto px-5 md:px-0">
         {/* HUD Top: Massive Typography */}
         <motion.div 
           initial={{ opacity: 0, y: 15 }}
@@ -113,41 +113,40 @@ export function HomeClient({
           </p>
         </motion.div>
 
-        {/* HUD Bottom: Bio & Action */}
+        {/* HUD Bottom: Bio, Action & Metadata */}
         <motion.div 
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-          className="grid grid-cols-1 md:grid-cols-2 gap-12 pb-8 pointer-events-auto"
+          className="flex flex-col gap-10 pb-12 md:pb-16 pointer-events-auto max-w-xl"
         >
-          <div className="space-y-8 max-w-md">
-            <p className="text-base text-muted-foreground leading-[1.8]">
-              {bio}
-            </p>
-            <div className="flex flex-wrap items-center gap-4">
-              <Link href="/projects" className="btn btn-primary btn-md group">
-                Enter Portfolio 
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </Link>
-              <Link href="/experience" className="text-sm font-semibold text-foreground hover:text-muted-foreground transition-colors underline-offset-4 hover:underline">
-                View Experience
-              </Link>
-            </div>
+          <p className="text-lg md:text-xl text-muted-foreground leading-[1.75]">
+            {bio}
+          </p>
+
+          <div className="flex flex-wrap items-center gap-4">
+            <Link href="/projects" className="btn btn-primary btn-lg group">
+              Enter Portfolio 
+              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+            </Link>
+            <Link href="/experience" className="text-base font-semibold text-foreground hover:text-secondary transition-colors underline-offset-4 hover:underline">
+              View Experience
+            </Link>
           </div>
 
-          <div className="flex flex-col md:items-end justify-end space-y-4 md:text-right hidden sm:flex">
-             <div className="space-y-1">
-               <p className="text-xs font-bold tracking-[0.2em] uppercase text-muted-foreground/60">Core Stack</p>
-               <p className="text-sm text-foreground/80 max-w-[280px] leading-relaxed">
-                 React, Next.js, Node.js, Python, PostgreSQL, Prisma, Tailwind, AWS
+          <div className="flex flex-col sm:flex-row gap-8 sm:gap-16 pt-8 border-t border-border/60">
+             <div className="space-y-1.5">
+               <p className="text-xs font-bold tracking-[0.15em] uppercase text-muted-foreground/60">Core Stack</p>
+               <p className="text-sm font-medium text-foreground/80 leading-relaxed">
+                 React, Next.js, Node.js, Python,<br/>PostgreSQL, Prisma, Tailwind, AWS
                </p>
              </div>
-             <div className="space-y-1 pt-4 border-t border-border/50">
-               <p className="text-xs font-bold tracking-[0.2em] uppercase text-muted-foreground/60">Status</p>
-               <p className="text-sm text-foreground flex items-center md:justify-end gap-2">
+             <div className="space-y-1.5">
+               <p className="text-xs font-bold tracking-[0.15em] uppercase text-muted-foreground/60">Status</p>
+               <p className="text-sm font-medium text-foreground flex items-center gap-2.5">
                  <span className="relative flex h-2 w-2">
-                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                   <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
+                   <span className="relative inline-flex rounded-full h-2 w-2 bg-secondary"></span>
                  </span>
                  Available for opportunities
                </p>
