@@ -35,6 +35,11 @@ This document outlines the milestones and completed tasks for Portfolio v5.
 ### Phase 6: Connecting the Core Pages
 - [x] Connected all main routes (`/`, `/about`, `/projects`, `/skills`, `/experience`, `/resume`, `/blog`, `/contact`) to fetch dynamic data via Prisma ORM queries.
 
+### Phase 6.5: Interactive Dashboards & UX Refinements
+- [x] Completely overhauled the `/skills` page into an **Interactive Analyst Dashboard**.
+- [x] Implemented search, proficiency filters, and cross-filtering on the Radar Chart.
+- [x] Resolved `react-icons` build errors by migrating to a dynamic SimpleIcons CDN + Lucide fallback strategy.
+
 ## Upcoming Milestones (TODO)
 
 ### Phase 7: Admin Dashboard

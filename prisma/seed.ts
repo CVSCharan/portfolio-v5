@@ -11,6 +11,7 @@ async function main() {
     name: "CVS Charan",
     email: "charan.cvs@gmail.com",
     bio: "AI-Augmented Full-Stack Developer with a strong foundation in Data Analytics. I specialize in building intelligent and scalable web and mobile applications that leverage LLMs, prompt engineering, and AI automation. Experienced in integrating OpenAI APIs, LangChain/N8N, and Pinecone into dynamic real-world solutions. Adept at transforming business needs into impactful user-facing experiences using React, Node.js, and modern cloud tooling.",
+    story: "My journey into software engineering is rooted in my academic background in Physics. Through my Master's at VIT University and my research fellowship at Mahindra University (where I focused on Solar Cells and High Entropy Alloys), I developed a deep appreciation for complex systems and data analysis. The transition to Full-Stack Development and AI integration felt like a natural progression—applying rigorous analytical thinking to build scalable, intelligent digital experiences. I believe in pushing the boundaries of what web applications can do by leveraging Large Language Models, prompt engineering, and modern cloud architecture.",
     avatar: "/avatar.jpg", // Ensure this exists or use a placeholder
   });
 
@@ -19,7 +20,32 @@ async function main() {
   // 2. Clear existing data to prevent duplicates
 
 
-  // 3. Create Experiences
+  // 2.5 Create Education
+  const educationList = [
+    {
+      degree: "Research Fellowship, Teaching Assistantship - Physics (Solar Cells / HEA)",
+      institution: "Mahindra University, Hyderabad",
+      period: "2022",
+      description: "Conducted research on Solar Cells and High Entropy Alloys (HEA). Assisted in teaching and guiding physics experiments."
+    },
+    {
+      degree: "MS/MSc (Master of Science) - Physics",
+      institution: "VIT University, Vellore",
+      period: "2021",
+      description: "Completed MSc review project and advanced physics coursework with a CGPA of 7.2. Developed strong analytical and data modeling skills."
+    },
+    {
+      degree: "CCBP 4.0 Intensive",
+      institution: "NxtWave, Hyderabad",
+      period: "2022",
+      description: "Learning 4.0 Technologies - Full Stack Web Development."
+    }
+  ]
+
+  for (const edu of educationList) {
+    await db.orm.public.Education.create(edu)
+  }
+  console.log("Created education")  // 3. Create Experiences
   const experiences = [
     {
       title: "Senior Data Analyst",
@@ -69,6 +95,8 @@ async function main() {
     { name: "Next JS", level: 90, category: "Frontend" },
     { name: "Tailwind CSS", level: 95, category: "Frontend" },
     { name: "Node JS", level: 85, category: "Backend" },
+    { name: "ElysiaJS", level: 80, category: "Backend" },
+    { name: "GraphQL", level: 75, category: "Backend" },
     { name: "React Native", level: 80, category: "Mobile" },
     // Databases
     { name: "PostgreSQL", level: 85, category: "Database" },

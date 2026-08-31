@@ -7,7 +7,7 @@ import { useTheme } from "next-themes";
 
 function ParticleSphere({ color }: { color: string }) {
   const pointsRef = useRef<THREE.Points>(null);
-  
+
   // Lower particle count on mobile for performance
   const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
@@ -18,7 +18,7 @@ function ParticleSphere({ color }: { color: string }) {
   }, []);
 
   const count = isMobile ? 1500 : 4000;
-  
+
   const positions = useMemo(() => {
     const pos = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
@@ -26,7 +26,7 @@ function ParticleSphere({ color }: { color: string }) {
       const r = 2.5 + (Math.random() - 0.5) * 0.4;
       const theta = 2 * Math.PI * Math.random();
       const phi = Math.acos(2 * Math.random() - 1);
-      
+
       pos[i * 3] = r * Math.sin(phi) * Math.cos(theta);
       pos[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
       pos[i * 3 + 2] = r * Math.cos(phi);
@@ -36,7 +36,8 @@ function ParticleSphere({ color }: { color: string }) {
 
   // Respect prefers-reduced-motion for accessibility
   const prefersReducedMotion = useRef(
-    typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches,
   );
 
   // Subtle constant rotation ONLY (no mouse tracking)
@@ -64,7 +65,9 @@ function ParticleSphere({ color }: { color: string }) {
         transparent
         opacity={color === "#000000" ? 0.8 : 0.6}
         sizeAttenuation={true}
-        blending={color === "#000000" ? THREE.NormalBlending : THREE.AdditiveBlending}
+        blending={
+          color === "#000000" ? THREE.NormalBlending : THREE.AdditiveBlending
+        }
       />
     </points>
   );
@@ -73,14 +76,18 @@ function ParticleSphere({ color }: { color: string }) {
 export default function SpatialHero3D() {
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
-  
+
   useEffect(() => setMounted(true), []);
 
-  const particleColor = mounted && resolvedTheme === "dark" ? "#ffffff" : "#000000";
+  const particleColor =
+    mounted && resolvedTheme === "dark" ? "#ffffff" : "#000000";
 
   return (
-    <div className="absolute inset-0 w-full h-full z-0 bg-background pointer-events-auto" aria-hidden="true">
-      <Canvas 
+    <div
+      className="absolute inset-0 w-full h-full z-0 bg-background pointer-events-auto"
+      aria-hidden="true"
+    >
+      <Canvas
         camera={{ position: [0, 0, 7], fov: 60 }}
         gl={{ antialias: true }}
       >

@@ -9,7 +9,9 @@ export function SuppressNextThemesWarning() {
       console.error = (...args: any[]) => {
         if (
           typeof args[0] === "string" &&
-          args[0].includes("Encountered a script tag while rendering React component")
+          args[0].includes(
+            "Encountered a script tag while rendering React component",
+          )
         ) {
           return; // Suppress this specific React 19 / next-themes warning
         }

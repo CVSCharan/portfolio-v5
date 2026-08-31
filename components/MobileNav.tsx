@@ -5,20 +5,22 @@ import Link from "next/link";
 import { Menu, X } from "lucide-react";
 
 const NAV_LINKS = [
-  { href: "/projects",   label: "Projects"   },
-  { href: "/skills",     label: "Skills"     },
+  { href: "/projects", label: "Projects" },
+  { href: "/skills", label: "Skills" },
   { href: "/experience", label: "Experience" },
-  { href: "/resume",     label: "Resume"     },
-  { href: "/blog",       label: "Blog"       },
-  { href: "/about",      label: "About"      },
-  { href: "/contact",    label: "Contact"    },
+  { href: "/resume", label: "Resume" },
+  { href: "/blog", label: "Blog" },
+  { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" },
 ];
 
 export function MobileNav() {
   const [isOpen, setIsOpen] = React.useState(false);
 
   React.useEffect(() => {
-    const handleResize = () => { if (window.innerWidth >= 768) setIsOpen(false); };
+    const handleResize = () => {
+      if (window.innerWidth >= 768) setIsOpen(false);
+    };
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
@@ -29,7 +31,9 @@ export function MobileNav() {
     } else {
       document.body.style.overflow = "";
     }
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [isOpen]);
 
   return (
@@ -46,7 +50,10 @@ export function MobileNav() {
       {/* Fullscreen overlay */}
       {isOpen && (
         <div className="fixed inset-0 top-14 z-40 bg-background border-t border-border md:hidden">
-          <nav className="flex flex-col px-6 py-8 gap-1" aria-label="Mobile navigation">
+          <nav
+            className="flex flex-col px-6 py-8 gap-1"
+            aria-label="Mobile navigation"
+          >
             {NAV_LINKS.map(({ href, label }) => (
               <Link
                 key={href}

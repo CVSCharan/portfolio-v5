@@ -12,8 +12,19 @@ model User {
   name      String
   email     String    @unique
   bio       String?
+  story     String?
   avatar    String?
-  createdAt TimestamptzString @default(now())
+  createdAt TimestamptzString  @default(now())
+}
+
+model Education {
+  id          Int      @id @default(autoincrement())
+  degree      String
+  institution String
+  period      String
+  description String?
+  courses     String[] @default([])
+  order       Int      @default(0)
 }
 
 model Project {
@@ -21,7 +32,8 @@ model Project {
   title     String
   slug      String    @unique
   description String?
-  techStack String[]
+  techStack String[] @default([])
+  highlights String[] @default([])
   githubUrl String?
   demoUrl   String?
   imageUrl  String?
@@ -37,11 +49,13 @@ model Skill {
 }
 
 model Experience {
-  id       Int   @id @default(autoincrement())
-  title    String
-  company  String
-  period   String
+  id          Int      @id @default(autoincrement())
+  title       String
+  company     String
+  period      String
   description String?
+  highlights  String[] @default([])
+  order       Int      @default(0)
 }
 
 model BlogPost {
@@ -64,4 +78,49 @@ model PageView {
   referrer  String?  // where they came from
   userAgent String?  // browser info
   createdAt TimestamptzString @default(now())
+}
+
+model Certification {
+  id        Int      @id @default(autoincrement())
+  title     String
+  issuer    String?
+  date      String?
+  url       String?
+  order     Int      @default(0)
+}
+
+model Language {
+  id              Int      @id @default(autoincrement())
+  title           String
+  proficiency     String
+  additionalInfo  String?
+  extraDetails    String?
+  highlights      String[] @default([])
+  order           Int      @default(0)
+}
+
+model VolunteerWork {
+  id              Int      @id @default(autoincrement())
+  organization    String
+  role            String
+  date            String?
+  additionalInfo  String?
+  extraDetails    String?
+  highlights      String[] @default([])
+  order           Int      @default(0)
+}
+
+model ResumeSection {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  title     String
+  order     Int      @default(0)
+  visible   Boolean  @default(true)
+}
+
+model ResumeSettings {
+  id              Int      @id @default(autoincrement())
+  activeTemplate  String   @default("T1")
+  activeTheme     String   @default("Black")
+  activeLayout    String   @default("Standard")
 }

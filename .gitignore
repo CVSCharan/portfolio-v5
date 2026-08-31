@@ -52,4 +52,4 @@ playwright/.cache/
 .devin/
 .cursor/
 .agents/
-
+.vscode/

@@ -26,7 +26,10 @@ export default function ProjectsGrid({ projects }: { projects: Project[] }) {
   return (
     <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
       {projects.map((proj) => (
-        <article key={proj.id} className="card card-hover flex flex-col overflow-hidden">
+        <article
+          key={proj.id}
+          className="card card-hover flex flex-col overflow-hidden"
+        >
           {proj.imageUrl ? (
             <img
               src={proj.imageUrl}
@@ -63,7 +66,9 @@ export default function ProjectsGrid({ projects }: { projects: Project[] }) {
             {proj.techStack.length > 0 && (
               <div className="flex flex-wrap gap-1.5 mt-auto">
                 {proj.techStack.slice(0, 5).map((tech) => (
-                  <span key={tech} className="badge">{tech}</span>
+                  <span key={tech} className="badge">
+                    {tech}
+                  </span>
                 ))}
               </div>
             )}

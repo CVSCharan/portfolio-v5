@@ -1,25 +1,30 @@
-"use client"
+"use client";
 
-import React, { useRef } from 'react'
-import { Canvas, useFrame } from '@react-three/fiber'
-import { PresentationControls, Float, MeshDistortMaterial, Environment } from '@react-three/drei'
-import * as THREE from 'three'
+import React, { useRef } from "react";
+import { Canvas, useFrame } from "@react-three/fiber";
+import {
+  PresentationControls,
+  Float,
+  MeshDistortMaterial,
+  Environment,
+} from "@react-three/drei";
+import * as THREE from "three";
 
 function AnimatedShape() {
-  const meshRef = useRef<THREE.Mesh>(null)
+  const meshRef = useRef<THREE.Mesh>(null);
 
   useFrame((state, delta) => {
     if (meshRef.current) {
-      meshRef.current.rotation.x += delta * 0.2
-      meshRef.current.rotation.y += delta * 0.3
+      meshRef.current.rotation.x += delta * 0.2;
+      meshRef.current.rotation.y += delta * 0.3;
     }
-  })
+  });
 
   return (
     <Float speed={1.5} rotationIntensity={1} floatIntensity={2}>
       <mesh ref={meshRef}>
         <icosahedronGeometry args={[1.5, 4]} />
-        <MeshDistortMaterial 
+        <MeshDistortMaterial
           color="#39FF14" // Will appear green-ish, but Environment mapping makes it look premium
           envMapIntensity={1}
           clearcoat={1}
@@ -31,7 +36,7 @@ function AnimatedShape() {
         />
       </mesh>
     </Float>
-  )
+  );
 }
 
 export default function Hero3D() {
@@ -40,8 +45,8 @@ export default function Hero3D() {
       <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
         <ambientLight intensity={0.5} />
         <directionalLight position={[10, 10, 5]} intensity={1} />
-        
-        <PresentationControls 
+
+        <PresentationControls
           global={false} // Only rotates when dragging the canvas
           cursor={true}
           snap={true}
@@ -53,7 +58,7 @@ export default function Hero3D() {
         >
           <AnimatedShape />
         </PresentationControls>
-        
+
         <Environment preset="city" />
       </Canvas>
       <div className="absolute bottom-4 left-0 w-full text-center pointer-events-none">
@@ -62,5 +67,5 @@ export default function Hero3D() {
         </span>
       </div>
     </div>
-  )
+  );
 }

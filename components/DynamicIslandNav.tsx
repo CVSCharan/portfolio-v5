@@ -4,17 +4,22 @@ import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTheme } from "next-themes";
-import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
+import {
+  motion,
+  AnimatePresence,
+  useScroll,
+  useMotionValueEvent,
+} from "framer-motion";
 import { Sun, Moon, Menu, X } from "lucide-react";
 
 const NAV_LINKS = [
-  { href: "/projects",   label: "Projects"   },
-  { href: "/skills",     label: "Skills"     },
+  { href: "/projects", label: "Projects" },
+  { href: "/skills", label: "Skills" },
   { href: "/experience", label: "Experience" },
-  { href: "/resume",     label: "Resume"     },
-  { href: "/blog",       label: "Blog"       },
-  { href: "/about",      label: "About"      },
-  { href: "/contact",    label: "Contact"    },
+  { href: "/resume", label: "Resume" },
+  { href: "/blog", label: "Blog" },
+  { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" },
 ];
 
 /* ─── Theme Toggle ─── */
@@ -39,16 +44,27 @@ function ThemeToggle() {
 }
 
 /* ─── Nav Link ─── */
-function NavLink({ href, label, onClick }: { href: string; label: string; onClick?: () => void }) {
+function NavLink({
+  href,
+  label,
+  onClick,
+}: {
+  href: string;
+  label: string;
+  onClick?: () => void;
+}) {
   const pathname = usePathname();
-  const isActive = pathname === href || (href !== "/" && pathname.startsWith(href));
+  const isActive =
+    pathname === href || (href !== "/" && pathname.startsWith(href));
 
   return (
     <Link
       href={href}
       onClick={onClick}
       className={`relative flex flex-col items-center gap-1 text-sm font-medium transition-colors duration-150 whitespace-nowrap ${
-        isActive ? "text-primary" : "text-muted-foreground hover:text-foreground"
+        isActive
+          ? "text-primary"
+          : "text-muted-foreground hover:text-foreground"
       }`}
     >
       {label}
@@ -57,12 +73,20 @@ function NavLink({ href, label, onClick }: { href: string; label: string; onClic
 }
 
 /* ─── Mobile Drawer ─── */
-function MobileDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
+function MobileDrawer({
+  open,
+  onClose,
+}: {
+  open: boolean;
+  onClose: () => void;
+}) {
   const pathname = usePathname();
 
   React.useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [open]);
 
   return (
@@ -87,14 +111,18 @@ function MobileDrawer({ open, onClose }: { open: boolean; onClose: () => void })
           >
             <nav className="flex flex-col p-2">
               {NAV_LINKS.map(({ href, label }) => {
-                const isActive = pathname === href || (href !== "/" && pathname.startsWith(href));
+                const isActive =
+                  pathname === href ||
+                  (href !== "/" && pathname.startsWith(href));
                 return (
                   <Link
                     key={href}
                     href={href}
                     onClick={onClose}
                     className={`px-4 py-3.5 text-base font-medium rounded-xl transition-colors flex items-center justify-between ${
-                      isActive ? "bg-primary/10 text-primary" : "text-foreground hover:bg-muted"
+                      isActive
+                        ? "bg-primary/10 text-primary"
+                        : "text-foreground hover:bg-muted"
                     }`}
                   >
                     {label}
@@ -177,7 +205,11 @@ export function DynamicIslandNav() {
                 onClick={() => setMobileOpen((o) => !o)}
                 aria-label="Open menu"
               >
-                {mobileOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+                {mobileOpen ? (
+                  <X className="w-4 h-4" />
+                ) : (
+                  <Menu className="w-4 h-4" />
+                )}
               </button>
             </div>
           </div>

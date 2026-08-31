@@ -24,6 +24,13 @@ An embedded, floating chat widget that simulates a RAG (Retrieval-Augmented Gene
 The UI intelligently handles complex career trajectories:
 - **Hybrid Role Grouping**: The `/experience` and `/resume` routes use data-reduction algorithms to group multiple discrete roles (e.g., Full Stack Engineer AND Data Analyst) under a single parent company umbrella, rendering them as a unified nested timeline.
 
+### 4. Interactive Skill Matrix Dashboard
+The `/skills` route features a complex, highly interactive data dashboard built using a "Spatial Bento" design language:
+- **Real-time Filtering & Search**: Users can search skills instantly or toggle between "Core Stack" and "Learning" proficiencies.
+- **Cross-filtering Radar Chart**: Hovering over categories on the custom SVG Radar Chart dynamically dims unrelated skills in the bento grid.
+- **Micro-interactions**: Hovering over individual skill cards reveals glassmorphic tooltips containing exact proficiency percentages and micro-bar charts.
+- **Robust Icon Strategy**: Dynamically loads official SVGs from SimpleIcons CDN, with native Lucide icons acting as a bulletproof fallback, completely removing reliance on brittle icon libraries like `react-icons`.
+
 ### 4. Custom In-App Analytics
 We have built a zero-dependency, privacy-focused, custom analytics engine.
 - A `<PageTracker />` client component sits in the root layout, silently observing route changes.

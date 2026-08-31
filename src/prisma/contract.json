@@ -12,8 +12,20 @@
       "model": "BlogPost",
       "namespace": "public"
     },
+    "certification": {
+      "model": "Certification",
+      "namespace": "public"
+    },
+    "education": {
+      "model": "Education",
+      "namespace": "public"
+    },
     "experience": {
       "model": "Experience",
+      "namespace": "public"
+    },
+    "language": {
+      "model": "Language",
       "namespace": "public"
     },
     "pageView": {
@@ -24,12 +36,24 @@
       "model": "Project",
       "namespace": "public"
     },
+    "resumeSection": {
+      "model": "ResumeSection",
+      "namespace": "public"
+    },
+    "resumeSettings": {
+      "model": "ResumeSettings",
+      "namespace": "public"
+    },
     "skill": {
       "model": "Skill",
       "namespace": "public"
     },
     "user": {
       "model": "User",
+      "namespace": "public"
+    },
+    "volunteerWork": {
+      "model": "VolunteerWork",
       "namespace": "public"
     }
   },
@@ -205,6 +229,159 @@
               "table": "blogPost"
             }
           },
+          "Certification": {
+            "fields": {
+              "date": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "issuer": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "order": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "title": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "url": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {},
+            "storage": {
+              "fields": {
+                "date": {
+                  "column": "date"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "issuer": {
+                  "column": "issuer"
+                },
+                "order": {
+                  "column": "order"
+                },
+                "title": {
+                  "column": "title"
+                },
+                "url": {
+                  "column": "url"
+                }
+              },
+              "namespaceId": "public",
+              "table": "certification"
+            }
+          },
+          "Education": {
+            "fields": {
+              "courses": {
+                "many": true,
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "degree": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "description": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "institution": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "order": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "period": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {},
+            "storage": {
+              "fields": {
+                "courses": {
+                  "column": "courses"
+                },
+                "degree": {
+                  "column": "degree"
+                },
+                "description": {
+                  "column": "description"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "institution": {
+                  "column": "institution"
+                },
+                "order": {
+                  "column": "order"
+                },
+                "period": {
+                  "column": "period"
+                }
+              },
+              "namespaceId": "public",
+              "table": "education"
+            }
+          },
           "Experience": {
             "fields": {
               "company": {
@@ -221,7 +398,22 @@
                   "kind": "scalar"
                 }
               },
+              "highlights": {
+                "many": true,
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
               "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "order": {
                 "nullable": false,
                 "type": {
                   "codecId": "pg/int4@1",
@@ -252,8 +444,14 @@
                 "description": {
                   "column": "description"
                 },
+                "highlights": {
+                  "column": "highlights"
+                },
                 "id": {
                   "column": "id"
+                },
+                "order": {
+                  "column": "order"
                 },
                 "period": {
                   "column": "period"
@@ -264,6 +462,88 @@
               },
               "namespaceId": "public",
               "table": "experience"
+            }
+          },
+          "Language": {
+            "fields": {
+              "additionalInfo": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "extraDetails": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "highlights": {
+                "many": true,
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "order": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "proficiency": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "title": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {},
+            "storage": {
+              "fields": {
+                "additionalInfo": {
+                  "column": "additionalInfo"
+                },
+                "extraDetails": {
+                  "column": "extraDetails"
+                },
+                "highlights": {
+                  "column": "highlights"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "order": {
+                  "column": "order"
+                },
+                "proficiency": {
+                  "column": "proficiency"
+                },
+                "title": {
+                  "column": "title"
+                }
+              },
+              "namespaceId": "public",
+              "table": "language"
             }
           },
           "PageView": {
@@ -357,6 +637,14 @@
                   "kind": "scalar"
                 }
               },
+              "highlights": {
+                "many": true,
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
               "id": {
                 "nullable": false,
                 "type": {
@@ -416,6 +704,9 @@
                 "githubUrl": {
                   "column": "githubUrl"
                 },
+                "highlights": {
+                  "column": "highlights"
+                },
                 "id": {
                   "column": "id"
                 },
@@ -437,6 +728,118 @@
               },
               "namespaceId": "public",
               "table": "project"
+            }
+          },
+          "ResumeSection": {
+            "fields": {
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "name": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "order": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "title": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "visible": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/bool@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {},
+            "storage": {
+              "fields": {
+                "id": {
+                  "column": "id"
+                },
+                "name": {
+                  "column": "name"
+                },
+                "order": {
+                  "column": "order"
+                },
+                "title": {
+                  "column": "title"
+                },
+                "visible": {
+                  "column": "visible"
+                }
+              },
+              "namespaceId": "public",
+              "table": "resumeSection"
+            }
+          },
+          "ResumeSettings": {
+            "fields": {
+              "activeLayout": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "activeTemplate": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "activeTheme": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {},
+            "storage": {
+              "fields": {
+                "activeLayout": {
+                  "column": "activeLayout"
+                },
+                "activeTemplate": {
+                  "column": "activeTemplate"
+                },
+                "activeTheme": {
+                  "column": "activeTheme"
+                },
+                "id": {
+                  "column": "id"
+                }
+              },
+              "namespaceId": "public",
+              "table": "resumeSettings"
             }
           },
           "Skill": {
@@ -533,6 +936,13 @@
                   "codecId": "pg/text@1",
                   "kind": "scalar"
                 }
+              },
+              "story": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
               }
             },
             "relations": {},
@@ -555,10 +965,105 @@
                 },
                 "name": {
                   "column": "name"
+                },
+                "story": {
+                  "column": "story"
                 }
               },
               "namespaceId": "public",
               "table": "user"
+            }
+          },
+          "VolunteerWork": {
+            "fields": {
+              "additionalInfo": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "date": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "extraDetails": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "highlights": {
+                "many": true,
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "order": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "organization": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "role": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {},
+            "storage": {
+              "fields": {
+                "additionalInfo": {
+                  "column": "additionalInfo"
+                },
+                "date": {
+                  "column": "date"
+                },
+                "extraDetails": {
+                  "column": "extraDetails"
+                },
+                "highlights": {
+                  "column": "highlights"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "order": {
+                  "column": "order"
+                },
+                "organization": {
+                  "column": "organization"
+                },
+                "role": {
+                  "column": "role"
+                }
+              },
+              "namespaceId": "public",
+              "table": "volunteerWork"
             }
           }
         }
@@ -721,9 +1226,76 @@
                 }
               ]
             },
-            "experience": {
+            "certification": {
               "columns": {
-                "company": {
+                "date": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "id": {
+                  "codecId": "pg/int4@1",
+                  "default": {
+                    "expression": "autoincrement()",
+                    "kind": "function"
+                  },
+                  "nativeType": "int4",
+                  "nullable": false
+                },
+                "issuer": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "order": {
+                  "codecId": "pg/int4@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": 0
+                  },
+                  "nativeType": "int4",
+                  "nullable": false
+                },
+                "title": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "url": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                }
+              },
+              "foreignKeys": [],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ]
+              },
+              "uniques": []
+            },
+            "education": {
+              "checks": [
+                {
+                  "expression": "array_position(\"courses\", NULL) IS NULL",
+                  "name": "education_courses_elem_not_null_cc871872",
+                  "prefix": "education_courses_elem_not_null"
+                }
+              ],
+              "columns": {
+                "courses": {
+                  "codecId": "pg/text@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": []
+                  },
+                  "many": true,
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "degree": {
                   "codecId": "pg/text@1",
                   "nativeType": "text",
                   "nullable": false
@@ -742,7 +1314,150 @@
                   "nativeType": "int4",
                   "nullable": false
                 },
+                "institution": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "order": {
+                  "codecId": "pg/int4@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": 0
+                  },
+                  "nativeType": "int4",
+                  "nullable": false
+                },
                 "period": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ]
+              },
+              "uniques": []
+            },
+            "experience": {
+              "checks": [
+                {
+                  "expression": "array_position(\"highlights\", NULL) IS NULL",
+                  "name": "experience_highlights_elem_not_null_1a2363a4",
+                  "prefix": "experience_highlights_elem_not_null"
+                }
+              ],
+              "columns": {
+                "company": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "description": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "highlights": {
+                  "codecId": "pg/text@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": []
+                  },
+                  "many": true,
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/int4@1",
+                  "default": {
+                    "expression": "autoincrement()",
+                    "kind": "function"
+                  },
+                  "nativeType": "int4",
+                  "nullable": false
+                },
+                "order": {
+                  "codecId": "pg/int4@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": 0
+                  },
+                  "nativeType": "int4",
+                  "nullable": false
+                },
+                "period": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "title": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ]
+              },
+              "uniques": []
+            },
+            "language": {
+              "checks": [
+                {
+                  "expression": "array_position(\"highlights\", NULL) IS NULL",
+                  "name": "language_highlights_elem_not_null_1a2363a4",
+                  "prefix": "language_highlights_elem_not_null"
+                }
+              ],
+              "columns": {
+                "additionalInfo": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "extraDetails": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "highlights": {
+                  "codecId": "pg/text@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": []
+                  },
+                  "many": true,
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/int4@1",
+                  "default": {
+                    "expression": "autoincrement()",
+                    "kind": "function"
+                  },
+                  "nativeType": "int4",
+                  "nullable": false
+                },
+                "order": {
+                  "codecId": "pg/int4@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": 0
+                  },
+                  "nativeType": "int4",
+                  "nullable": false
+                },
+                "proficiency": {
                   "codecId": "pg/text@1",
                   "nativeType": "text",
                   "nullable": false
@@ -810,6 +1525,11 @@
             "project": {
               "checks": [
                 {
+                  "expression": "array_position(\"highlights\", NULL) IS NULL",
+                  "name": "project_highlights_elem_not_null_1a2363a4",
+                  "prefix": "project_highlights_elem_not_null"
+                },
+                {
                   "expression": "array_position(\"techStack\", NULL) IS NULL",
                   "name": "project_techStack_elem_not_null_54034c45",
                   "prefix": "project_techStack_elem_not_null"
@@ -839,6 +1559,16 @@
                   "codecId": "pg/text@1",
                   "nativeType": "text",
                   "nullable": true
+                },
+                "highlights": {
+                  "codecId": "pg/text@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": []
+                  },
+                  "many": true,
+                  "nativeType": "text",
+                  "nullable": false
                 },
                 "id": {
                   "codecId": "pg/int4@1",
@@ -870,6 +1600,10 @@
                 },
                 "techStack": {
                   "codecId": "pg/text@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": []
+                  },
                   "many": true,
                   "nativeType": "text",
                   "nullable": false
@@ -894,6 +1628,109 @@
                   ]
                 }
               ]
+            },
+            "resumeSection": {
+              "columns": {
+                "id": {
+                  "codecId": "pg/int4@1",
+                  "default": {
+                    "expression": "autoincrement()",
+                    "kind": "function"
+                  },
+                  "nativeType": "int4",
+                  "nullable": false
+                },
+                "name": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "order": {
+                  "codecId": "pg/int4@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": 0
+                  },
+                  "nativeType": "int4",
+                  "nullable": false
+                },
+                "title": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "visible": {
+                  "codecId": "pg/bool@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": true
+                  },
+                  "nativeType": "bool",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ]
+              },
+              "uniques": [
+                {
+                  "columns": [
+                    "name"
+                  ]
+                }
+              ]
+            },
+            "resumeSettings": {
+              "columns": {
+                "activeLayout": {
+                  "codecId": "pg/text@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "Standard"
+                  },
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "activeTemplate": {
+                  "codecId": "pg/text@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "T1"
+                  },
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "activeTheme": {
+                  "codecId": "pg/text@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": "Black"
+                  },
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/int4@1",
+                  "default": {
+                    "expression": "autoincrement()",
+                    "kind": "function"
+                  },
+                  "nativeType": "int4",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ]
+              },
+              "uniques": []
             },
             "skill": {
               "columns": {
@@ -970,6 +1807,11 @@
                   "codecId": "pg/text@1",
                   "nativeType": "text",
                   "nullable": false
+                },
+                "story": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
                 }
               },
               "foreignKeys": [],
@@ -986,6 +1828,78 @@
                   ]
                 }
               ]
+            },
+            "volunteerWork": {
+              "checks": [
+                {
+                  "expression": "array_position(\"highlights\", NULL) IS NULL",
+                  "name": "volunteerWork_highlights_elem_not_null_1a2363a4",
+                  "prefix": "volunteerWork_highlights_elem_not_null"
+                }
+              ],
+              "columns": {
+                "additionalInfo": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "date": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "extraDetails": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "highlights": {
+                  "codecId": "pg/text@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": []
+                  },
+                  "many": true,
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/int4@1",
+                  "default": {
+                    "expression": "autoincrement()",
+                    "kind": "function"
+                  },
+                  "nativeType": "int4",
+                  "nullable": false
+                },
+                "order": {
+                  "codecId": "pg/int4@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": 0
+                  },
+                  "nativeType": "int4",
+                  "nullable": false
+                },
+                "organization": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "role": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ]
+              },
+              "uniques": []
             }
           }
         },
@@ -993,7 +1907,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "269f10d50c65a9de2aeabf5ce9991079bd3be29b098075b66d6be8c0798c9b4f"
+    "storageHash": "a6c4633afcaae543405aadc086ef52bbcc9ea6baffdf5782461044b404aff39d"
   },
   "capabilities": {
     "postgres": {

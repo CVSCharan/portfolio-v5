@@ -4,8 +4,20 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { GitFork, Link2, Download, MapPin, Mail } from "lucide-react";
 
-interface Skill { id: number; name: string; level: number; category: string; }
-interface UserRecord { id: number; name: string | null; email: string; bio: string | null; avatar: string | null; createdAt: string; }
+interface Skill {
+  id: number;
+  name: string;
+  level: number;
+  category: string;
+}
+interface UserRecord {
+  id: number;
+  name: string | null;
+  email: string;
+  bio: string | null;
+  avatar: string | null;
+  createdAt: string;
+}
 
 function fadeUp(delay: number) {
   return {
@@ -15,7 +27,13 @@ function fadeUp(delay: number) {
   };
 }
 
-export function AboutClient({ skills, user }: { skills: Skill[]; user: UserRecord | null }) {
+export function AboutClient({
+  skills,
+  user,
+}: {
+  skills: Skill[];
+  user: UserRecord | null;
+}) {
   const name = user?.name ?? "CVS Charan";
   const bio =
     user?.bio ??
@@ -56,13 +74,26 @@ export function AboutClient({ skills, user }: { skills: Skill[]; user: UserRecor
       <motion.div className="divider pt-8 space-y-4" {...fadeUp(0.14)}>
         <p className="text-label text-muted-foreground">Connect</p>
         <div className="flex flex-wrap gap-3">
-          <a href="mailto:charan.cvs@gmail.com" className="btn btn-outline btn-sm gap-2">
+          <a
+            href="mailto:charan.cvs@gmail.com"
+            className="btn btn-outline btn-sm gap-2"
+          >
             <Mail className="w-3.5 h-3.5" /> charan.cvs@gmail.com
           </a>
-          <a href="https://github.com/CVSCharan" target="_blank" rel="noopener noreferrer" className="btn btn-outline btn-sm gap-2">
+          <a
+            href="https://github.com/CVSCharan"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-outline btn-sm gap-2"
+          >
             <GitFork className="w-3.5 h-3.5" /> GitHub
           </a>
-          <a href="https://linkedin.com/in/cvscharan" target="_blank" rel="noopener noreferrer" className="btn btn-outline btn-sm gap-2">
+          <a
+            href="https://linkedin.com/in/cvscharan"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-outline btn-sm gap-2"
+          >
             <Link2 className="w-3.5 h-3.5" /> LinkedIn
           </a>
           <Link href="/resume" className="btn btn-primary btn-sm gap-2">
@@ -80,7 +111,9 @@ export function AboutClient({ skills, user }: { skills: Skill[]; user: UserRecor
               <h3 className="text-sm font-semibold text-foreground">{cat}</h3>
               <div className="flex flex-wrap gap-2">
                 {items.map((s) => (
-                  <span key={s.id} className="badge">{s.name}</span>
+                  <span key={s.id} className="badge">
+                    {s.name}
+                  </span>
                 ))}
               </div>
             </div>

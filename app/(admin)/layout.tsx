@@ -1,61 +1,33 @@
 "use client";
 
-import { SessionProvider, useSession, signOut } from "next-auth/react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { SessionProvider, useSession } from "next-auth/react";
+import { AdminSidebar } from "@/components/admin/AdminSidebar";
 
-function AdminNav() {
-  const { data: session, status } = useSession();
-  const pathname = usePathname();
+function AdminLayoutInner({ children }: { children: React.ReactNode }) {
+  const { status } = useSession();
 
-  if (status !== "authenticated") return null;
-
-  const navLinks = [
-    { name: "Dashboard", href: "/admin" },
-    { name: "Projects", href: "/admin/projects" },
-    { name: "Skills", href: "/admin/skills" },
-    { name: "Experiences", href: "/admin/experiences" },
-    { name: "Blog Posts", href: "/admin/blogs" },
-  ];
+  if (status !== "authenticated") {
+    // If not authenticated, we could just render children (which handles login)
+    // or a full-page loading state. The inner pages handle redirection.
+    return <>{children}</>;
+  }
 
   return (
-    <nav className="bg-gray-800 text-white p-4">
-      <div className="flex justify-between items-center max-w-6xl mx-auto">
-        <ul className="flex space-x-6">
-          {navLinks.map((link) => (
-            <li key={link.href}>
-              <Link 
-                href={link.href} 
-                className={`hover:text-gray-300 ${pathname === link.href ? "font-bold border-b-2" : ""}`}
-              >
-                {link.name}
-              </Link>
-            </li>
-          ))}
-        </ul>
-        <button 
-          onClick={() => signOut({ callbackUrl: "/" })}
-          className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded text-sm"
-        >
-          Logout
-        </button>
-      </div>
-    </nav>
+    <div className="min-h-screen bg-gray-50 flex">
+      <AdminSidebar />
+      <main className="flex-1 overflow-y-auto h-screen relative">
+        <div className="max-w-4xl mx-auto p-8 pb-24">
+          {children}
+        </div>
+      </main>
+    </div>
   );
 }
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
     <SessionProvider>
-      <div className="min-h-screen bg-gray-50 text-gray-900 flex flex-col">
-        <header className="bg-white shadow p-4 flex justify-between items-center">
-          <h1 className="text-xl font-bold">Admin Dashboard</h1>
-        </header>
-        <AdminNav />
-        <main className="flex-1 p-6 max-w-6xl mx-auto w-full">
-          {children}
-        </main>
-      </div>
+      <AdminLayoutInner>{children}</AdminLayoutInner>
     </SessionProvider>
   );
 }
