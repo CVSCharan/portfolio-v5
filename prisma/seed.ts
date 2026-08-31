@@ -22,10 +22,16 @@ async function main() {
   // 3. Create Experiences
   const experiences = [
     {
-      title: "Senior Data Analyst (Full Stack Engineer)",
+      title: "Full Stack Engineer",
       company: "Ninex Corp Pvt. Ltd.",
       period: "Apr 2026 - Present",
-      description: "Developed Super Admin and Vendor Admin portals using Next.js, React, TypeScript, Tailwind CSS, HeroUI, and AG Grid. Built secure Role-Based Access Control (RBAC). Developed REST APIs using Bun, ElysiaJS, Prisma ORM, and PostgreSQL. Implemented cursor-based pagination, TanStack Query caching, and Zustand state management."
+      description: "Developed Super Admin and Vendor Admin portals using Next.js, React, TypeScript, Tailwind CSS, and AG Grid. Built secure Role-Based Access Control (RBAC) and REST APIs using Bun, ElysiaJS, Prisma, and PostgreSQL."
+    },
+    {
+      title: "Senior Data Analyst",
+      company: "Ninex Corp Pvt. Ltd.",
+      period: "Apr 2026 - Present",
+      description: "Implemented robust data pipelines and optimized large dataset rendering using cursor-based pagination and TanStack Query caching for the analytics dashboard."
     },
     {
       title: "Project Lead",
