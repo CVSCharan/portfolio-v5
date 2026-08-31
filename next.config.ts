@@ -18,10 +18,19 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
-        source: "/:all",
+        source: "/(.*)",
         headers: [
-          // Allow @ aliases in imports
-          { key: "Content-Security-Policy", value: "default-src 'self' data: blob: 'self' https: http:;" },
+          {
+            key: "Content-Security-Policy",
+            value: [
+              "default-src 'self' data: blob: https: http:",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https: http:",
+              "style-src 'self' 'unsafe-inline' https: http:",
+              "img-src 'self' data: blob: https: http:",
+              "font-src 'self' data: https: http:",
+              "connect-src 'self' https: http: wss: ws:",
+            ].join("; "),
+          },
         ],
       },
     ];

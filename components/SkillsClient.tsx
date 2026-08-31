@@ -13,6 +13,10 @@ import {
   Wrench,
   LucideIcon,
   Code2,
+  TrendingUp,
+  Layers,
+  Zap,
+  Star,
 } from "lucide-react";
 import React, { useMemo } from "react";
 
@@ -25,464 +29,334 @@ interface Skill {
 
 const CATEGORY_META: Record<
   string,
-  { icon: LucideIcon; color: string; hex: string }
+  { icon: LucideIcon; hex: string }
 > = {
-  Frontend: { icon: Monitor, color: "text-blue-500", hex: "#3b82f6" },
-  Backend: { icon: Server, color: "text-purple-500", hex: "#a855f7" },
-  Database: { icon: Database, color: "text-amber-500", hex: "#f59e0b" },
-  Cloud: { icon: Cloud, color: "text-cyan-500", hex: "#06b6d4" },
-  "AI & ML": { icon: BrainCircuit, color: "text-emerald-500", hex: "#10b981" },
-  Mobile: { icon: Smartphone, color: "text-rose-500", hex: "#f43f5e" },
-  Tools: { icon: Wrench, color: "text-slate-500", hex: "#64748b" },
+  Frontend:  { icon: Monitor,      hex: "#3b82f6" },
+  Backend:   { icon: Server,       hex: "#8b5cf6" },
+  Database:  { icon: Database,     hex: "#f59e0b" },
+  Cloud:     { icon: Cloud,        hex: "#06b6d4" },
+  "AI & ML": { icon: BrainCircuit, hex: "#10b981" },
+  Mobile:    { icon: Smartphone,   hex: "#f43f5e" },
+  Tools:     { icon: Wrench,       hex: "#64748b" },
 };
 
 const SKILL_SLUGS: Record<string, string> = {
-  "HTML": "html5",
-  "CSS": "css3",
-  "JavaScript": "javascript",
-  "TypeScript": "typescript",
-  "Python": "python",
-  "React JS": "react",
-  "Next JS": "nextdotjs",
-  "Tailwind CSS": "tailwindcss",
-  "Node JS": "nodedotjs",
-  "GraphQL": "graphql",
+  // Web & Languages
+  "HTML": "html5", "CSS": "css3", "JavaScript": "javascript",
+  "TypeScript": "typescript", "Python": "python",
+  // Frontend
+  "React JS": "react", "Next JS": "nextdotjs", "Tailwind CSS": "tailwindcss",
+  // Backend
+  "Node JS": "nodedotjs", "GraphQL": "graphql",
+  // Mobile
   "React Native": "react",
-  "PostgreSQL": "postgresql",
-  "MySQL": "mysql",
-  "MongoDB": "mongodb",
-  "SQLite": "sqlite",
-  "Snowflake": "snowflake",
-  "Vercel": "vercel",
-  "Docker": "docker",
-  "Kubernetes": "kubernetes",
-  "Git": "git",
-  "n8n": "n8n",
+  // Databases
+  "PostgreSQL": "postgresql", "MySQL": "mysql", "MongoDB": "mongodb",
+  "SQLite": "sqlite", "Snowflake": "snowflake", "Databricks": "databricks",
+  // Cloud & Infra
+  "Vercel": "vercel", "Docker": "docker", "Kubernetes": "kubernetes",
+  "Git": "git", "AWS": "amazonaws", "Azure": "microsoftazure", "GCP": "googlecloud",
+  // AI & ML
+  "OpenAI API": "openai", "LangChain": "langchain",
+  "Pinecone": "pinecone", "Hugging Face": "huggingface",
+  // Tools
+  "n8n": "n8n", "Power BI": "powerbi",
 };
 
+// Only for skills with NO simpleicons equivalent
 const SKILL_LUCIDE: Record<string, LucideIcon> = {
   "ElysiaJS": Server,
-  "OpenAI API": BrainCircuit,
-  "LangChain": BrainCircuit,
-  "Pinecone": Database,
-  "Hugging Face": BrainCircuit,
-  "Azure": Cloud,
-  "AWS": Cloud,
-  "GCP": Cloud,
-  "Power BI": Monitor,
-  "Databricks": Database,
+  "RAG Architecture": Code2,
 };
 
 const SkillImgIcon = ({ name, className }: { name: string; className?: string }) => {
-  const [hasError, setHasError] = React.useState(false);
+  const [err, setErr] = React.useState(false);
   const slug = SKILL_SLUGS[name];
-  const FallbackIcon = SKILL_LUCIDE[name];
-  
-  if (FallbackIcon) {
-    return <FallbackIcon className={className} />;
-  }
-
-  if (!slug || hasError) return <Code2 className={className} />;
-  
-  return (
-    <img
-      src={`https://cdn.simpleicons.org/${slug}`}
-      alt={name}
-      className={className}
-      onError={() => setHasError(true)}
-    />
-  );
+  const Fallback = SKILL_LUCIDE[name];
+  if (Fallback) return <Fallback className={className} />;
+  if (!slug || err) return <Code2 className={className} />;
+  return <img src={`https://cdn.simpleicons.org/${slug}`} alt={name} className={className} onError={() => setErr(true)} />;
 };
 
-function RadarChart({
-  categories,
-  data,
-  hoveredCategory,
-  onHoverCategory,
-}: {
-  categories: string[];
-  data: number[];
-  hoveredCategory: string | null;
-  onHoverCategory: (cat: string | null) => void;
-}) {
-  const size = 300;
-  const center = size / 2;
-  const radius = size / 2 - 40;
-  const angleStep = (Math.PI * 2) / categories.length;
+function levelInfo(lvl: number): { label: string; dots: number } {
+  if (lvl >= 90) return { label: "Expert",     dots: 4 };
+  if (lvl >= 75) return { label: "Advanced",   dots: 3 };
+  if (lvl >= 55) return { label: "Proficient", dots: 2 };
+  return               { label: "Learning",    dots: 1 };
+}
 
-  const points = data
-    .map((value, i) => {
-      const r = (value / 100) * radius;
-      const x = center + r * Math.cos(i * angleStep - Math.PI / 2);
-      const y = center + r * Math.sin(i * angleStep - Math.PI / 2);
-      return `${x},${y}`;
-    })
-    .join(" ");
-
-  const bgPolygons = [20, 40, 60, 80, 100].map((level) => {
-    return categories
-      .map((_, i) => {
-        const r = (level / 100) * radius;
-        const x = center + r * Math.cos(i * angleStep - Math.PI / 2);
-        const y = center + r * Math.sin(i * angleStep - Math.PI / 2);
-        return `${x},${y}`;
-      })
-      .join(" ");
-  });
+/* ─── Single skill row ─── */
+function SkillRow({ skill, hex, index, catIndex }: { skill: Skill; hex: string; index: number; catIndex: number }) {
+  const { label, dots } = levelInfo(skill.level);
 
   return (
-    <div className="relative flex items-center justify-center w-full max-w-[400px] mx-auto aspect-square">
-      <svg
-        viewBox={`0 0 ${size} ${size}`}
-        className="w-full h-full overflow-visible"
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.35, delay: catIndex * 0.04 + index * 0.04 }}
+      className="group relative flex items-center gap-4 p-4 rounded-2xl bg-background border border-border/70 hover:border-transparent transition-all duration-300 overflow-hidden cursor-default"
+      whileHover={{ y: -2, boxShadow: `0 0 0 1.5px ${hex}55, 0 8px 24px ${hex}14` }}
+    >
+
+
+      {/* Hover wash */}
+      <div
+        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none"
+        style={{ background: `linear-gradient(100deg, ${hex}0c 0%, transparent 70%)` }}
+      />
+
+      {/* Icon bubble */}
+      <div
+        className="relative z-10 w-10 h-10 shrink-0 rounded-xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110"
+        style={{ backgroundColor: hex + "18" }}
       >
-        <defs>
-          <radialGradient id="radarGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="var(--secondary)" stopOpacity="0.4" />
-            <stop offset="100%" stopColor="var(--secondary)" stopOpacity="0" />
-          </radialGradient>
-        </defs>
+        <SkillImgIcon name={skill.name} className="w-5 h-5" />
+      </div>
 
-        {/* Background Web */}
-        {bgPolygons.map((points, i) => (
-          <polygon
-            key={i}
-            points={points}
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1"
-            className="text-muted/20"
-          />
-        ))}
-        {categories.map((_, i) => {
-          const x = center + radius * Math.cos(i * angleStep - Math.PI / 2);
-          const y = center + radius * Math.sin(i * angleStep - Math.PI / 2);
-          return (
-            <line
-              key={i}
-              x1={center}
-              y1={center}
-              x2={x}
-              y2={y}
-              stroke="currentColor"
-              strokeWidth="1"
-              className="text-muted/20"
-            />
-          );
-        })}
-
-        {/* Data Polygon */}
-        <motion.polygon
-          points={points}
-          fill="url(#radarGlow)"
-          stroke="var(--secondary)"
-          strokeWidth="2"
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 1.5, type: "spring", bounce: 0.4 }}
-          style={{ transformOrigin: "center" }}
-        />
-
-        {/* Data Points & Labels */}
-        {categories.map((cat, i) => {
-          const val = data[i];
-          const r = (val / 100) * radius;
-          const x = center + r * Math.cos(i * angleStep - Math.PI / 2);
-          const y = center + r * Math.sin(i * angleStep - Math.PI / 2);
-
-          const labelR = radius + 25;
-          const labelX =
-            center + labelR * Math.cos(i * angleStep - Math.PI / 2);
-          const labelY =
-            center + labelR * Math.sin(i * angleStep - Math.PI / 2);
-            
-          const isHovered = hoveredCategory === cat;
-          const opacity = hoveredCategory ? (isHovered ? 1 : 0.2) : 1;
-
-          return (
-            <g 
-              key={cat}
-              onMouseEnter={() => onHoverCategory(cat)}
-              onMouseLeave={() => onHoverCategory(null)}
-              className="cursor-pointer transition-opacity duration-300"
-              style={{ opacity }}
-            >
-              <motion.circle
-                cx={x}
-                cy={y}
-                r={isHovered ? "6" : "4"}
-                fill="var(--secondary)"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1 + i * 0.1 }}
-                className="transition-all duration-300"
+      {/* Name + bar */}
+      <div className="relative z-10 flex-1 min-w-0">
+        <div className="flex items-center justify-between gap-2 mb-2">
+          <span className="text-sm font-bold text-foreground leading-none">{skill.name}</span>
+          {/* Dot rating */}
+          <div className="flex items-center gap-0.5 shrink-0">
+            {[1,2,3,4].map(d => (
+              <div
+                key={d}
+                className="w-1.5 h-1.5 rounded-full transition-all duration-300"
+                style={{ backgroundColor: d <= dots ? hex : hex + "30" }}
               />
-              <motion.text
-                x={labelX}
-                y={labelY}
-                textAnchor="middle"
-                dominantBaseline="middle"
-                className={`text-[10px] font-bold uppercase tracking-widest transition-colors duration-300 ${isHovered ? 'fill-secondary' : 'fill-muted-foreground'}`}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5 + i * 0.1 }}
-              >
-                {cat}
-              </motion.text>
-            </g>
-          );
-        })}
-      </svg>
-    </div>
+            ))}
+          </div>
+        </div>
+        {/* Progress bar */}
+        <div className="h-2 w-full bg-border/50 rounded-full overflow-hidden">
+          <motion.div
+            className="h-full rounded-full"
+            style={{ backgroundColor: hex }}
+            initial={{ width: 0 }}
+            animate={{ width: `${skill.level}%` }}
+            transition={{ duration: 1.1, delay: catIndex * 0.04 + index * 0.05, ease: [0.22, 1, 0.36, 1] }}
+          />
+        </div>
+      </div>
+
+      {/* Level + pct */}
+      <div className="relative z-10 shrink-0 text-right">
+        <span className="block text-xs font-black font-mono" style={{ color: hex }}>{skill.level}%</span>
+        <span className="block text-[9px] font-semibold text-muted-foreground uppercase tracking-wide mt-0.5">{label}</span>
+      </div>
+    </motion.div>
   );
 }
 
-export function SkillsClient({ skills }: { skills: Skill[] }) {
-  const [hoveredCategory, setHoveredCategory] = React.useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = React.useState("");
-  const [filterLevel, setFilterLevel] = React.useState<"all" | "core" | "learning">("all");
-
-  const filteredSkills = useMemo(() => {
-    return skills.filter((skill) => {
-      if (searchQuery && !skill.name.toLowerCase().includes(searchQuery.toLowerCase())) {
-        return false;
-      }
-      if (filterLevel === "core" && skill.level < 80) return false;
-      if (filterLevel === "learning" && skill.level >= 80) return false;
-      return true;
-    });
-  }, [skills, searchQuery, filterLevel]);
-
-  // Base grouping for Radar Chart (always show all categories)
-  const baseGrouped = useMemo(() => {
-    return skills.reduce<Record<string, Skill[]>>((acc, s) => {
-      const cat = s.category || "Other";
-      (acc[cat] = acc[cat] || []).push(s);
-      return acc;
-    }, {});
-  }, [skills]);
-
-  // Filtered grouping for Bento Grid
-  const grouped = useMemo(() => {
-    return filteredSkills.reduce<Record<string, Skill[]>>((acc, s) => {
-      const cat = s.category || "Other";
-      (acc[cat] = acc[cat] || []).push(s);
-      return acc;
-    }, {});
-  }, [filteredSkills]);
-
-  const order = [
-    "Frontend",
-    "Backend",
-    "Database",
-    "AI & ML",
-    "Cloud",
-    "Mobile",
-    "Tools",
-  ];
-  
-  const baseCategories = Object.keys(baseGrouped).sort((a, b) => {
-    return (
-      (order.indexOf(a) !== -1 ? order.indexOf(a) : 99) -
-      (order.indexOf(b) !== -1 ? order.indexOf(b) : 99)
-    );
-  });
-
-  const categoryAverages = useMemo(() => {
-    return baseCategories.map((cat) => {
-      const catSkills = baseGrouped[cat];
-      if (!catSkills || catSkills.length === 0) return 0;
-      return Math.round(
-        catSkills.reduce((sum, s) => sum + s.level, 0) / catSkills.length,
-      );
-    });
-  }, [baseCategories, baseGrouped]);
-
-  const gridCategories = Object.keys(grouped).sort((a, b) => {
-    return (
-      (order.indexOf(a) !== -1 ? order.indexOf(a) : 99) -
-      (order.indexOf(b) !== -1 ? order.indexOf(b) : 99)
-    );
-  });
-  
-  const topCategory = baseCategories[categoryAverages.indexOf(Math.max(...categoryAverages))] || "Data & AI";
+/* ─── Category card ─── */
+function CategoryCard({ cat, skills, meta, index }: {
+  cat: string;
+  skills: Skill[];
+  meta: { icon: LucideIcon; hex: string };
+  index: number;
+}) {
+  const Icon = meta.icon;
+  const avg = Math.round(skills.reduce((s, sk) => s + sk.level, 0) / skills.length);
+  const circ = 2 * Math.PI * 15;
 
   return (
-    <div className="w-full pb-32">
-      <PageHeader
-        label="Analytics"
-        title="Skill Matrix"
-        description="A data-driven breakdown of my technical capabilities and domain expertise."
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.55, delay: index * 0.06, ease: [0.22, 1, 0.36, 1] }}
+      className="relative rounded-3xl border border-border bg-card overflow-hidden"
+    >
+
+      {/* Ambient glow (subtle) */}
+      <div
+        className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-700 pointer-events-none"
+        style={{ background: `radial-gradient(600px circle at 50% -20%, ${meta.hex}0b, transparent 55%)` }}
       />
 
-      <div className="max-w-7xl mx-auto px-5 md:px-8 space-y-12">
-        {/* Top Section: Radar Chart & Top Stats */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center card p-8 rounded-3xl bg-card/50 backdrop-blur-xl border border-border/50">
-          <div className="flex flex-col space-y-6">
-            <div>
-              <h2
-                className="text-2xl font-bold tracking-tight mb-2"
-                style={{ fontFamily: "var(--font-bricolage)" }}
-              >
-                Competency Distribution
-              </h2>
-              <p className="text-muted-foreground">
-                An aggregate analysis of my proficiency across major
-                technological domains, reflecting a strong emphasis on Data, AI,
-                and Full-Stack Engineering.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div className="p-4 rounded-2xl bg-background/50 border border-border/50">
-                <p className="text-sm text-muted-foreground font-medium mb-1">
-                  Total Technologies
-                </p>
-                <p className="text-3xl font-black">{skills.length}</p>
-              </div>
-              <div className="p-4 rounded-2xl bg-background/50 border border-border/50">
-                <p className="text-sm text-muted-foreground font-medium mb-1">
-                  Primary Domain
-                </p>
-                <p className="text-xl font-black text-secondary">{topCategory}</p>
-              </div>
-            </div>
+      {/* Card Header */}
+      <div className="relative z-10 flex items-center justify-between p-5 pb-4 border-b border-border/50">
+        <div className="flex items-center gap-3">
+          <div
+            className="w-10 h-10 rounded-xl flex items-center justify-center"
+            style={{ backgroundColor: meta.hex + "18" }}
+          >
+            <Icon className="w-5 h-5" style={{ color: meta.hex }} />
           </div>
+          <div>
+            <h3 className="text-base font-bold leading-tight">{cat}</h3>
+            <p className="text-xs text-muted-foreground mt-0.5">{skills.length} {skills.length === 1 ? "technology" : "technologies"}</p>
+          </div>
+        </div>
 
-          <div className="flex justify-center p-4">
-            <RadarChart 
-              categories={baseCategories} 
-              data={categoryAverages} 
-              hoveredCategory={hoveredCategory}
-              onHoverCategory={setHoveredCategory}
+        {/* Circular avg */}
+        <div className="relative w-12 h-12">
+          <svg className="w-full h-full -rotate-90" viewBox="0 0 36 36">
+            <circle cx="18" cy="18" r="15" fill="none" stroke="currentColor" strokeWidth="2" className="text-border" />
+            <motion.circle
+              cx="18" cy="18" r="15"
+              fill="none"
+              stroke={meta.hex}
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeDasharray={circ}
+              initial={{ strokeDashoffset: circ }}
+              animate={{ strokeDashoffset: circ - (avg / 100) * circ }}
+              transition={{ duration: 1.4, delay: index * 0.06 + 0.2, ease: [0.22, 1, 0.36, 1] }}
+            />
+          </svg>
+          <div className="absolute inset-0 flex flex-col items-center justify-center">
+            <span className="text-[10px] font-black leading-none" style={{ color: meta.hex }}>{avg}</span>
+            <span className="text-[7px] text-muted-foreground font-medium leading-none mt-0.5">avg</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Skill rows */}
+      <div className="relative z-10 p-4 space-y-2">
+        {skills.map((skill, idx) => (
+          <SkillRow key={skill.id} skill={skill} hex={meta.hex} index={idx} catIndex={index} />
+        ))}
+      </div>
+    </motion.div>
+  );
+}
+
+/* ─── Stat card ─── */
+function StatCard({ label, value, icon: Icon, color }: {
+  label: string; value: string | number; icon: LucideIcon; color: string;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="relative flex items-center gap-4 p-5 rounded-2xl bg-card border border-border overflow-hidden group"
+    >
+      <div
+        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+        style={{ background: `radial-gradient(200px circle at 20% 50%, ${color}0c, transparent 60%)` }}
+      />
+      <div
+        className="relative z-10 w-11 h-11 shrink-0 rounded-xl flex items-center justify-center"
+        style={{ backgroundColor: color + "18" }}
+      >
+        <Icon className="w-5 h-5" style={{ color }} />
+      </div>
+      <div className="relative z-10 min-w-0">
+        <p className="text-xs text-muted-foreground font-medium leading-none mb-1.5">{label}</p>
+        <p className="text-2xl font-black tracking-tight leading-none">{value}</p>
+      </div>
+    </motion.div>
+  );
+}
+
+/* ─── Main Component ─── */
+export function SkillsClient({ skills }: { skills: Skill[] }) {
+  const [search, setSearch] = React.useState("");
+  const [filter, setFilter] = React.useState<"all" | "core" | "learning">("all");
+
+  const filtered = useMemo(() => skills.filter(sk => {
+    if (search && !sk.name.toLowerCase().includes(search.toLowerCase())) return false;
+    if (filter === "core"     && sk.level < 80) return false;
+    if (filter === "learning" && sk.level >= 80) return false;
+    return true;
+  }), [skills, search, filter]);
+
+  const grouped = useMemo(() =>
+    filtered.reduce<Record<string, Skill[]>>((acc, s) => {
+      const c = s.category || "Other";
+      (acc[c] = acc[c] || []).push(s);
+      return acc;
+    }, {}), [filtered]);
+
+  const allGrouped = useMemo(() =>
+    skills.reduce<Record<string, Skill[]>>((acc, s) => {
+      const c = s.category || "Other";
+      (acc[c] = acc[c] || []).push(s);
+      return acc;
+    }, {}), [skills]);
+
+  const order = ["Frontend", "Backend", "Database", "AI & ML", "Cloud", "Mobile", "Tools"];
+  const cats = Object.keys(grouped).sort((a, b) =>
+    (order.indexOf(a) !== -1 ? order.indexOf(a) : 99) - (order.indexOf(b) !== -1 ? order.indexOf(b) : 99)
+  );
+
+  const overallAvg = Math.round(skills.reduce((s, sk) => s + sk.level, 0) / (skills.length || 1));
+  const expertCount = skills.filter(s => s.level >= 90).length;
+
+  const filters: { key: typeof filter; label: string; count: number }[] = [
+    { key: "all",      label: "All",        count: skills.length },
+    { key: "core",     label: "Core Stack", count: skills.filter(s => s.level >= 80).length },
+    { key: "learning", label: "Learning",   count: skills.filter(s => s.level < 80).length },
+  ];
+
+  return (
+    <div>
+      <PageHeader
+        label="Skill Matrix"
+        title="Technical Arsenal"
+        description="A comprehensive, data-driven map of the tools, frameworks, and technologies I work with every day."
+      />
+
+      <div className="space-y-8">
+
+        {/* ── Stats ── */}
+        <div className="grid grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-4">
+          <StatCard label="Total Technologies"  value={skills.length}      icon={Layers}     color="#3b82f6" />
+          <StatCard label="Expert (90%+)"       value={expertCount}        icon={Star}       color="#10b981" />
+          <StatCard label="Avg Proficiency"     value={`${overallAvg}%`}   icon={TrendingUp} color="#8b5cf6" />
+          <StatCard label="Top Domain"          value="Full Stack"          icon={Zap}        color="#f59e0b" />
+        </div>
+
+        {/* ── Controls ── */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div className="relative w-full sm:w-72">
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+            <input
+              type="text"
+              placeholder="Search technologies..."
+              className="w-full bg-card border border-border rounded-xl pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500/60 transition-all placeholder:text-muted-foreground/60"
+              value={search}
+              onChange={e => setSearch(e.target.value)}
             />
           </div>
-        </div>
-
-        {/* Dashboard Controls Section */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-card/40 backdrop-blur-md border border-border/40">
-           {/* Search */}
-           <div className="relative w-full md:w-72">
-             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-             <input 
-               type="text" 
-               placeholder="Search technologies..." 
-               className="w-full bg-background/50 border border-border/50 rounded-lg pl-9 pr-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-secondary transition-all"
-               value={searchQuery}
-               onChange={(e) => setSearchQuery(e.target.value)}
-             />
-           </div>
-           
-           {/* Filters */}
-           <div className="flex items-center w-full md:w-auto p-1 bg-background/50 rounded-lg border border-border/50 overflow-x-auto">
-             <button 
-               onClick={() => setFilterLevel("all")} 
-               className={`px-4 py-2 text-xs font-bold rounded-md transition-all whitespace-nowrap ${filterLevel === "all" ? "bg-secondary text-secondary-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
-             >
-               All ({skills.length})
-             </button>
-             <button 
-               onClick={() => setFilterLevel("core")} 
-               className={`px-4 py-2 text-xs font-bold rounded-md transition-all whitespace-nowrap ${filterLevel === "core" ? "bg-secondary text-secondary-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
-             >
-               Core Stack ({skills.filter(s => s.level >= 80).length})
-             </button>
-             <button 
-               onClick={() => setFilterLevel("learning")} 
-               className={`px-4 py-2 text-xs font-bold rounded-md transition-all whitespace-nowrap ${filterLevel === "learning" ? "bg-secondary text-secondary-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
-             >
-               Learning ({skills.filter(s => s.level < 80).length})
-             </button>
-           </div>
-        </div>
-
-        {/* Bottom Section: Data Meters */}
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-          {gridCategories.length === 0 && (
-            <div className="col-span-full py-12 text-center text-muted-foreground">
-              No skills match your search criteria.
-            </div>
-          )}
-          {gridCategories.map((cat, i) => {
-            const meta = CATEGORY_META[cat] || CATEGORY_META["Tools"];
-            const Icon = meta.icon;
-            
-            // Cross-filtering visual dimming
-            const isHovered = hoveredCategory === cat;
-            const isDimmed = hoveredCategory !== null && !isHovered;
-            
-            // Calculate real average for the displayed items
-            const catSkills = grouped[cat];
-            const avg = Math.round(catSkills.reduce((sum, s) => sum + s.level, 0) / catSkills.length);
-
-            return (
-              <motion.div
-                key={cat}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                className={`card p-6 rounded-3xl bg-card/30 backdrop-blur-md border border-border/30 transition-all duration-300 ${isDimmed ? 'opacity-40 scale-[0.98]' : 'hover:bg-card/60'} ${isHovered ? 'ring-2 ring-secondary/50 shadow-lg shadow-secondary/10' : ''}`}
+          <div className="flex items-center gap-0 overflow-x-auto">
+            {filters.map(f => (
+              <button
+                key={f.key}
+                onClick={() => setFilter(f.key)}
+                className={`relative px-4 py-2 text-sm font-semibold whitespace-nowrap transition-colors duration-200 ${
+                  filter === f.key ? "text-foreground" : "text-muted-foreground hover:text-foreground"
+                }`}
               >
-                <div className="flex items-center justify-between mb-6">
-                  <div className="flex items-center gap-3">
-                    <div
-                      className={`p-2 rounded-xl bg-background/80 ${meta.color} shadow-sm border border-border/50`}
-                    >
-                      <Icon className="w-5 h-5" />
-                    </div>
-                    <h3 className="text-lg font-bold">{cat}</h3>
-                  </div>
-                  <span className="text-xs font-mono font-bold px-2 py-1 rounded-md bg-muted text-muted-foreground">
-                    AVG {avg}%
-                  </span>
-                </div>
-
-                <div className="flex flex-wrap gap-2.5">
-                  {catSkills.map((skill, idx) => {
-                    return (
-                      <motion.div
-                        key={skill.id}
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.3, delay: 0.1 + idx * 0.05 }}
-                        className="relative flex items-center gap-2 px-3 py-2 bg-background/40 border border-border/50 rounded-xl hover:bg-card hover:border-border transition-all duration-300 group/skillcard shadow-sm hover:shadow-md cursor-default"
-                      >
-                        <SkillImgIcon
-                          name={skill.name}
-                          className="w-4 h-4 transition-transform duration-300 group-hover/skillcard:scale-110 drop-shadow-sm"
-                        />
-                        <span className="text-sm font-medium text-foreground/80 group-hover/skillcard:text-foreground transition-colors">
-                          {skill.name}
-                        </span>
-                        
-                        {/* Tooltip */}
-                        <div className="absolute -top-10 left-1/2 -translate-x-1/2 opacity-0 group-hover/skillcard:opacity-100 transition-all duration-300 pointer-events-none z-10 flex flex-col items-center translate-y-2 group-hover/skillcard:translate-y-0">
-                          <div className="bg-popover text-popover-foreground text-xs px-2.5 py-1.5 rounded-lg shadow-xl border border-border flex items-center gap-2 whitespace-nowrap">
-                            <span className="font-bold">{skill.level}%</span>
-                            <div className="w-12 h-1 bg-muted rounded-full overflow-hidden">
-                              <div className="h-full" style={{ width: `${skill.level}%`, backgroundColor: meta.hex }} />
-                            </div>
-                          </div>
-                          <div className="w-2 h-2 bg-popover border-b border-r border-border rotate-45 -mt-1.5" />
-                        </div>
-
-                        {/* Subtle proficiency line at bottom */}
-                        <div className="absolute bottom-0 left-0 h-[2px] w-full bg-muted-foreground/10 rounded-b-xl overflow-hidden">
-                           <div 
-                             className="h-full opacity-60 group-hover/skillcard:opacity-100 transition-opacity" 
-                             style={{ width: `${skill.level}%`, backgroundColor: meta.hex }} 
-                           />
-                        </div>
-                      </motion.div>
-                    );
-                  })}
-                </div>
-              </motion.div>
-            );
-          })}
+                {f.label}
+                <span className={`ml-1.5 text-xs font-black ${filter === f.key ? "text-blue-500" : "opacity-40"}`}>{f.count}</span>
+                {filter === f.key && (
+                  <span className="absolute bottom-0 left-2 right-2 h-[2px] rounded-full bg-foreground" />
+                )}
+              </button>
+            ))}
+          </div>
         </div>
+
+        {/* ── Grid ── */}
+        {cats.length === 0 && (
+          <div className="py-24 text-center text-muted-foreground">No technologies match your search.</div>
+        )}
+        {cats.length > 0 && (
+          <React.Fragment key={filter + "|" + search}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 sm:gap-6 items-start">
+              {cats.map((cat, i) => {
+                const meta = CATEGORY_META[cat] ?? CATEGORY_META["Tools"];
+                return (
+                  <CategoryCard key={cat} cat={cat} skills={grouped[cat]} meta={meta} index={i} />
+                );
+              })}
+            </div>
+          </React.Fragment>
+        )}
       </div>
     </div>
   );

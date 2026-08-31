@@ -46,7 +46,7 @@ export function AboutClient({
   }, {});
 
   return (
-    <div className="max-w-3xl mx-auto space-y-16">
+    <div className="space-y-16">
       {/* Header */}
       <motion.div className="space-y-4" {...fadeUp(0)}>
         <p className="text-label text-primary">About</p>

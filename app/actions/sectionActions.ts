@@ -1,6 +1,6 @@
 "use server";
 
-import { db } from "@/prisma/db";
+import { db } from "@/src/prisma/db";
 import { revalidatePath } from "next/cache";
 
 // Seed default sections if they don't exist
@@ -16,30 +16,30 @@ const DEFAULT_SECTIONS = [
 ];
 
 export async function getResumeSections() {
-  let sections = await db.sql`SELECT * FROM "resumeSection" ORDER BY "order" ASC`;
+  let sections = await db.orm.public.ResumeSection.orderBy((s) => s.order.asc()).all();
 
   // Seed if empty
   if (sections.length === 0) {
     for (const s of DEFAULT_SECTIONS) {
-      await db.sql`
-        INSERT INTO "resumeSection" (name, title, "order", visible)
-        VALUES (${s.name}, ${s.title}, ${s.order}, true)
-      `;
+      await db.orm.public.ResumeSection.create({
+        name: s.name,
+        title: s.title,
+        order: s.order,
+        visible: true
+      });
     }
-    sections = await db.sql`SELECT * FROM "resumeSection" ORDER BY "order" ASC`;
+    sections = await db.orm.public.ResumeSection.orderBy((s) => s.order.asc()).all();
   }
 
   return sections;
 }
 
 export async function updateSectionOrder(updates: { id: number; order: number; visible: boolean }[]) {
-  // We do multiple updates
   for (const update of updates) {
-    await db.sql`
-      UPDATE "resumeSection"
-      SET "order" = ${update.order}, visible = ${update.visible}
-      WHERE id = ${update.id}
-    `;
+    await db.orm.public.ResumeSection.where({ id: update.id }).update({
+      order: update.order,
+      visible: update.visible
+    });
   }
   revalidatePath("/admin/sections");
 }

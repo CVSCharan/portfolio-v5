@@ -24,7 +24,7 @@ export default async function ResumePage() {
   }, {});
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div>
       <PageHeader
         label="CV"
         title="Resume"

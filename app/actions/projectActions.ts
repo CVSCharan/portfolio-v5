@@ -1,0 +1,60 @@
+"use server";
+
+import { db } from "@/src/prisma/db";
+import { revalidatePath } from "next/cache";
+
+export async function getProjects() {
+  return await db.orm.public.Project.orderBy((p) => p.order.asc()).all();
+}
+
+export async function addProject() {
+  const result = await db.orm.public.Project.create({
+    title: 'New Project',
+    slug: 'new-project-' + Date.now(),
+    description: null,
+    techStack: [],
+    highlights: [],
+    githubUrl: null,
+    demoUrl: null,
+    imageUrl: null,
+    order: 999
+  });
+  revalidatePath("/admin/projects");
+  return result;
+}
+
+export async function updateProject(id: number, data: any) {
+  let techStackArray = data.techStack;
+  if (typeof data.techStack === 'string') {
+    techStackArray = data.techStack.split(',').map((s: string) => s.trim()).filter(Boolean);
+  }
+
+  let highlightsArray = data.highlights;
+  if (typeof data.highlights === 'string') {
+    highlightsArray = data.highlights.split(',').map((s: string) => s.trim()).filter(Boolean);
+  }
+
+  await db.orm.public.Project.where({ id }).update({
+    title: data.title,
+    slug: data.slug,
+    description: data.description || null,
+    techStack: techStackArray,
+    highlights: highlightsArray,
+    githubUrl: data.githubUrl || null,
+    demoUrl: data.demoUrl || null,
+    imageUrl: data.imageUrl || null
+  });
+  revalidatePath("/admin/projects");
+}
+
+export async function deleteProject(id: number) {
+  await db.orm.public.Project.where({ id }).delete();
+  revalidatePath("/admin/projects");
+}
+
+export async function reorderProjects(updates: { id: number; order: number }[]) {
+  for (const update of updates) {
+    await db.orm.public.Project.where({ id: update.id }).update({ order: update.order });
+  }
+  revalidatePath("/admin/projects");
+}
