@@ -162,9 +162,9 @@ export function HomeClient({
         
         {/* ── SECTION B: EXPERIENCE GLIMPSE ── */}
         <section className="max-w-4xl mx-auto mb-32">
-          <div className="text-center mb-12">
+          <div className="mb-12">
             <h2 className="text-headline text-foreground mb-4">The Journey So Far.</h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed" style={{ fontFamily: "var(--font-bricolage)" }}>
+            <p className="text-xl text-muted-foreground max-w-2xl leading-relaxed" style={{ fontFamily: "var(--font-bricolage)" }}>
               From Data Analytics to Full-Stack Engineering, I have built AI-driven platforms and cross-platform architecture that scale.
             </p>
           </div>
@@ -188,7 +188,7 @@ export function HomeClient({
             ))}
           </div>
 
-          <div className="flex justify-center">
+          <div className="flex justify-start">
             <Link href="/experience" className="btn btn-outline btn-lg group">
               View Full Experience Track <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </Link>
@@ -232,14 +232,16 @@ export function HomeClient({
                   </div>
                 )}
                 
-                <div className="absolute inset-x-0 bottom-0 p-8 flex flex-col gap-2">
-                  <p className="text-label text-primary-foreground/70">Featured Project</p>
-                  <h3 className="text-2xl font-bold text-white flex items-center justify-between" style={{ fontFamily: "var(--font-bricolage)" }}>
+                <div className="absolute inset-x-0 bottom-0 p-8 flex flex-col gap-2 z-10">
+                  <p className={`text-label ${project.imageUrl ? "text-primary-foreground/70" : "text-muted-foreground"}`}>
+                    Featured Project
+                  </p>
+                  <h3 className={`text-2xl font-bold flex items-center justify-between ${project.imageUrl ? "text-white" : "text-foreground"}`} style={{ fontFamily: "var(--font-bricolage)" }}>
                     {project.title}
-                    <ArrowUpRight className="w-6 h-6 text-white/50 group-hover:text-white group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
+                    <ArrowUpRight className={`w-6 h-6 transition-all group-hover:translate-x-1 group-hover:-translate-y-1 ${project.imageUrl ? "text-white/50 group-hover:text-white" : "text-muted-foreground group-hover:text-foreground"}`} />
                   </h3>
                   {project.description && (
-                    <p className="text-sm text-white/80 line-clamp-2 mt-2 leading-relaxed">
+                    <p className={`text-sm line-clamp-2 mt-2 leading-relaxed ${project.imageUrl ? "text-white/80" : "text-muted-foreground"}`}>
                       {project.description}
                     </p>
                   )}
@@ -248,7 +250,7 @@ export function HomeClient({
             ))}
           </div>
 
-          <div className="flex justify-center">
+          <div className="flex justify-start">
             <Link href="/projects" className="btn btn-outline btn-lg group">
               View All Projects <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </Link>
