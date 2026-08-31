@@ -4,9 +4,9 @@ import { HomeClient } from "@/components/HomeClient";
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  let user = null;
-  let featuredProjects = [];
-  let experiences = [];
+  let user: any = null;
+  let featuredProjects: any[] = [];
+  let experiences: any[] = [];
   
   try {
     user = await db.orm.public.User.where({ email: "charan.cvs@gmail.com" }).all().first();
