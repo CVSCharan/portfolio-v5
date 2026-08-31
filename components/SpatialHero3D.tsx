@@ -7,6 +7,7 @@ import { useTheme } from "next-themes";
 
 function ParticleSphere({ color }: { color: string }) {
   const pointsRef = useRef<THREE.Points>(null);
+  const groupRef = useRef<THREE.Group>(null);
   
   // Lower particle count on mobile for performance
   const [isMobile, setIsMobile] = useState(false);
@@ -41,18 +42,33 @@ function ParticleSphere({ color }: { color: string }) {
 
   // Subtle constant rotation + mouse influence
   useFrame((state, delta) => {
-    if (pointsRef.current && !prefersReducedMotion.current) {
-      pointsRef.current.rotation.y += delta * 0.05;
-      pointsRef.current.rotation.x += delta * 0.03;
+    if (!prefersReducedMotion.current) {
+      // 1. Constant slow spin on the inner sphere
+      if (pointsRef.current) {
+        pointsRef.current.rotation.y += delta * 0.05;
+        pointsRef.current.rotation.x += delta * 0.02;
+      }
       
-      // Mouse influence (only noticeable on desktop where mouse moves)
-      pointsRef.current.rotation.y += (state.pointer.x * 0.2 - pointsRef.current.rotation.y) * 0.02;
-      pointsRef.current.rotation.x += (-state.pointer.y * 0.2 - pointsRef.current.rotation.x) * 0.02;
+      // 2. High interactivity: Make the entire group follow the cursor (like Antigravity)
+      if (groupRef.current) {
+        // Heavy rotation tracking
+        const targetRotX = -state.pointer.y * 0.6;
+        const targetRotY = state.pointer.x * 0.6;
+        groupRef.current.rotation.x += (targetRotX - groupRef.current.rotation.x) * 0.05;
+        groupRef.current.rotation.y += (targetRotY - groupRef.current.rotation.y) * 0.05;
+
+        // Parallax position tracking (sphere moves towards cursor)
+        const targetPosX = state.pointer.x * 2;
+        const targetPosY = state.pointer.y * 2;
+        groupRef.current.position.x += (targetPosX - groupRef.current.position.x) * 0.05;
+        groupRef.current.position.y += (targetPosY - groupRef.current.position.y) * 0.05;
+      }
     }
   });
 
   return (
-    <points ref={pointsRef}>
+    <group ref={groupRef}>
+      <points ref={pointsRef}>
       <bufferGeometry>
         <bufferAttribute
           attach="attributes-position"
@@ -69,6 +85,7 @@ function ParticleSphere({ color }: { color: string }) {
         blending={color === "#000000" ? THREE.NormalBlending : THREE.AdditiveBlending}
       />
     </points>
+    </group>
   );
 }
 
