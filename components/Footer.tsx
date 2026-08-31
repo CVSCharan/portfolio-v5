@@ -85,12 +85,12 @@ export function Footer() {
       </div>
 
       {/* Huge bottom text */}
-      <div className="w-full overflow-hidden flex justify-center pb-0">
+      <div className="w-full overflow-hidden pointer-events-none select-none flex justify-center">
         <h2 
-          className="text-[20vw] leading-[0.75] font-bold text-muted-foreground/10 select-none pointer-events-none whitespace-nowrap"
-          style={{ fontFamily: "var(--font-bricolage)", letterSpacing: "-0.05em" }}
+          className="text-[24vw] leading-[0.7] font-bold text-muted-foreground/10 whitespace-nowrap -mb-[4vw]"
+          style={{ fontFamily: "var(--font-bricolage)", letterSpacing: "-0.04em" }}
         >
-          cvs charan
+          charan
         </h2>
       </div>
     </footer>
