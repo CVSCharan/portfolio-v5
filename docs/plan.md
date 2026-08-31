@@ -8,9 +8,9 @@
 
 ## 2. Data Schema
 
-### Prisma Schema
-Our primary source of truth is the PostgreSQL database managed by Prisma. The schema includes models for User (Admin), Project, Skill, Experience, and BlogPost.
-(See `docs/schema.md` for full schema definition).
+### Prisma Next Data Contract
+Our primary source of truth is the PostgreSQL database managed by Prisma Next. The schema includes models for User (Admin), Project, Skill, Experience, and BlogPost.
+(See `docs/schema.md` for full schema definition or `src/prisma/contract.prisma`).
 
 ### API Routes & Data Fetching (Next.js App Router)
 Data for the public portfolio is fetched directly from the database using **React Server Components** for optimal performance and SEO.
@@ -60,10 +60,10 @@ Admin management (CRUD operations) is handled either through Server Actions or p
 ```bash
 npm install
 # Setup the database
-npx prisma generate
-npx prisma db push # or npx prisma migrate dev
+npx prisma contract emit
+npx prisma db init
 # Seed data
-npx prisma db seed
+npx tsx src/prisma/seed.ts
 # Run app
 npm run dev
 ```
@@ -73,12 +73,10 @@ npm run dev
 src/
   app/           # Next.js App Router pages (includes /admin)
   components/    # Reusable UI components
-  lib/           # Utilities (prisma client, auth, etc.)
+  lib/           # Utilities (auth, etc.)
+  prisma/        # Prisma Next contract (contract.prisma) and seed.ts
   styles/        # Global CSS, Tailwind config
   types/         # TypeScript shared types
-prisma/
-  schema.prisma  # Database schema
-  seed.ts        # Initial data seeding
 public/
   favicon.ico
 ```

@@ -2,7 +2,7 @@ import Image from "next/image"
 import Link from "next/link"
 {/* SEO Metadata generated dynamically in generateMetadata below */}
 
-export const generateMetadata = {
+export const metadata = {
   title: "CVS CHARAN - Portfolio",
   description:
     "Portfolio of CVS CHARAN, frontend developer specializing in Next.js, React, and Tailwind CSS. View projects, skills, and blog posts.",
@@ -36,12 +36,12 @@ export const generateMetadata = {
   },
 }
 
-import { db } from "@/prisma/db"
+import { db } from "@/src/prisma/db"
 
 export default async function Home() {
-  const projectsCount = await db.orm.public.Project.count();
-  const skillsCount = await db.orm.public.Skill.count();
-  const expCount = await db.orm.public.Experience.count();
+  const projectsCount = (await db.orm.public.Project.all()).length;
+  const skillsCount = (await db.orm.public.Skill.all()).length;
+  const expCount = (await db.orm.public.Experience.all()).length;
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-primary to-secondary text-white py-12 px-6 font-sans">
@@ -84,15 +84,15 @@ export default async function Home() {
         {/* Brief Stats */}
         <div className="grid grid-cols-2 gap-6 md:grid-cols-4 mt-12 max-w-2xl mx-auto">
           <div className="group hover:bg-white/10 transition-colors rounded-lg p-6">
-            <div className="text-3xl font-bold text-accent mb-2">{projectsCount}</div>
+            <div className="text-3xl font-bold text-accent mb-2">{Number(projectsCount)}</div>
             <div className="text-zinc-300">Projects</div>
           </div>
           <div className="group hover:bg-white/10 transition-colors rounded-lg p-6">
-            <div className="text-3xl font-bold text-accent mb-2">{skillsCount}</div>
+            <div className="text-3xl font-bold text-accent mb-2">{Number(skillsCount)}</div>
             <div className="text-zinc-300">Skills</div>
           </div>
           <div className="group hover:bg-white/10 transition-colors rounded-lg p-6">
-            <div className="text-3xl font-bold text-accent mb-2">{expCount}</div>
+            <div className="text-3xl font-bold text-accent mb-2">{Number(expCount)}</div>
             <div className="text-zinc-300">Experience</div>
           </div>
           <div className="group hover:bg-white/10 transition-colors rounded-lg p-6">

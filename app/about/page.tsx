@@ -1,7 +1,7 @@
 import Image from "next/image"
 import Link from "next/link"
 
-export const generateMetadata = {
+export const metadata = {
   title: "CVS CHARAN - About",
   description:
     "Learn more about CVS CHARAN, frontend developer specializing in Next.js, React, and Tailwind CSS. View experience, skills, and contact information.",

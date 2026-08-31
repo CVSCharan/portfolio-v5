@@ -1,6 +1,6 @@
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import { db } from "@/prisma/db";
+import { db } from "@/src/prisma/db";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 export default async function AdminDashboard() {
@@ -10,10 +10,10 @@ export default async function AdminDashboard() {
     redirect("/admin/login");
   }
 
-  const projects = await db.orm.public.Project.findMany();
-  const skills = await db.orm.public.Skill.findMany();
-  const experiences = await db.orm.public.Experience.findMany();
-  const blogs = await db.orm.public.BlogPost.findMany();
+  const projects = await db.orm.public.Project.all();
+  const skills = await db.orm.public.Skill.all();
+  const experiences = await db.orm.public.Experience.all();
+  const blogs = await db.orm.public.BlogPost.all();
 
   return (
     <div className="space-y-8">
