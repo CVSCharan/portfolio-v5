@@ -317,3 +317,41 @@
 ::-webkit-scrollbar-track  { background: transparent; }
 ::-webkit-scrollbar-thumb  { background: var(--border); border-radius: 99px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--muted-foreground); }
+
+/* ─── Resume Template Sheet ─── */
+.resume-sheet {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.08);
+}
+
+/* ─── Print Styles ─── */
+@media print {
+  /* Hide everything except the resume sheet */
+  body > * { display: none !important; }
+  main { display: block !important; padding: 0 !important; max-width: 100% !important; }
+  main > * { display: none !important; }
+  main .no-print { display: none !important; }
+  .resume-sheet {
+    display: block !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+  }
+  /* Force A4 page size */
+  @page {
+    size: A4 portrait;
+    margin: 12mm 14mm;
+  }
+  /* Prevent page breaks inside experience/project blocks */
+  section, .card { break-inside: avoid; }
+  /* Reset colors for print */
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}

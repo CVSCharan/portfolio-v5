@@ -21,6 +21,7 @@ import { signOut } from "next-auth/react";
 const NAV_ITEMS = [
   { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { name: "Manage Sections", href: "/admin/sections", icon: Settings },
+  { name: "Resume Settings", href: "/admin/settings", icon: FileText },
   { type: "divider" },
   { name: "Personal Info", href: "/admin/personal-info", icon: User },
   { name: "Education", href: "/admin/education", icon: GraduationCap },
