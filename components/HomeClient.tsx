@@ -65,7 +65,11 @@ export function HomeClient({
         {/* ── 1. Hero Card (Span 2) ── */}
         <motion.section 
           {...fadeUp(0)}
-          className="md:col-span-2 card flex flex-col justify-between p-8 md:p-12 min-h-[360px]"
+          className="md:col-span-2 rounded-2xl border border-border flex flex-col justify-between p-8 md:p-12 min-h-[360px]"
+          style={{ 
+            backgroundColor: "var(--card-elevated)", 
+            boxShadow: "0 12px 40px rgba(0, 0, 0, 0.08)"
+          }}
         >
           <div className="space-y-6 max-w-2xl">
             <p className="text-label text-primary flex items-center gap-2">
@@ -107,7 +111,11 @@ export function HomeClient({
         {/* ── 2. Featured Project Card (Span 1) ── */}
         <motion.section 
           {...fadeUp(0.1)}
-          className="md:col-span-1 card relative overflow-hidden group min-h-[300px] md:min-h-[360px] flex flex-col"
+          className="md:col-span-1 rounded-2xl border border-border relative overflow-hidden group min-h-[300px] md:min-h-[360px] flex flex-col"
+          style={{ 
+            backgroundColor: "var(--card-elevated)",
+            boxShadow: "0 12px 40px rgba(0, 0, 0, 0.08)"
+          }}
         >
           {featuredProject ? (
             <Link href={`/projects#${featuredProject.slug}`} className="absolute inset-0 block">
