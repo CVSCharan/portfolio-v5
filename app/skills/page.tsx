@@ -1,52 +1,65 @@
 import { db } from "@/src/prisma/db";
+import { PageHeader } from "@/components/PageHeader";
 
 export const metadata = {
-  title: "Skills - CVS CHARAN",
-  description: "My technical skills and proficiencies.",
+  title: "Skills",
+  description: "Technical skills, tools, and technologies I work with.",
+};
+
+const LEVEL_LABELS: Record<number, string> = {
+  1: "Learning", 2: "Familiar", 3: "Proficient", 4: "Advanced", 5: "Expert",
 };
 
 export default async function SkillsPage() {
   const skills = await db.orm.public.Skill.all();
 
-  // Group skills by category
-  const groupedSkills = skills.reduce((acc, skill) => {
-    if (!acc[skill.category]) {
-      acc[skill.category] = [];
-    }
-    acc[skill.category].push(skill);
+  const grouped = skills.reduce<Record<string, typeof skills>>((acc, s) => {
+    const cat = s.category || "Other";
+    (acc[cat] = acc[cat] || []).push(s);
     return acc;
-  }, {} as Record<string, typeof skills>);
+  }, {});
+
+  const categories = Object.keys(grouped).sort();
 
   return (
-    <main className="min-h-screen bg-gray-50 py-24 px-6">
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl font-bold text-primary mb-12 text-center">My Skills</h1>
-        
-        <div className="space-y-12">
-          {Object.entries(groupedSkills).map(([category, items]) => (
-            <div key={category} className="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
-              <h2 className="text-2xl font-bold text-gray-800 mb-6 border-b pb-4">{category}</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {items.map(skill => (
-                  <div key={skill.id} className="space-y-2">
-                    <div className="flex justify-between items-center">
-                      <span className="font-medium text-gray-700">{skill.name}</span>
-                      <span className="text-sm text-gray-500">{skill.level}%</span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2.5">
-                      <div className="bg-primary h-2.5 rounded-full" style={{ width: `${skill.level}%` }}></div>
-                    </div>
+    <div>
+      <PageHeader
+        label="Expertise"
+        title="Skills"
+        description="Technologies and tools I use to design, build, and ship products."
+      />
+
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {categories.map((cat) => (
+          <div key={cat} className="card p-6 space-y-5">
+            <h2
+              className="text-sm font-semibold text-foreground"
+              style={{ fontFamily: "var(--font-bricolage)" }}
+            >
+              {cat}
+            </h2>
+            <div className="space-y-3">
+              {grouped[cat].map((skill) => (
+                <div key={skill.id} className="space-y-1.5">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium text-foreground">{skill.name}</span>
+                    <span className="text-xs text-muted-foreground">
+                      {LEVEL_LABELS[skill.level] ?? skill.level}
+                    </span>
                   </div>
-                ))}
-              </div>
+                  {/* Proficiency bar */}
+                  <div className="h-1 rounded-full bg-muted overflow-hidden">
+                    <div
+                      className="h-full rounded-full bg-primary transition-all"
+                      style={{ width: `${(skill.level / 5) * 100}%` }}
+                    />
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
-          
-          {Object.keys(groupedSkills).length === 0 && (
-            <p className="text-center text-gray-500">No skills added yet.</p>
-          )}
-        </div>
+          </div>
+        ))}
       </div>
-    </main>
+    </div>
   );
 }

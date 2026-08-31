@@ -1,271 +1,278 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
-/* ─────────────────────────────────────────────
-   DESIGN SYSTEM — CVS CHARAN PORTFOLIO
-   Classic · Professional · Editorial
-   Light mode: warm near-white + ink
-   Dark mode:  deep charcoal + off-white
-   Accent: refined indigo  
-   ───────────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════
+   CVS CHARAN — PORTFOLIO DESIGN SYSTEM
+   Font stack: Bricolage Grotesque (display) + Plus Jakarta Sans (UI)
+   Inspired by: sarvam.ai aesthetic — clean, wide, expressive
+   ══════════════════════════════════════════════════════ */
 
+/* ─── Tailwind theme tokens ─── */
 @theme {
-  /* Map CSS variables into Tailwind utilities */
-  --color-background:        var(--background);
-  --color-foreground:        var(--foreground);
-  --color-primary:           var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary:         var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted:             var(--muted);
-  --color-muted-foreground:  var(--muted-foreground);
-  --color-border:            var(--border);
-  --color-card:              var(--card);
-  --color-card-foreground:   var(--card-foreground);
-  --color-accent:            var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-ring:              var(--ring);
+  --color-background:             var(--background);
+  --color-foreground:             var(--foreground);
+  --color-primary:                var(--primary);
+  --color-primary-foreground:     var(--primary-foreground);
+  --color-secondary:              var(--secondary);
+  --color-secondary-foreground:   var(--secondary-foreground);
+  --color-muted:                  var(--muted);
+  --color-muted-foreground:       var(--muted-foreground);
+  --color-border:                 var(--border);
+  --color-card:                   var(--card);
+  --color-card-foreground:        var(--card-foreground);
+  --color-accent:                 var(--accent);
+  --color-accent-foreground:      var(--accent-foreground);
+  --color-ring:                   var(--ring);
 
-  --font-sans:  var(--font-inter, "Inter", system-ui, sans-serif);
-  --font-serif: var(--font-dm-serif, "DM Serif Display", Georgia, serif);
-  --font-mono:  var(--font-geist-mono, "Geist Mono", monospace);
+  /* Fonts — injected by next/font/google via CSS vars */
+  --font-sans:    var(--font-plus-jakarta, "Plus Jakarta Sans", system-ui, sans-serif);
+  --font-display: var(--font-bricolage, "Bricolage Grotesque", system-ui, sans-serif);
+  --font-mono:    var(--font-geist-mono, "Geist Mono", monospace);
 
-  --radius-sm:  4px;
-  --radius-md:  8px;
-  --radius-lg:  12px;
-  --radius-xl:  16px;
+  /* Radii */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-pill: 9999px;
 }
 
+/* ─── Light/Dark Colour Tokens ─── */
 @layer base {
   :root {
-    /* ── Light ── */
-    --background:            #fafaf8;   /* warm off-white */
-    --foreground:            #1a1a1a;   /* near-black ink */
+    --background:          #fafaf9;
+    --foreground:          #111111;
 
-    --card:                  #ffffff;
-    --card-foreground:       #1a1a1a;
+    --card:                #ffffff;
+    --card-foreground:     #111111;
 
-    --muted:                 #f2f2ef;   /* subtle warm grey */
-    --muted-foreground:      #6b7280;
+    --muted:               #f2f1ee;
+    --muted-foreground:    #6b6b6b;
 
-    --primary:               #3730a3;   /* deep indigo */
-    --primary-foreground:    #ffffff;
+    /* Accent = indigo, used *sparingly* */
+    --primary:             #3730a3;
+    --primary-foreground:  #ffffff;
 
-    --secondary:             #f2f2ef;
-    --secondary-foreground:  #1a1a1a;
+    --secondary:           #f2f1ee;
+    --secondary-foreground:#111111;
 
-    --accent:                #eef2ff;   /* soft indigo tint */
-    --accent-foreground:     #3730a3;
+    --accent:              #eef2ff;
+    --accent-foreground:   #3730a3;
 
-    --border:                #e5e5e0;   /* warm neutral border */
-    --ring:                  #3730a3;
+    --border:              #e8e6e0;
+    --ring:                #3730a3;
   }
 
   .dark {
-    /* ── Dark ── */
-    --background:            #111110;   /* deep warm charcoal */
-    --foreground:            #eeece8;   /* warm off-white */
+    --background:          #0d0d0b;
+    --foreground:          #f0ede8;
 
-    --card:                  #1a1a18;
-    --card-foreground:       #eeece8;
+    --card:                #141412;
+    --card-foreground:     #f0ede8;
 
-    --muted:                 #242422;
-    --muted-foreground:      #9ca3af;
+    --muted:               #1e1e1c;
+    --muted-foreground:    #888884;
 
-    --primary:               #818cf8;   /* soft indigo — readable on dark */
-    --primary-foreground:    #111110;
+    --primary:             #818cf8;
+    --primary-foreground:  #0d0d0b;
 
-    --secondary:             #242422;
-    --secondary-foreground:  #eeece8;
+    --secondary:           #1e1e1c;
+    --secondary-foreground:#f0ede8;
 
-    --accent:                #1e1e3a;
-    --accent-foreground:     #818cf8;
+    --accent:              #1a1a30;
+    --accent-foreground:   #818cf8;
 
-    --border:                #2a2a27;
-    --ring:                  #818cf8;
+    --border:              #222220;
+    --ring:                #818cf8;
   }
 }
 
-/* ─── Reset & Base ─── */
+/* ─── Global Reset & Base ─── */
 @layer base {
   *, *::before, *::after {
     box-sizing: border-box;
     border-color: var(--border);
+    margin: 0;
+    padding: 0;
   }
 
   html {
     scroll-behavior: smooth;
-    font-size: 16px;
     -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
   }
 
   body {
     background-color: var(--background);
     color: var(--foreground);
-    font-family: "Inter", system-ui, sans-serif;
-    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
-    line-height: 1.6;
+    font-family: var(--font-plus-jakarta, "Plus Jakarta Sans", system-ui, sans-serif);
+    font-size: 16px;
+    line-height: 1.65;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Prose headings use the serif display font */
+  /* Display headings → Bricolage Grotesque */
   h1, h2, h3 {
-    font-family: "DM Serif Display", Georgia, serif;
-    line-height: 1.15;
+    font-family: var(--font-bricolage, "Bricolage Grotesque", system-ui, sans-serif);
+    font-weight: 700;
+    line-height: 1.1;
     letter-spacing: -0.02em;
   }
 
   h4, h5, h6 {
-    font-family: "Inter", system-ui, sans-serif;
+    font-family: var(--font-plus-jakarta, "Plus Jakarta Sans", system-ui, sans-serif);
     font-weight: 600;
     letter-spacing: -0.01em;
   }
 
-  /* Focus ring */
+  a { text-decoration: none; color: inherit; }
+
   *:focus-visible {
     outline: 2px solid var(--ring);
     outline-offset: 2px;
+    border-radius: var(--radius-sm);
   }
 
-  /* Selection */
   ::selection {
     background-color: var(--accent);
     color: var(--accent-foreground);
   }
 }
 
-/* ─── Typography Scale ─── */
+/* ─── Typography Utilities ─── */
 @layer utilities {
+  /* Extra-large display — Bricolage */
   .text-display {
-    font-family: "DM Serif Display", Georgia, serif;
-    font-size: clamp(2.5rem, 5vw + 1rem, 4.5rem);
-    line-height: 1.1;
+    font-family: var(--font-bricolage, "Bricolage Grotesque", system-ui, sans-serif);
+    font-size: clamp(2.75rem, 6vw + 0.5rem, 5.5rem);
+    font-weight: 700;
+    line-height: 1.05;
     letter-spacing: -0.03em;
   }
 
+  /* Section heading — Bricolage */
   .text-headline {
-    font-family: "DM Serif Display", Georgia, serif;
-    font-size: clamp(1.75rem, 3vw + 0.5rem, 2.5rem);
-    line-height: 1.2;
-    letter-spacing: -0.02em;
+    font-family: var(--font-bricolage, "Bricolage Grotesque", system-ui, sans-serif);
+    font-size: clamp(1.875rem, 3.5vw, 2.75rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.025em;
   }
 
+  /* Sarvam-style section label: small, uppercase, tracked */
   .text-label {
-    font-family: "Inter", system-ui, sans-serif;
-    font-size: 0.75rem;
+    font-family: var(--font-plus-jakarta, "Plus Jakarta Sans", system-ui, sans-serif);
+    font-size: 0.6875rem;
     font-weight: 600;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
+  }
+
+  /* Muted body copy */
+  .text-body-muted {
+    color: var(--muted-foreground);
+    line-height: 1.75;
   }
 }
 
 /* ─── Component Tokens ─── */
 @layer utilities {
-  /* Dividers */
-  .divider {
-    border-top: 1px solid var(--border);
-  }
+  /* ── Divider ── */
+  .divider { border-top: 1px solid var(--border); }
 
-  /* Cards */
-  .card-classic {
+  /* ── Cards ── */
+  .card {
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
-    transition: border-color 200ms, box-shadow 200ms;
   }
 
-  .card-classic:hover {
+  .card-hover {
+    transition: border-color 200ms ease, box-shadow 200ms ease, transform 200ms ease;
+  }
+  .card-hover:hover {
     border-color: var(--primary);
-    box-shadow: 0 4px 16px rgba(55, 48, 163, 0.06);
+    box-shadow: 0 4px 20px color-mix(in srgb, var(--primary) 8%, transparent);
+    transform: translateY(-2px);
   }
 
-  .dark .card-classic:hover {
-    box-shadow: 0 4px 16px rgba(129, 140, 248, 0.08);
-  }
-
-  /* Nav link */
-  .nav-link {
-    position: relative;
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: var(--muted-foreground);
-    transition: color 200ms;
-  }
-
-  .nav-link:hover {
-    color: var(--foreground);
-  }
-
-  .nav-link.active {
-    color: var(--foreground);
-  }
-
-  /* Badge / chip */
-  .badge {
+  /* ── Buttons ── */
+  .btn {
     display: inline-flex;
     align-items: center;
-    padding: 2px 10px;
-    border-radius: 999px;
-    font-size: 0.75rem;
-    font-weight: 500;
-    background: var(--muted);
-    color: var(--muted-foreground);
-    border: 1px solid var(--border);
-  }
-
-  .badge-primary {
-    background: var(--accent);
-    color: var(--accent-foreground);
-    border-color: transparent;
-  }
-
-  /* Buttons */
-  .btn-primary {
-    display: inline-flex;
-    align-items: center;
+    justify-content: center;
     gap: 8px;
-    padding: 10px 20px;
+    font-family: var(--font-plus-jakarta, "Plus Jakarta Sans", system-ui, sans-serif);
+    font-size: 0.875rem;
+    font-weight: 600;
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    transition: opacity 180ms ease, transform 150ms ease, background 180ms ease;
+    white-space: nowrap;
+    border: none;
+    outline: none;
+  }
+
+  .btn-sm  { padding: 6px 16px; font-size: 0.8125rem; }
+  .btn-md  { padding: 10px 22px; }
+  .btn-lg  { padding: 13px 28px; font-size: 0.9375rem; }
+
+  .btn-primary {
     background: var(--primary);
     color: var(--primary-foreground);
-    border-radius: var(--radius-md);
-    font-size: 0.875rem;
-    font-weight: 500;
-    transition: opacity 200ms, transform 150ms;
-    border: none;
-    cursor: pointer;
   }
-
-  .btn-primary:hover {
-    opacity: 0.9;
-    transform: translateY(-1px);
-  }
+  .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
 
   .btn-outline {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 20px;
     background: transparent;
     color: var(--foreground);
     border: 1px solid var(--border);
-    border-radius: var(--radius-md);
-    font-size: 0.875rem;
-    font-weight: 500;
-    transition: background 200ms, border-color 200ms, transform 150ms;
-    cursor: pointer;
   }
-
   .btn-outline:hover {
     background: var(--muted);
     border-color: var(--muted-foreground);
     transform: translateY(-1px);
   }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--muted-foreground);
+  }
+  .btn-ghost:hover {
+    background: var(--muted);
+    color: var(--foreground);
+  }
+
+  /* ── Badges ── */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 11px;
+    border-radius: var(--radius-pill);
+    font-size: 0.75rem;
+    font-weight: 500;
+    background: var(--muted);
+    color: var(--muted-foreground);
+    border: 1px solid var(--border);
+    line-height: 1.4;
+  }
+  .badge-accent {
+    background: var(--accent);
+    color: var(--accent-foreground);
+    border-color: transparent;
+  }
 }
 
-/* ─── Animations ─── */
+/* ─── Dynamic Island Nav animations ─── */
+@keyframes island-in {
+  from { opacity: 0; transform: translateY(-16px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
 @keyframes fade-up {
-  from { opacity: 0; transform: translateY(16px); }
+  from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
@@ -274,19 +281,27 @@
   to   { opacity: 1; }
 }
 
-@layer utilities {
-  .animate-fade-up  { animation: fade-up  0.5s ease both; }
-  .animate-fade-in  { animation: fade-in  0.4s ease both; }
+@keyframes slide-down {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
 
+@layer utilities {
+  .animate-island-in { animation: island-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+  .animate-fade-up   { animation: fade-up 0.5s ease both; }
+  .animate-fade-in   { animation: fade-in 0.4s ease both; }
+  .animate-slide-down{ animation: slide-down 0.3s ease both; }
+
+  .delay-75  { animation-delay: 75ms; }
   .delay-100 { animation-delay: 100ms; }
+  .delay-150 { animation-delay: 150ms; }
   .delay-200 { animation-delay: 200ms; }
   .delay-300 { animation-delay: 300ms; }
   .delay-400 { animation-delay: 400ms; }
-  .delay-500 { animation-delay: 500ms; }
 }
 
 /* ─── Scrollbar ─── */
-::-webkit-scrollbar        { width: 6px; height: 6px; }
+::-webkit-scrollbar        { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track  { background: transparent; }
-::-webkit-scrollbar-thumb  { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb  { background: var(--border); border-radius: 99px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--muted-foreground); }

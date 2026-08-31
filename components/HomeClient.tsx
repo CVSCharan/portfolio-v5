@@ -13,191 +13,124 @@ interface UserRecord {
   createdAt: string;
 }
 
-const TECH_STACK = [
-  "Next.js", "React", "TypeScript", "Node.js",
-  "PostgreSQL", "Prisma", "AWS", "Docker",
-  "LangChain", "OpenAI", "Tailwind CSS", "GraphQL",
+const STATS = [
+  { value: "4+",  label: "Years Experience" },
+  { value: "30+", label: "Projects Shipped" },
+  { value: "12+", label: "Technologies" },
+  { value: "5+",  label: "Open Source" },
 ];
 
-const STATS = [
-  { label: "Years Experience", value: "4+" },
-  { label: "Projects Shipped", value: "30+" },
-  { label: "Tech Stack", value: "12+" },
-  { label: "Open Source", value: "5+" },
+const QUICK_LINKS = [
+  { href: "/projects",   title: "Projects",   desc: "Full-stack apps, AI tools, and open-source work." },
+  { href: "/experience", title: "Experience", desc: "Professional history and companies I've worked with." },
+  { href: "/resume",     title: "Resume",     desc: "Interactive timeline, skills, and downloadable CV." },
 ];
+
+function fadeUp(delay: number) {
+  return {
+    initial: { opacity: 0, y: 18 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.5, delay, ease: "easeOut" as const },
+  };
+}
 
 export function HomeClient({ user }: { user: UserRecord | null }) {
   const name = user?.name ?? "CVS Charan";
   const bio =
     user?.bio ??
-    "AI-Augmented Full-Stack Developer with a strong foundation in Data Analytics. I specialise in building intelligent and scalable web applications that leverage LLMs, prompt engineering, and AI automation.";
+    "AI-Augmented Full-Stack Developer with a foundation in Data Analytics. I build intelligent, scalable web applications using LLMs, modern cloud infrastructure, and clean engineering principles.";
 
   return (
-    <div className="flex flex-col gap-24">
+    <div className="flex flex-col gap-20 md:gap-28">
       {/* ── Hero ── */}
-      <section className="grid lg:grid-cols-[1fr_auto] gap-16 items-start pt-4">
-        <div className="space-y-8 max-w-2xl">
-          {/* Label */}
-          <motion.div
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
-          >
-            <span className="text-label text-primary">
-              Available · Open to Opportunities
-            </span>
-          </motion.div>
+      <section className="pt-4 md:pt-8 space-y-8 max-w-3xl">
+        <motion.p className="text-label text-primary" {...fadeUp(0)}>
+          Available · Open to New Opportunities
+        </motion.p>
 
-          {/* Heading */}
-          <motion.h1
-            className="text-display text-foreground"
-            style={{ fontFamily: "var(--font-dm-serif)" }}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.08 }}
-          >
-            {name}
-          </motion.h1>
-
-          {/* Role line */}
-          <motion.p
-            className="text-xl font-light text-muted-foreground tracking-wide"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.15 }}
-          >
-            Full-Stack Engineer · AI Integration · Cloud Architecture
-          </motion.p>
-
-          {/* Bio */}
-          <motion.p
-            className="text-base leading-relaxed text-muted-foreground max-w-xl"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.22 }}
-          >
-            {bio}
-          </motion.p>
-
-          {/* Location */}
-          <motion.div
-            className="flex items-center gap-2 text-sm text-muted-foreground"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.4, delay: 0.28 }}
-          >
-            <MapPin className="w-3.5 h-3.5" />
-            <span>India — Available for remote worldwide</span>
-          </motion.div>
-
-          {/* CTAs */}
-          <motion.div
-            className="flex flex-wrap gap-3 pt-2"
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.32 }}
-          >
-            <Link href="/projects" className="btn-primary group">
-              View Projects
-              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
-            </Link>
-            <Link href="/resume" className="btn-outline">
-              Resume
-            </Link>
-            <Link href="/contact" className="btn-outline">
-              Get in Touch
-            </Link>
-          </motion.div>
-        </div>
-
-        {/* ── Right: Stats card ── */}
-        <motion.div
-          className="hidden lg:grid grid-cols-2 gap-px bg-border rounded-xl overflow-hidden border border-border w-72 shrink-0 mt-8"
-          initial={{ opacity: 0, x: 12 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
+        <motion.h1
+          {...fadeUp(0.06)}
+          className="text-display text-foreground leading-[1.05]"
+          style={{ fontFamily: "var(--font-bricolage)" }}
         >
-          {STATS.map(({ label, value }) => (
-            <div key={label} className="bg-background p-6 flex flex-col gap-1">
-              <span
-                className="text-2xl font-semibold text-foreground"
-                style={{ fontFamily: "var(--font-dm-serif)" }}
-              >
-                {value}
-              </span>
-              <span className="text-xs text-muted-foreground leading-tight">{label}</span>
-            </div>
-          ))}
+          {name}
+        </motion.h1>
+
+        <motion.p {...fadeUp(0.12)} className="text-xl font-light text-muted-foreground tracking-wide">
+          Full-Stack Engineer · AI Integration · Cloud Architecture
+        </motion.p>
+
+        <motion.p {...fadeUp(0.18)} className="text-base text-muted-foreground leading-[1.8] max-w-2xl">
+          {bio}
+        </motion.p>
+
+        <motion.div {...fadeUp(0.22)} className="flex items-center gap-2 text-sm text-muted-foreground">
+          <MapPin className="w-3.5 h-3.5 shrink-0" />
+          <span>India — Available for remote opportunities worldwide</span>
+        </motion.div>
+
+        <motion.div {...fadeUp(0.27)} className="flex flex-wrap gap-3 pt-1">
+          <Link href="/projects" className="btn btn-primary btn-md group">
+            View Projects
+            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+          </Link>
+          <Link href="/resume" className="btn btn-outline btn-md">
+            Resume
+          </Link>
+          <Link href="/contact" className="btn btn-outline btn-md">
+            Get in Touch
+          </Link>
         </motion.div>
       </section>
 
-      {/* ── Divider ── */}
-      <div className="divider" />
-
-      {/* ── Tech Stack ── */}
+      {/* ── Stats ── */}
       <motion.section
-        className="space-y-6"
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.4 }}
+        transition={{ duration: 0.5, delay: 0.35 }}
+        className="divider pt-10 grid grid-cols-2 sm:grid-cols-4 gap-px bg-border rounded-2xl overflow-hidden border border-border"
       >
-        <div className="space-y-1">
-          <p className="text-label text-muted-foreground">Core Technologies</p>
-          <h2
-            className="text-headline text-foreground"
-            style={{ fontFamily: "var(--font-dm-serif)" }}
-          >
-            What I Work With
-          </h2>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          {TECH_STACK.map((tech) => (
-            <span key={tech} className="badge">
-              {tech}
+        {STATS.map(({ value, label }) => (
+          <div key={label} className="bg-background px-6 py-7 flex flex-col gap-1">
+            <span
+              className="text-3xl font-bold text-foreground"
+              style={{ fontFamily: "var(--font-bricolage)" }}
+            >
+              {value}
             </span>
-          ))}
-        </div>
+            <span className="text-xs text-muted-foreground leading-snug">{label}</span>
+          </div>
+        ))}
       </motion.section>
-
-      {/* ── Divider ── */}
-      <div className="divider" />
 
       {/* ── Quick Links ── */}
       <motion.section
-        className="grid sm:grid-cols-3 gap-4"
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.5 }}
+        transition={{ duration: 0.5, delay: 0.42 }}
+        className="space-y-4"
       >
-        {[
-          {
-            href: "/projects",
-            title: "Projects",
-            desc: "Explore full-stack apps, AI tools, and open-source work.",
-          },
-          {
-            href: "/experience",
-            title: "Experience",
-            desc: "Professional history, roles, and companies I've worked with.",
-          },
-          {
-            href: "/resume",
-            title: "Resume",
-            desc: "Interactive timeline and downloadable CV.",
-          },
-        ].map(({ href, title, desc }) => (
-          <Link
-            key={href}
-            href={href}
-            className="card-classic p-6 flex flex-col gap-3 group"
-          >
-            <div className="flex items-center justify-between">
-              <h3 className="font-semibold text-foreground">{title}</h3>
-              <ExternalLink className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
-            </div>
-            <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
-          </Link>
-        ))}
+        <p className="text-label text-muted-foreground mb-6">Explore</p>
+        <div className="grid sm:grid-cols-3 gap-4">
+          {QUICK_LINKS.map(({ href, title, desc }) => (
+            <Link
+              key={href}
+              href={href}
+              className="card card-hover p-6 flex flex-col gap-3 group"
+            >
+              <div className="flex items-center justify-between">
+                <h3
+                  className="font-semibold text-foreground"
+                  style={{ fontFamily: "var(--font-bricolage)" }}
+                >
+                  {title}
+                </h3>
+                <ExternalLink className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
+              </div>
+              <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
+            </Link>
+          ))}
+        </div>
       </motion.section>
     </div>
   );

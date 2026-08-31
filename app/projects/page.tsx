@@ -1,25 +1,24 @@
-import ProjectsGrid from "@/components/ProjectsGrid"
-import Link from "next/link"
-import { db } from "@/src/prisma/db"
+import { db } from "@/src/prisma/db";
+import { PageHeader } from "@/components/PageHeader";
+import ProjectsGrid from "@/components/ProjectsGrid";
 
-export default async function Projects() {
+export const metadata = {
+  title: "Projects",
+  description: "A collection of full-stack apps, AI tools, and open-source work.",
+};
+
+export default async function ProjectsPage() {
   const projects = await db.orm.public.Project.all();
   projects.sort((a, b) => a.order - b.order);
 
   return (
-    <div className="space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Projects</h1>
-        <p className="text-muted-foreground mt-2">A collection of my recent work.</p>
-      </div>
-      
+    <div>
+      <PageHeader
+        label="Work"
+        title="Projects"
+        description="A selection of things I've built — full-stack apps, AI integrations, and open-source tools."
+      />
       <ProjectsGrid projects={projects} />
-      
-      <div className="max-w-2xl mx-auto pt-12 text-center">
-        <p className="text-muted-foreground text-sm">
-          Want to add your own projects? <Link href="/admin" className="font-medium text-primary hover:underline">Visit the admin panel</Link> to manage them.
-        </p>
-      </div>
     </div>
-  )
+  );
 }
