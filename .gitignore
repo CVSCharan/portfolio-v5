@@ -47,3 +47,9 @@ dist/
 playwright-report/
 test-results/
 playwright/.cache/
+
+# IDEs / Agents
+.devin/
+.cursor/
+.agents/
+
