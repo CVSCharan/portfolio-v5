@@ -2,7 +2,8 @@
 
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import Image from "next/image";
+import { ArrowRight, Code2, ArrowUpRight, Briefcase } from "lucide-react";
 import { motion } from "framer-motion";
 
 // Lazy load the 3D scene to ensure TTI and mobile performance aren't blocked
@@ -20,11 +21,29 @@ interface UserRecord {
   bio: string | null;
 }
 
+interface ProjectRecord {
+  id: number;
+  title: string;
+  slug: string;
+  description: string | null;
+  imageUrl: string | null;
+}
+
+interface ExperienceRecord {
+  id: number;
+  title: string;
+  company: string;
+  period: string;
+}
+
 export function HomeClient({ 
-  user 
+  user,
+  featuredProjects,
+  experiences
 }: { 
   user: UserRecord | null;
-  featuredProject: any | null; // Unused in this layout, but keeping signature
+  featuredProjects: ProjectRecord[];
+  experiences: ExperienceRecord[];
 }) {
   const name = user?.name ?? "CVS Charan";
   const bio =
@@ -32,21 +51,20 @@ export function HomeClient({
     "AI-Augmented Full-Stack Developer with a foundation in Data Analytics. I build intelligent, scalable web applications using LLMs, modern cloud infrastructure, and clean engineering principles.";
 
   return (
-    <>
-      {/* ── 3D Canvas Background (Full Screen) ── */}
+    <div className="w-full relative">
+      {/* ── 3D Canvas Background (Fixed Full Screen) ── */}
       <div className="fixed inset-0 w-full h-[100svh] z-[-1] bg-background">
         <SpatialHero3D />
       </div>
 
-      {/* ── HUD Overlay (DOM-based for SEO and Accessibility) ── */}
-      <div className="relative z-10 w-full min-h-[calc(100svh-180px)] flex flex-col justify-between pointer-events-none">
-        
+      {/* ── SECTION A: HUD HERO (100svh) ── */}
+      <div className="relative z-10 w-full min-h-[calc(100svh-180px)] flex flex-col justify-between pointer-events-none mb-32">
         {/* HUD Top: Massive Typography */}
         <motion.div 
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
-          className="pt-4 md:pt-12"
+          className="pt-4 md:pt-12 pointer-events-auto max-w-full"
         >
           <h1 
             className="text-[4rem] md:text-[6rem] lg:text-[8rem] font-bold text-foreground leading-[0.9] tracking-tighter"
@@ -103,8 +121,108 @@ export function HomeClient({
              </div>
           </div>
         </motion.div>
+      </div>
+
+      {/* ── SCROLLABLE SECTIONS (Glimpses) ── */}
+      {/* Container with backdrop blur that slides over the fixed 3D background */}
+      <div className="relative z-20 bg-background/95 backdrop-blur-md border-t border-border py-24 md:py-32 -mx-5 px-5 md:-mx-10 md:px-10">
+        
+        {/* ── SECTION B: EXPERIENCE GLIMPSE ── */}
+        <section className="max-w-4xl mx-auto mb-32">
+          <div className="text-center mb-12">
+            <h2 className="text-headline text-foreground mb-4">The Journey So Far.</h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed" style={{ fontFamily: "var(--font-bricolage)" }}>
+              From Data Analytics to Full-Stack Engineering, I have built AI-driven platforms and cross-platform architecture that scale.
+            </p>
+          </div>
+
+          <div className="space-y-4 mb-10">
+            {experiences.map((exp) => (
+              <div key={exp.id} className="card p-6 md:p-8 flex flex-col md:flex-row md:items-center justify-between gap-4 card-hover">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center shrink-0">
+                    <Briefcase className="w-5 h-5 text-muted-foreground" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-foreground" style={{ fontFamily: "var(--font-bricolage)" }}>{exp.title}</h3>
+                    <p className="text-base text-muted-foreground">{exp.company}</p>
+                  </div>
+                </div>
+                <div className="text-sm font-mono text-muted-foreground md:text-right">
+                  {exp.period}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="flex justify-center">
+            <Link href="/experience" className="btn btn-outline btn-lg group">
+              View Full Experience Track <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+            </Link>
+          </div>
+        </section>
+
+        {/* ── SECTION C: FEATURED PROJECTS GLIMPSE ── */}
+        <section className="max-w-6xl mx-auto">
+          <div className="mb-12">
+            <h2 className="text-headline text-foreground mb-4">Engineering Philosophy.</h2>
+            <p className="text-xl text-muted-foreground max-w-3xl leading-relaxed" style={{ fontFamily: "var(--font-bricolage)" }}>
+              I believe in building uncompromising digital experiences and intelligent data systems using modern frameworks and Large Language Models.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+            {featuredProjects.map((project) => (
+              <Link 
+                href={`/projects#${project.slug}`} 
+                key={project.id}
+                className="group rounded-2xl border border-border relative overflow-hidden min-h-[360px] flex flex-col transition-all duration-300 hover:border-primary"
+                style={{ 
+                  backgroundColor: "var(--card-elevated)",
+                  boxShadow: "0 12px 40px rgba(0, 0, 0, 0.08)"
+                }}
+              >
+                {project.imageUrl ? (
+                  <div className="absolute inset-0 w-full h-full">
+                    <Image 
+                      src={project.imageUrl} 
+                      alt={project.title}
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-80 group-hover:opacity-100 transition-opacity" />
+                  </div>
+                ) : (
+                  <div className="absolute inset-0 bg-muted flex items-center justify-center">
+                    <Code2 className="w-12 h-12 text-muted-foreground/30" />
+                  </div>
+                )}
+                
+                <div className="absolute inset-x-0 bottom-0 p-8 flex flex-col gap-2">
+                  <p className="text-label text-primary-foreground/70">Featured Project</p>
+                  <h3 className="text-2xl font-bold text-white flex items-center justify-between" style={{ fontFamily: "var(--font-bricolage)" }}>
+                    {project.title}
+                    <ArrowUpRight className="w-6 h-6 text-white/50 group-hover:text-white group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
+                  </h3>
+                  {project.description && (
+                    <p className="text-sm text-white/80 line-clamp-2 mt-2 leading-relaxed">
+                      {project.description}
+                    </p>
+                  )}
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          <div className="flex justify-center">
+            <Link href="/projects" className="btn btn-outline btn-lg group">
+              View All Projects <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+            </Link>
+          </div>
+        </section>
 
       </div>
-    </>
+    </div>
   );
 }

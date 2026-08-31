@@ -102,6 +102,7 @@ export default function SpatialHero3D() {
       <Canvas 
         camera={{ position: [0, 0, 7], fov: 60 }}
         gl={{ antialias: true }}
+        eventSource={document.body}
       >
         <ParticleSphere color={particleColor} />
       </Canvas>
