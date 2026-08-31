@@ -1,36 +1,89 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CVS CHARAN - Personal Portfolio v5
+
+A modern, fast, and secure personal portfolio built with Next.js 16 (App Router), React 19, Tailwind CSS v4, and PostgreSQL via Prisma Next. It features a fully bespoke public frontend and a secure admin dashboard to manage all content dynamically.
+
+## Features
+
+- **Public Portfolio:**
+  - Dynamic Projects grid with tech stack badges and links.
+  - Interactive Skills view with category grouping and progress bars.
+  - Experience timeline.
+  - Markdown-powered Blog for publishing articles.
+  - Server-Side Rendered (SSR) for optimal SEO and performance (Zero loading flashes).
+- **Admin Dashboard (CMS):**
+  - Custom NextAuth.js credentials login (100% self-hosted, no third-party auth services required).
+  - Full CRUD functionality for managing Projects, Skills, Experiences, and Blog Posts.
+  - Next.js Server Actions used for secure database mutations.
+- **Database:**
+  - PostgreSQL managed by `@prisma/orm-postgres` (Prisma Next).
+  - Strictly typed queries using Prisma Next Data Contracts.
+
+## Tech Stack
+
+- **Framework:** [Next.js 16](https://nextjs.org) (App Router)
+- **UI:** [React 19](https://react.dev), [Tailwind CSS v4](https://tailwindcss.com), `@tailwindcss/typography`
+- **Database:** PostgreSQL
+- **ORM:** [Prisma Next](https://prisma.io) (`@prisma/orm-postgres`)
+- **Authentication:** [NextAuth.js](https://next-auth.js.org)
+- **Content:** `react-markdown`
 
 ## Getting Started
 
-First, run the development server:
+### 1. Environment Variables
+
+Create a `.env` file in the root directory and add the following variables:
+
+```bash
+# Database Connection (e.g., Neon PostgreSQL)
+DATABASE_URL="postgres://username:password@hostname/dbname?sslmode=require"
+
+# NextAuth Configuration
+NEXTAUTH_SECRET="your-super-secret-string-here"
+NEXTAUTH_URL="http://localhost:3000"
+NEXT_PUBLIC_SITE_URL="http://localhost:3000"
+```
+*(Tip: You can generate a `NEXTAUTH_SECRET` by running `openssl rand -base64 32` in your terminal)*
+
+### 2. Install Dependencies
+
+```bash
+npm install
+```
+
+### 3. Initialize Database
+
+Emit the Prisma Next data contract and initialize the database schema:
+
+```bash
+npm run contract:emit
+npx prisma db init
+```
+
+### 4. Seed Initial Data (Optional)
+
+You can seed the database with an admin user and placeholder data:
+
+```bash
+npx tsx src/prisma/seed.ts
+```
+*Note: Check `src/prisma/seed.ts` for the default admin login credentials!*
+
+### 5. Run Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to view the portfolio.
+Navigate to [http://localhost:3000/admin](http://localhost:3000/admin) to log in to the CMS.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Deployment
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+This project is configured to deploy seamlessly on [Vercel](https://vercel.com).
+1. Connect your GitHub repository to Vercel.
+2. Add your `DATABASE_URL` and `NEXTAUTH_SECRET` in the Vercel Environment Variables settings.
+3. The build command `npm run build` will automatically emit the Prisma contract and build the Next.js app.
 
-## Learn More
+## License
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT
