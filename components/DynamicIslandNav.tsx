@@ -171,14 +171,16 @@ export function DynamicIslandNav() {
           {/* Controls */}
           <div className="flex items-center gap-1 shrink-0">
             <ThemeToggle />
-            {/* Hamburger menu: Show on mobile ALWAYS. Hidden on desktop. */}
-            <button
-              className="btn btn-ghost w-8 h-8 rounded-full p-0 flex items-center justify-center md:hidden"
-              onClick={() => setMobileOpen((o) => !o)}
-              aria-label="Open menu"
-            >
-              {mobileOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
-            </button>
+            {/* Hamburger menu: Show on mobile/tablet ONLY. Hidden on desktop. */}
+            <div className="md:hidden flex">
+              <button
+                className="btn btn-ghost w-8 h-8 rounded-full p-0 flex items-center justify-center"
+                onClick={() => setMobileOpen((o) => !o)}
+                aria-label="Open menu"
+              >
+                {mobileOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+              </button>
+            </div>
           </div>
         </motion.nav>
       </div>
