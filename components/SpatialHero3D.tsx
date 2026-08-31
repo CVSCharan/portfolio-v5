@@ -50,7 +50,7 @@ function ParticleSphere({ color }: { color: string }) {
   });
 
   return (
-    <points ref={pointsRef}>
+    <points ref={pointsRef} position={[isMobile ? 0 : 3.0, 0, 0]}>
       <bufferGeometry>
         <bufferAttribute
           attach="attributes-position"
