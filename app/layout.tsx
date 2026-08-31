@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { PageTracker } from "@/components/PageTracker";
 import { DynamicIslandNav } from "@/components/DynamicIslandNav";
+import { Footer } from "@/components/Footer";
 
 /* ── Fonts ──────────────────────────────────────────── */
 const plusJakarta = Plus_Jakarta_Sans({
@@ -80,18 +81,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </main>
 
           {/* ── Footer ── */}
-          <footer className="border-t border-border bg-background">
-            <div className="max-w-6xl mx-auto px-5 md:px-10 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
-              <span
-                className="font-semibold text-foreground"
-                style={{ fontFamily: "var(--font-bricolage)" }}
-              >
-                CVS Charan
-              </span>
-              <p>Built with Next.js 16, Tailwind v4 &amp; Prisma.</p>
-              <p>© {new Date().getFullYear()} All rights reserved.</p>
-            </div>
-          </footer>
+          <Footer />
         </ThemeProvider>
       </body>
     </html>
