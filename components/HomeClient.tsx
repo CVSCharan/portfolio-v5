@@ -147,7 +147,7 @@ export function HomeClient({
            <div className="space-y-1.5">
              <p className="text-xs font-bold tracking-[0.15em] uppercase text-muted-foreground/80">Core Stack</p>
              <p className="text-sm font-medium text-foreground/90 leading-relaxed">
-               React, Next.js, Node.js, Python,<br/>PostgreSQL, Prisma, Tailwind, AWS
+               Next.js, Python, PostgreSQL, Snowflake,<br/>Prisma, LangChain, Tailwind, AWS
              </p>
            </div>
            
