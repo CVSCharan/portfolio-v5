@@ -68,6 +68,8 @@ function NavLink({ href, label, onClick }: { href: string; label: string; onClic
 
 /* ─── Mobile Drawer ─── */
 function MobileDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const pathname = usePathname();
+
   React.useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
@@ -93,17 +95,23 @@ function MobileDrawer({ open, onClose }: { open: boolean; onClose: () => void })
             exit={{ opacity: 0, y: -12, scale: 0.97 }}
             transition={{ type: "spring", stiffness: 360, damping: 30 }}
           >
-            <nav className="flex flex-col p-4">
-              {NAV_LINKS.map(({ href, label }) => (
-                <Link
-                  key={href}
-                  href={href}
-                  onClick={onClose}
-                  className="px-4 py-3.5 text-base font-medium text-foreground hover:bg-muted rounded-xl transition-colors"
-                >
-                  {label}
-                </Link>
-              ))}
+            <nav className="flex flex-col p-2">
+              {NAV_LINKS.map(({ href, label }) => {
+                const isActive = pathname === href || (href !== "/" && pathname.startsWith(href));
+                return (
+                  <Link
+                    key={href}
+                    href={href}
+                    onClick={onClose}
+                    className={`px-4 py-3.5 text-base font-medium rounded-xl transition-colors flex items-center justify-between ${
+                      isActive ? "bg-primary/10 text-primary" : "text-foreground hover:bg-muted"
+                    }`}
+                  >
+                    {label}
+                    {isActive && <div className="w-1.5 h-1.5 rounded-full bg-primary" />}
+                  </Link>
+                );
+              })}
             </nav>
           </motion.div>
         </>
@@ -121,7 +129,6 @@ export function DynamicIslandNav() {
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     setScrolled(latest > 60);
-    // Close mobile when scrolling
     if (latest > 60 && mobileOpen) setMobileOpen(false);
   });
 
@@ -176,9 +183,11 @@ export function DynamicIslandNav() {
           {/* Controls */}
           <div className="flex items-center gap-1 shrink-0">
             <ThemeToggle />
-            {/* Mobile hamburger */}
+            {/* Hamburger menu: Show on mobile ALWAYS. Show on desktop ONLY WHEN collapsed (isExpanded is false) */}
             <button
-              className="md:hidden btn btn-ghost w-8 h-8 rounded-full p-0 flex items-center justify-center"
+              className={`btn btn-ghost w-8 h-8 rounded-full p-0 flex items-center justify-center ${
+                isExpanded ? "md:hidden" : "flex"
+              }`}
               onClick={() => setMobileOpen((o) => !o)}
               aria-label="Open menu"
             >
