@@ -17,7 +17,7 @@ export default async function ExperiencePage() {
   }, {});
 
   return (
-    <div className="max-w-3xl">
+    <div className="max-w-3xl mx-auto">
       <PageHeader
         label="Career"
         title="Experience"

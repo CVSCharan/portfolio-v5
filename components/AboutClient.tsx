@@ -28,7 +28,7 @@ export function AboutClient({ skills, user }: { skills: Skill[]; user: UserRecor
   }, {});
 
   return (
-    <div className="max-w-3xl space-y-16">
+    <div className="max-w-3xl mx-auto space-y-16">
       {/* Header */}
       <motion.div className="space-y-4" {...fadeUp(0)}>
         <p className="text-label text-primary">About</p>
