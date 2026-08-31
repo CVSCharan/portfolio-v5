@@ -132,6 +132,7 @@ export function HomeClient({
             <Link href="/experience" className="text-base font-semibold text-foreground hover:text-secondary transition-colors underline-offset-4 hover:underline">
               View Experience
             </Link>
+          </div>
         </motion.div>
 
         {/* Floating Deck: Core Stack & Status (Right side) */}
