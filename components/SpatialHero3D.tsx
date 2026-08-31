@@ -1,9 +1,9 @@
 "use client";
 
-import { useRef, useMemo, useState, useEffect } from "react";
+import { useRef, useMemo, useEffect, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { useTheme } from "next-themes";
 import * as THREE from "three";
+import { useTheme } from "next-themes";
 
 function ParticleSphere({ color }: { color: string }) {
   const pointsRef = useRef<THREE.Points>(null);
@@ -13,24 +13,22 @@ function ParticleSphere({ color }: { color: string }) {
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  const count = isMobile ? 1500 : 3000;
-
-  // Generate particles in a spherical distribution
+  const count = isMobile ? 1500 : 4000;
+  
   const positions = useMemo(() => {
     const pos = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
-      // Golden ratio spiral for even distribution
-      const phi = Math.acos(-1 + (2 * i) / count);
-      const theta = Math.sqrt(count * Math.PI) * phi;
+      // Generate points on a sphere with slight displacement
+      const r = 2.5 + (Math.random() - 0.5) * 0.4;
+      const theta = 2 * Math.PI * Math.random();
+      const phi = Math.acos(2 * Math.random() - 1);
       
-      const r = 3 + (Math.random() * 0.1); // Radius with slight noise
-
-      pos[i * 3] = r * Math.cos(theta) * Math.sin(phi);
-      pos[i * 3 + 1] = r * Math.sin(theta) * Math.sin(phi);
+      pos[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+      pos[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
       pos[i * 3 + 2] = r * Math.cos(phi);
     }
     return pos;
@@ -41,11 +39,13 @@ function ParticleSphere({ color }: { color: string }) {
     typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
   );
 
-  // Subtle constant rotation ONLY, no cursor following
+  // Subtle constant rotation ONLY (no mouse tracking)
   useFrame((state, delta) => {
-    if (pointsRef.current && !prefersReducedMotion.current) {
-      pointsRef.current.rotation.y += delta * 0.05;
-      pointsRef.current.rotation.x += delta * 0.03;
+    if (!prefersReducedMotion.current) {
+      if (pointsRef.current) {
+        pointsRef.current.rotation.y += delta * 0.05;
+        pointsRef.current.rotation.x += delta * 0.02;
+      }
     }
   });
 
@@ -59,11 +59,11 @@ function ParticleSphere({ color }: { color: string }) {
         />
       </bufferGeometry>
       <pointsMaterial
-        size={isMobile ? 0.04 : 0.06}
+        size={0.012}
         color={color}
+        transparent
+        opacity={color === "#000000" ? 0.8 : 0.6}
         sizeAttenuation={true}
-        transparent={true}
-        opacity={0.8}
         blending={color === "#000000" ? THREE.NormalBlending : THREE.AdditiveBlending}
       />
     </points>
@@ -73,15 +73,10 @@ function ParticleSphere({ color }: { color: string }) {
 export default function SpatialHero3D() {
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  
+  useEffect(() => setMounted(true), []);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) return null;
-
-  // Adapt particle color to the current theme
-  const particleColor = resolvedTheme === "dark" ? "#ffffff" : "#000000";
+  const particleColor = mounted && resolvedTheme === "dark" ? "#ffffff" : "#000000";
 
   return (
     <div className="absolute inset-0 w-full h-full z-0 bg-background pointer-events-auto" aria-hidden="true">
