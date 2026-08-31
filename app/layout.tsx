@@ -6,6 +6,7 @@ import { PageTracker } from "@/components/PageTracker";
 import { DynamicIslandNav } from "@/components/DynamicIslandNav";
 import { Footer } from "@/components/Footer";
 import { AIChatbot } from "@/components/AIChatbot";
+import { SuppressNextThemesWarning } from "@/components/SuppressNextThemesWarning";
 
 /* ── Fonts ──────────────────────────────────────────── */
 const plusJakarta = Plus_Jakarta_Sans({
@@ -65,6 +66,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       suppressHydrationWarning
     >
       <body className="min-h-[100dvh] flex flex-col bg-background text-foreground antialiased">
+        <SuppressNextThemesWarning />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
