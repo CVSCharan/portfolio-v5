@@ -168,7 +168,7 @@ export function HomeClient({
       </section>
 
       {/* ── SCROLLABLE SECTIONS (Glimpses) ── */}
-      <div className="relative z-20 bg-background w-full py-24 md:py-32 px-5 md:px-10 flex flex-col gap-24 md:gap-32">
+      <div className="relative z-20 bg-background w-full pb-24 md:pb-32 pt-8 md:pt-12 px-5 md:px-10 flex flex-col gap-24 md:gap-32">
         
         {/* ── SECTION B: EXPERIENCE GLIMPSE ── */}
         <section className="max-w-6xl mx-auto w-full">
