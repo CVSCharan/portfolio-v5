@@ -60,9 +60,9 @@ function ParticleSphere({ color }: { color: string }) {
         size={0.012}
         color={color}
         transparent
-        opacity={0.6}
+        opacity={color === "#000000" ? 0.8 : 0.6}
         sizeAttenuation={true}
-        blending={THREE.AdditiveBlending}
+        blending={color === "#000000" ? THREE.NormalBlending : THREE.AdditiveBlending}
       />
     </points>
   );
