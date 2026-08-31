@@ -52,7 +52,7 @@ Admin management (CRUD operations) is handled either through Server Actions or p
 ## 7. Deployment Checklist
 1. Connect repo to Vercel
 2. Set env vars (`NEXT_PUBLIC_SITE_URL`, `DATABASE_URL`, `NEXTAUTH_SECRET`, `NEXTAUTH_URL`)
-3. Run database migrations via Vercel build command or manually (`npx prisma migrate deploy`)
+3. Run database initialization via Vercel build command or manually (`npx prisma db init`)
 4. `vercel deploy` — preview URLs per branch
 5. Custom domain + HTTPS
 

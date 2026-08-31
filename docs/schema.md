@@ -1,76 +1,51 @@
 # Data Schema
 
-Our portfolio uses a PostgreSQL database (e.g., Neon) managed via Prisma as the single source of truth for all data, allowing management through the `/admin` panel.
+Our portfolio uses a PostgreSQL database managed via Prisma Next (`@prisma/orm-postgres`) as the single source of truth for all data, allowing management through the `/admin` panel.
 
-## Prisma Schema
+## Prisma Next Contract
 
 ```prisma
-// prisma/schema.prisma
-generator client {
-  provider = "prisma-client-js"
-}
-
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
-
+// src/prisma/contract.prisma
 model Admin {
-  id        Int       @id @default(autoincrement)
+  id        Int       @id @default(autoincrement())
   username  String    @unique
   password  String    // Hashed password for NextAuth credentials login
-  createdAt DateTime  @default(now)
-}
-
-model User {
-  id        Int       @id @default(autoincrement)
-  name      String
-  email     String    @unique
-  bio       String?   // short biography
-  avatar    String?   // URL to profile picture
-  createdAt DateTime  @default(now)
 }
 
 model Project {
-  id        Int       @id @default(autoincrement)
-  title     String
-  slug      String    @unique // SEO-friendly identifier
-  description String? // long-form description
-  techStack String[]  // e.g. ["React", "Next.js", "Tailwind"]
-  githubUrl String? // link to repository
-  demoUrl   String? // live demo link
-  imageUrl  String? // hero image
-  order     Int       @default(0) // control display order
-  createdAt DateTime @default(now)
+  id          Int      @id @default(autoincrement())
+  title       String
+  slug        String   @unique
+  description String?
+  techStack   String[]
+  githubUrl   String?
+  demoUrl     String?
+  imageUrl    String?
+  order       Int      @default(0)
 }
 
 model Skill {
-  id       Int   @id @default(autoincrement)
-  name     String // e.g. "JavaScript", "CSS"
-  level    Int    // 1 (beginner) – 5 (expert)
-  category String // "frontend", "design", "backend", etc.
+  id       Int    @id @default(autoincrement())
+  name     String
+  level    Int
+  category String
 }
 
 model Experience {
-  id       Int   @id @default(autoincrement)
-  title    String // e.g. "Frontend Developer"
-  company  String
-  period   String // e.g. "Jan 2023 – Present"
-  description String? // bullet points
+  id          Int     @id @default(autoincrement())
+  title       String
+  company     String
+  period      String
+  description String?
 }
 
 model BlogPost {
-  id        Int       @id @default(autoincrement)
+  id        Int     @id @default(autoincrement())
   title     String
-  slug      String    @unique
+  slug      String  @unique
   excerpt   String?
-  content   String?   // MDX/HTML body
-  authorId  Int?      // optional link to User
-  createdAt DateTime @default(now)
-  published Boolean   @default(false)
-  viewCount Int       @default(0)
-
-  author User? @relation(fields: [authorId], references: [id])
+  content   String?
+  published Boolean @default(false)
 }
 ```
 
@@ -80,27 +55,19 @@ model BlogPost {
    ```
    DATABASE_URL="postgres://neon_owner:YOUR_PASSWORD@ep.region.neon.tech/neondb?sslmode=require"
    ```
-2. **Install Prisma** (if not already installed):
+2. **Install Dependencies**:
    ```bash
-   npm install prisma @prisma/client
+   npm install @prisma/orm-postgres @prisma/client
+   npm install --save-dev @prisma/cli-engine prisma
    ```
-3. **Run migrations**:
+3. **Run initialization**:
    ```bash
-   npx prisma generate
-   npx prisma migrate dev --name init
+   npx prisma contract emit
+   npx prisma db init
    ```
-4. **Prisma Client Utility** (`src/lib/prisma.ts`):
+4. **Prisma Next Database Utility** (`src/prisma/db.ts`):
    ```ts
-   import { PrismaClient } from "@prisma/client"
-   
-   const globalForPrisma = globalThis as unknown as {
-     prisma: PrismaClient | undefined
-   }
-   
-   export const prisma =
-     globalForPrisma.prisma ?? new PrismaClient({
-       log: ["query", "error"],
-     })
-   
-   if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma
+   import { Prisma } from "@prisma/client";
+
+   export const db = Prisma.connect();
    ```
