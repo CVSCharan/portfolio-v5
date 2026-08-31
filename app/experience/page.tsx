@@ -8,7 +8,7 @@ export const metadata = {
 };
 
 export default async function ExperiencePage() {
-  const experiences = await db.orm.public.Experience.orderBy((e) => e.id.desc()).all();
+  const experiences = await db.orm.public.Experience.orderBy((e) => e.id.asc()).all();
 
   // Group experiences by company
   const groupedExperiences = experiences.reduce<Record<string, typeof experiences>>((acc, exp) => {

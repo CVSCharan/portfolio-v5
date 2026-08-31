@@ -9,7 +9,7 @@ export const metadata = {
 };
 
 export default async function ResumePage() {
-  const experiences = await db.orm.public.Experience.orderBy((e) => e.id.desc()).all();
+  const experiences = await db.orm.public.Experience.orderBy((e) => e.id.asc()).all();
   const skills = await db.orm.public.Skill.all();
 
   const groupedSkills = skills.reduce<Record<string, typeof skills>>((acc, s) => {
