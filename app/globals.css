@@ -41,50 +41,49 @@
 /* ─── Light/Dark Colour Tokens ─── */
 @layer base {
   :root {
-    --background:          #fafaf9;
-    --foreground:          #111111;
+    --background:          #ffffff;
+    --foreground:          #0a0a0a;
 
-    --card:                #ffffff;
-    --card-foreground:     #111111;
+    --card:                #fafafa;
+    --card-foreground:     #0a0a0a;
 
-    --muted:               #f2f1ee;
-    --muted-foreground:    #6b6b6b;
+    --muted:               #f4f4f5;
+    --muted-foreground:    #71717a;
 
-    /* Accent = indigo, used *sparingly* */
-    --primary:             #3730a3;
+    --primary:             #000000;
     --primary-foreground:  #ffffff;
 
-    --secondary:           #f2f1ee;
-    --secondary-foreground:#111111;
+    --secondary:           #f4f4f5;
+    --secondary-foreground:#0a0a0a;
 
-    --accent:              #eef2ff;
-    --accent-foreground:   #3730a3;
+    --accent:              #f4f4f5;
+    --accent-foreground:   #0a0a0a;
 
-    --border:              #e8e6e0;
-    --ring:                #3730a3;
+    --border:              #e4e4e7;
+    --ring:                #0a0a0a;
   }
 
   .dark {
-    --background:          #0d0d0b;
-    --foreground:          #f0ede8;
+    --background:          #0a0a0a;
+    --foreground:          #ededed;
 
-    --card:                #141412;
-    --card-foreground:     #f0ede8;
+    --card:                #111111;
+    --card-foreground:     #ededed;
 
-    --muted:               #1e1e1c;
-    --muted-foreground:    #888884;
+    --muted:               #27272a;
+    --muted-foreground:    #a1a1aa;
 
-    --primary:             #818cf8;
-    --primary-foreground:  #0d0d0b;
+    --primary:             #ffffff;
+    --primary-foreground:  #0a0a0a;
 
-    --secondary:           #1e1e1c;
-    --secondary-foreground:#f0ede8;
+    --secondary:           #27272a;
+    --secondary-foreground:#ededed;
 
-    --accent:              #1a1a30;
-    --accent-foreground:   #818cf8;
+    --accent:              #27272a;
+    --accent-foreground:   #ffffff;
 
-    --border:              #222220;
-    --ring:                #818cf8;
+    --border:              #27272a;
+    --ring:                #ffffff;
   }
 }
 
@@ -194,8 +193,11 @@
   }
   .card-hover:hover {
     border-color: var(--primary);
-    box-shadow: 0 4px 20px color-mix(in srgb, var(--primary) 8%, transparent);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
     transform: translateY(-2px);
+  }
+  .dark .card-hover:hover {
+    box-shadow: 0 8px 30px rgba(255, 255, 255, 0.04);
   }
 
   /* ── Buttons ── */

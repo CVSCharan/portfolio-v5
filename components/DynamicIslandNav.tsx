@@ -71,7 +71,7 @@ function MobileDrawer({ open, onClose }: { open: boolean; onClose: () => void })
         <>
           {/* Backdrop */}
           <motion.div
-            className="fixed inset-0 z-40 bg-background/80 backdrop-blur-sm"
+            className="fixed inset-0 z-40 bg-background/95"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -137,8 +137,7 @@ export function DynamicIslandNav() {
             stiffness: 300,
             damping: 30,
           }}
-          className="pointer-events-auto relative flex items-center h-12 px-4 rounded-full border border-border bg-background/80 backdrop-blur-xl shadow-sm overflow-hidden"
-          style={{ backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)" }}
+          className="pointer-events-auto relative flex items-center h-12 px-4 rounded-full border border-border bg-background shadow-sm overflow-hidden"
         >
           {/* Wordmark — always visible */}
           <Link
