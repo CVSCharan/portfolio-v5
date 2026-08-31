@@ -31,42 +31,53 @@ const CATEGORY_META: Record<
   string,
   { icon: LucideIcon; hex: string }
 > = {
-  Frontend:  { icon: Monitor,      hex: "#3b82f6" },
-  Backend:   { icon: Server,       hex: "#8b5cf6" },
-  Database:  { icon: Database,     hex: "#f59e0b" },
-  Cloud:     { icon: Cloud,        hex: "#06b6d4" },
-  "AI & ML": { icon: BrainCircuit, hex: "#10b981" },
-  Mobile:    { icon: Smartphone,   hex: "#f43f5e" },
-  Tools:     { icon: Wrench,       hex: "#64748b" },
+  Frontend:              { icon: Monitor,      hex: "#3b82f6" },
+  Backend:               { icon: Server,       hex: "#8b5cf6" },
+  Database:              { icon: Database,     hex: "#f59e0b" },
+  "Cloud & DevOps":      { icon: Cloud,        hex: "#06b6d4" },
+  "Data Analytics & ML": { icon: TrendingUp,   hex: "#10b981" },
+  Mobile:                { icon: Smartphone,   hex: "#f43f5e" },
+  Languages:             { icon: Code2,        hex: "#eab308" },
+  Tools:                 { icon: Wrench,       hex: "#64748b" },
 };
 
 const SKILL_SLUGS: Record<string, string> = {
   // Web & Languages
-  "HTML": "html5", "CSS": "css3", "JavaScript": "javascript",
-  "TypeScript": "typescript", "Python": "python",
+  "HTML": "html5", "HTML5": "html5", "CSS": "css3", "CSS3": "css3", "JavaScript": "javascript",
+  "TypeScript": "typescript", "Python": "python", "C": "c", "C++": "cplusplus", "Java": "java",
+  "Matlab": "mathworks",
   // Frontend
   "React JS": "react", "Next JS": "nextdotjs", "Tailwind CSS": "tailwindcss",
+  "Redux": "redux", "Bootstrap": "bootstrap",
   // Backend
-  "Node JS": "nodedotjs", "GraphQL": "graphql",
+  "Node JS": "nodedotjs", "GraphQL": "graphql", "Express.js": "express",
+  "Django": "django", "Flask": "flask", "FastAPI": "fastapi",
   // Mobile
-  "React Native": "react",
+  "React Native": "react", "Flutter": "flutter", "Expo": "expo",
   // Databases
   "PostgreSQL": "postgresql", "MySQL": "mysql", "MongoDB": "mongodb",
   "SQLite": "sqlite", "Snowflake": "snowflake", "Databricks": "databricks",
+  "Oracle": "oracle", "Redis": "redis",
   // Cloud & Infra
   "Vercel": "vercel", "Docker": "docker", "Kubernetes": "kubernetes",
-  "Git": "git", "AWS": "amazonaws", "Azure": "microsoftazure", "GCP": "googlecloud",
+  "Git": "git", "AWS": "amazonaws", "Amazon AWS": "amazonaws", "Azure": "microsoftazure", "Microsoft Azure": "microsoftazure", "GCP": "googlecloud", "Google Cloud": "googlecloud",
+  "GitHub Actions": "githubactions", "ArgoCD": "argo", "Heroku": "heroku", "Hostinger": "hostinger",
   // AI & ML
   "OpenAI API": "openai", "LangChain": "langchain",
   "Pinecone": "pinecone", "Hugging Face": "huggingface",
+  "Pandas": "pandas", "Numpy": "numpy", "Scikit Learn": "scikitlearn", "Tensorflow": "tensorflow",
   // Tools
-  "n8n": "n8n", "Power BI": "powerbi",
+  "n8n": "n8n", "Power BI": "powerbi", "Tableau": "tableau",
+  "Github": "github", "VS Code": "visualstudiocode", "Unity": "unity", "Postman": "postman", "Figma": "figma", "Slack": "slack"
 };
 
 // Only for skills with NO simpleicons equivalent
 const SKILL_LUCIDE: Record<string, LucideIcon> = {
   "ElysiaJS": Server,
   "RAG Architecture": Code2,
+  "Excloud": Cloud,
+  "OpenRouter": BrainCircuit,
+  "Matplotlib": TrendingUp,
 };
 
 const SkillImgIcon = ({ name, className }: { name: string; className?: string }) => {
