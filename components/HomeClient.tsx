@@ -97,7 +97,7 @@ export function HomeClient({
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
-          className="pt-4 md:pt-12 pointer-events-auto max-w-full"
+          className="pt-4 md:pt-12 pointer-events-auto w-full flex flex-col items-center text-center"
         >
           <h1 
             className="text-[4rem] md:text-[6rem] lg:text-[8rem] font-bold text-foreground leading-[0.9] tracking-tighter"
@@ -106,7 +106,7 @@ export function HomeClient({
             {name}.
           </h1>
           <p 
-            className="text-xl md:text-3xl text-muted-foreground mt-4 md:mt-6 font-medium max-w-2xl" 
+            className="text-xl md:text-3xl text-muted-foreground mt-4 md:mt-6 font-medium max-w-3xl" 
             style={{ fontFamily: "var(--font-bricolage)" }}
           >
             Building uncompromising digital experiences & intelligent data systems.
@@ -118,13 +118,13 @@ export function HomeClient({
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-          className="flex flex-col gap-10 pb-12 md:pb-16 pointer-events-auto max-w-xl"
+          className="flex flex-col items-center text-center gap-10 pb-12 md:pb-16 pointer-events-auto max-w-2xl mx-auto"
         >
           <p className="text-lg md:text-xl text-muted-foreground leading-[1.75]">
             {bio}
           </p>
 
-          <div className="flex flex-wrap items-center gap-4">
+          <div className="flex flex-wrap items-center justify-center gap-4">
             <Link href="/projects" className="btn btn-primary btn-lg group">
               Enter Portfolio 
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -134,7 +134,7 @@ export function HomeClient({
             </Link>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-8 sm:gap-16 pt-8 border-t border-border/60">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-16 pt-8 border-t border-border/60 w-full">
              <div className="space-y-1.5">
                <p className="text-xs font-bold tracking-[0.15em] uppercase text-muted-foreground/60">Core Stack</p>
                <p className="text-sm font-medium text-foreground/80 leading-relaxed">
@@ -143,7 +143,7 @@ export function HomeClient({
              </div>
              <div className="space-y-1.5">
                <p className="text-xs font-bold tracking-[0.15em] uppercase text-muted-foreground/60">Status</p>
-               <p className="text-sm font-medium text-foreground flex items-center gap-2.5">
+               <p className="text-sm font-medium text-foreground flex items-center justify-center gap-2.5">
                  <span className="relative flex h-2 w-2">
                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
                    <span className="relative inline-flex rounded-full h-2 w-2 bg-secondary"></span>
