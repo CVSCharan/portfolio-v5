@@ -140,7 +140,7 @@ export function HomeClient({
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
-          className="mt-8 md:mt-0 md:absolute md:bottom-16 md:right-12 lg:right-24 xl:right-32 flex flex-col gap-6 p-6 md:p-8 rounded-2xl border border-border/50 bg-background/40 backdrop-blur-xl shadow-2xl z-20 pointer-events-auto w-full md:w-auto max-w-sm"
+          className="mt-8 md:mt-0 md:absolute md:top-1/2 md:-translate-y-1/2 md:right-0 lg:right-12 xl:right-24 flex flex-col gap-6 p-6 md:p-8 rounded-2xl border border-border/50 bg-background/40 backdrop-blur-xl shadow-2xl z-20 pointer-events-auto w-full md:w-auto max-w-sm"
         >
            <div className="space-y-1.5">
              <p className="text-xs font-bold tracking-[0.15em] uppercase text-muted-foreground/80">Core Stack</p>
