@@ -1,14 +1,14 @@
 "use client";
 
 import { useRef, useMemo, useState, useEffect } from "react";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 import { useTheme } from "next-themes";
 import * as THREE from "three";
 
-function LiquidParticles({ color }: { color: string }) {
+function ParticleSphere({ color }: { color: string }) {
   const pointsRef = useRef<THREE.Points>(null);
   
-  // Adjust particle count for mobile
+  // Lower particle count on mobile for performance
   const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -17,124 +17,36 @@ function LiquidParticles({ color }: { color: string }) {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  const count = isMobile ? 1200 : 2500;
-  
-  // Use useThree to get the viewport dimensions for scattering and mouse mapping
-  const { viewport } = useThree();
+  const count = isMobile ? 1500 : 3000;
 
-  // Initialize particle state
-  const { positions, basePositions, velocities, types, randoms } = useMemo(() => {
+  // Generate particles in a spherical distribution
+  const positions = useMemo(() => {
     const pos = new Float32Array(count * 3);
-    const base = new Float32Array(count * 3);
-    const vel = new Float32Array(count * 3);
-    const typeArr = new Uint8Array(count); // 0 = scatter, 1 = gravity core
-    const rand = new Float32Array(count);
-
     for (let i = 0; i < count; i++) {
-      // Scatter particles across the entire viewport width and height
-      // Add depth (z) for 3D effect
-      const x = (Math.random() - 0.5) * (viewport.width * 1.5);
-      const y = (Math.random() - 0.5) * (viewport.height * 1.5);
-      const z = (Math.random() - 0.5) * 8; // Depth range
-
-      pos[i * 3] = x;
-      pos[i * 3 + 1] = y;
-      pos[i * 3 + 2] = z;
-
-      base[i * 3] = x;
-      base[i * 3 + 1] = y;
-      base[i * 3 + 2] = z;
-
-      // 50% are gravity particles (type 1), 50% are scatter (type 0)
-      typeArr[i] = i % 2 === 0 ? 1 : 0;
+      // Golden ratio spiral for even distribution
+      const phi = Math.acos(-1 + (2 * i) / count);
+      const theta = Math.sqrt(count * Math.PI) * phi;
       
-      // Random offset for organic motion
-      rand[i] = Math.random() * Math.PI * 2;
+      const r = 3 + (Math.random() * 0.1); // Radius with slight noise
+
+      pos[i * 3] = r * Math.cos(theta) * Math.sin(phi);
+      pos[i * 3 + 1] = r * Math.sin(theta) * Math.sin(phi);
+      pos[i * 3 + 2] = r * Math.cos(phi);
     }
+    return pos;
+  }, [count]);
 
-    return { positions: pos, basePositions: base, velocities: vel, types: typeArr, randoms: rand };
-  }, [count, viewport.width, viewport.height]);
-
+  // Respect prefers-reduced-motion for accessibility
   const prefersReducedMotion = useRef(
     typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
   );
 
-  // The physics loop
-  useFrame((state) => {
-    if (!pointsRef.current || prefersReducedMotion.current) return;
-    
-    const time = state.clock.elapsedTime;
-    
-    // Map normalized pointer (-1 to 1) to 3D world coordinates
-    const mouseX = state.pointer.x * (state.viewport.width / 2);
-    const mouseY = state.pointer.y * (state.viewport.height / 2);
-
-    for (let i = 0; i < count; i++) {
-      const i3 = i * 3;
-      
-      let targetX, targetY, targetZ;
-      
-      if (types[i] === 1) {
-        // GRAVITY PARTICLES: Flow towards the cursor
-        // Instead of forming a single dot, we use their base positions scaled down to form a liquid blob around the cursor
-        targetX = mouseX + basePositions[i3] * 0.15;
-        targetY = mouseY + basePositions[i3 + 1] * 0.15;
-        // The core swirls slowly on Z based on time and random offset
-        targetZ = Math.sin(time + randoms[i]) * 2; 
-
-        // Calculate force vector towards target
-        const dx = targetX - positions[i3];
-        const dy = targetY - positions[i3 + 1];
-        const dz = targetZ - positions[i3 + 2];
-        
-        // Spring physics (acceleration)
-        velocities[i3] += dx * 0.04; 
-        velocities[i3 + 1] += dy * 0.04;
-        velocities[i3 + 2] += dz * 0.04;
-        
-        // Liquid damping/friction (heavy friction so it feels viscous and trails the mouse)
-        velocities[i3] *= 0.82;
-        velocities[i3 + 1] *= 0.82;
-        velocities[i3 + 2] *= 0.82;
-        
-      } else {
-        // SCATTER PARTICLES: Drift organically around their base positions
-        // They float using sine waves based on time and random phases
-        targetX = basePositions[i3] + Math.sin(time * 0.5 + randoms[i]) * 0.8;
-        targetY = basePositions[i3 + 1] + Math.cos(time * 0.4 + randoms[i]) * 0.8;
-        targetZ = basePositions[i3 + 2] + Math.sin(time * 0.6 + randoms[i]) * 0.8;
-        
-        // Slight mouse repulsion for scatter particles (adds to interactivity)
-        const distToMouse = Math.sqrt(Math.pow(positions[i3] - mouseX, 2) + Math.pow(positions[i3 + 1] - mouseY, 2));
-        if (distToMouse < 3) {
-          const repelStrength = (3 - distToMouse) * 0.02;
-          velocities[i3] -= (mouseX - positions[i3]) * repelStrength;
-          velocities[i3 + 1] -= (mouseY - positions[i3 + 1]) * repelStrength;
-        }
-
-        const dx = targetX - positions[i3];
-        const dy = targetY - positions[i3 + 1];
-        const dz = targetZ - positions[i3 + 2];
-        
-        // Gentle spring force back to base target
-        velocities[i3] += dx * 0.01;
-        velocities[i3 + 1] += dy * 0.01;
-        velocities[i3 + 2] += dz * 0.01;
-        
-        // Lower damping for a looser, floating feel
-        velocities[i3] *= 0.92;
-        velocities[i3 + 1] *= 0.92;
-        velocities[i3 + 2] *= 0.92;
-      }
-      
-      // Apply velocity to position
-      positions[i3] += velocities[i3];
-      positions[i3 + 1] += velocities[i3 + 1];
-      positions[i3 + 2] += velocities[i3 + 2];
+  // Subtle constant rotation ONLY, no cursor following
+  useFrame((state, delta) => {
+    if (pointsRef.current && !prefersReducedMotion.current) {
+      pointsRef.current.rotation.y += delta * 0.05;
+      pointsRef.current.rotation.x += delta * 0.03;
     }
-    
-    // Notify Three.js that the buffer has been modified
-    pointsRef.current.geometry.attributes.position.needsUpdate = true;
   });
 
   return (
@@ -168,6 +80,7 @@ export default function SpatialHero3D() {
 
   if (!mounted) return null;
 
+  // Adapt particle color to the current theme
   const particleColor = resolvedTheme === "dark" ? "#ffffff" : "#000000";
 
   return (
@@ -175,9 +88,8 @@ export default function SpatialHero3D() {
       <Canvas 
         camera={{ position: [0, 0, 7], fov: 60 }}
         gl={{ antialias: true }}
-        eventSource={typeof window !== "undefined" ? document.body : undefined}
       >
-        <LiquidParticles color={particleColor} />
+        <ParticleSphere color={particleColor} />
       </Canvas>
     </div>
   );
