@@ -48,7 +48,40 @@ export function HomeClient({
   const name = user?.name ?? "CVS Charan";
   const bio =
     user?.bio ??
-    "AI-Augmented Full-Stack Developer with a foundation in Data Analytics. I build intelligent, scalable web applications using LLMs, modern cloud infrastructure, and clean engineering principles.";
+    "AI-Augmented Full-Stack Developer with a foundation in Data Analytics. I specialize in building intelligent and scalable web and mobile applications that leverage LLMs, prompt engineering, and AI automation.";
+
+  // Fallback to dummy data if the database is currently empty so the layout is visible
+  const displayProjects = featuredProjects.length > 0 ? featuredProjects : [
+    {
+      id: -1,
+      title: "Antigravity AI Portfolio",
+      slug: "antigravity-ai",
+      description: "A highly interactive, fluid 3D portfolio powered by React Three Fiber, Next.js, and Prisma 8.",
+      imageUrl: null,
+    },
+    {
+      id: -2,
+      title: "Data Analytics Platform",
+      slug: "data-analytics",
+      description: "Scalable data ingestion and visualization platform built with AWS, PostgreSQL, and Python.",
+      imageUrl: null,
+    }
+  ];
+
+  const displayExperiences = experiences.length > 0 ? experiences : [
+    {
+      id: -1,
+      title: "AI-Augmented Full-Stack Developer",
+      company: "Independent / Freelance",
+      period: "2023 - Present",
+    },
+    {
+      id: -2,
+      title: "Data Analytics Specialist",
+      company: "Corporate Tech",
+      period: "2020 - 2023",
+    }
+  ];
 
   return (
     <div className="w-full relative">
@@ -124,8 +157,8 @@ export function HomeClient({
       </div>
 
       {/* ── SCROLLABLE SECTIONS (Glimpses) ── */}
-      {/* Container with backdrop blur that slides over the fixed 3D background */}
-      <div className="relative z-20 bg-background/95 backdrop-blur-md border-t border-border py-24 md:py-32 -mx-5 px-5 md:-mx-10 md:px-10">
+      {/* Container is completely transparent so the 3D globe stays visible while scrolling */}
+      <div className="relative z-20 py-24 md:py-32 -mx-5 px-5 md:-mx-10 md:px-10">
         
         {/* ── SECTION B: EXPERIENCE GLIMPSE ── */}
         <section className="max-w-4xl mx-auto mb-32">
@@ -137,8 +170,8 @@ export function HomeClient({
           </div>
 
           <div className="space-y-4 mb-10">
-            {experiences.map((exp) => (
-              <div key={exp.id} className="card p-6 md:p-8 flex flex-col md:flex-row md:items-center justify-between gap-4 card-hover">
+            {displayExperiences.map((exp) => (
+              <div key={exp.id} className="card p-6 md:p-8 flex flex-col md:flex-row md:items-center justify-between gap-4 card-hover shadow-sm backdrop-blur-md bg-card/90">
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center shrink-0">
                     <Briefcase className="w-5 h-5 text-muted-foreground" />
@@ -172,7 +205,7 @@ export function HomeClient({
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-            {featuredProjects.map((project) => (
+            {displayProjects.map((project) => (
               <Link 
                 href={`/projects#${project.slug}`} 
                 key={project.id}
