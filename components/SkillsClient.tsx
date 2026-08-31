@@ -167,7 +167,7 @@ function CategoryCard({ cat, skills, meta, index }: {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
       transition={{ duration: 0.55, delay: index * 0.06, ease: [0.22, 1, 0.36, 1] }}
-      className="relative rounded-3xl border border-border bg-card overflow-hidden"
+      className="relative rounded-3xl border border-border bg-card overflow-hidden break-inside-avoid mb-5 sm:mb-6"
     >
 
       {/* Ambient glow (subtle) */}
@@ -347,7 +347,7 @@ export function SkillsClient({ skills }: { skills: Skill[] }) {
         )}
         {cats.length > 0 && (
           <React.Fragment key={filter + "|" + search}>
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 sm:gap-6 items-start">
+            <div className="columns-1 sm:columns-2 xl:columns-3 gap-5 sm:gap-6">
               {cats.map((cat, i) => {
                 const meta = CATEGORY_META[cat] ?? CATEGORY_META["Tools"];
                 return (
