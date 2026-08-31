@@ -84,29 +84,31 @@ export function HomeClient({
   ];
 
   return (
-    <div className="w-full relative">
-      {/* ── 3D Canvas Background (Fixed Full Screen) ── */}
-      <div className="fixed inset-0 w-full h-[100svh] z-[-1] bg-background">
-        <SpatialHero3D />
-      </div>
+    <div className="w-full relative bg-background">
+      {/* ── HERO SECTION ── */}
+      <section className="relative w-full min-h-[100svh] flex flex-col justify-center overflow-hidden">
+        {/* 3D Canvas Background */}
+        <div className="absolute inset-0 w-full h-full z-0">
+          <SpatialHero3D />
+        </div>
 
-      {/* ── SECTION A: HUD HERO (100svh) ── */}
-      <div className="relative z-10 w-full min-h-[calc(100svh-180px)] flex flex-col justify-between pointer-events-none mb-32 max-w-6xl mx-auto px-5 md:px-0">
+        {/* ── SECTION A: HUD HERO ── */}
+        <div className="relative z-10 w-full max-w-6xl mx-auto px-5 md:px-0 flex flex-col justify-center pointer-events-none h-full gap-10 md:gap-16 pt-24 md:pt-32 pb-16 md:pb-24">
         {/* HUD Top: Massive Typography */}
         <motion.div 
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
-          className="pt-4 md:pt-12 pointer-events-auto max-w-full flex flex-col items-start text-left"
+          className="pointer-events-auto max-w-full flex flex-col items-start text-left"
         >
           <h1 
-            className="text-[4rem] md:text-[6rem] lg:text-[8rem] font-bold text-foreground leading-[0.9] tracking-tighter"
+            className="text-6xl sm:text-7xl md:text-[6rem] lg:text-[8rem] font-bold text-foreground leading-[0.9] tracking-tighter"
             style={{ fontFamily: "var(--font-bricolage)" }}
           >
             {name}.
           </h1>
           <p 
-            className="text-xl md:text-3xl text-muted-foreground mt-4 md:mt-6 font-medium max-w-3xl" 
+            className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-muted-foreground mt-4 md:mt-6 font-medium max-w-3xl" 
             style={{ fontFamily: "var(--font-bricolage)" }}
           >
             Building uncompromising digital experiences & intelligent data systems.
@@ -118,9 +120,9 @@ export function HomeClient({
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-          className="flex flex-col items-start text-left gap-10 pb-12 md:pb-16 pointer-events-auto max-w-xl"
+          className="flex flex-col items-start text-left gap-10 pointer-events-auto max-w-xl"
         >
-          <p className="text-lg md:text-xl text-muted-foreground leading-[1.75]">
+          <p className="text-base sm:text-lg md:text-xl text-muted-foreground leading-[1.75]">
             {bio}
           </p>
 
@@ -140,7 +142,7 @@ export function HomeClient({
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
-          className="mt-8 md:mt-0 md:absolute md:top-1/2 md:-translate-y-1/2 md:right-0 lg:right-12 xl:right-24 flex flex-col gap-6 p-6 md:p-8 rounded-2xl border border-border/50 bg-background/40 backdrop-blur-xl shadow-2xl z-20 pointer-events-auto w-full md:w-auto max-w-sm"
+          className="md:absolute md:top-1/2 md:-translate-y-1/2 md:right-0 lg:right-12 xl:right-24 flex flex-col gap-6 p-6 md:p-8 rounded-2xl border border-border/50 bg-background/40 backdrop-blur-xl shadow-2xl z-20 pointer-events-auto w-full md:w-auto max-w-sm"
         >
            <div className="space-y-1.5">
              <p className="text-xs font-bold tracking-[0.15em] uppercase text-muted-foreground/80">Core Stack</p>
@@ -163,13 +165,13 @@ export function HomeClient({
            </div>
         </motion.div>
       </div>
+      </section>
 
       {/* ── SCROLLABLE SECTIONS (Glimpses) ── */}
-      {/* Container is completely transparent so the 3D globe stays visible while scrolling */}
-      <div className="relative z-20 py-24 md:py-32 -mx-5 px-5 md:-mx-10 md:px-10">
+      <div className="relative z-20 bg-background w-full py-24 md:py-32 px-5 md:px-10 flex flex-col gap-24 md:gap-32">
         
         {/* ── SECTION B: EXPERIENCE GLIMPSE ── */}
-        <section className="max-w-6xl mx-auto mb-32">
+        <section className="max-w-6xl mx-auto w-full">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8">
             {/* Left Column: Typography & Action */}
             <div className="lg:col-span-5 flex flex-col items-start">
@@ -205,7 +207,7 @@ export function HomeClient({
         </section>
 
         {/* ── SECTION C: FEATURED PROJECTS GLIMPSE ── */}
-        <section className="max-w-6xl mx-auto">
+        <section className="max-w-6xl mx-auto w-full">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8">
             {/* Left Column: Typography & Action */}
             <div className="lg:col-span-5 flex flex-col items-start">
