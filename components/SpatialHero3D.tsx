@@ -34,9 +34,14 @@ function ParticleSphere({ color }: { color: string }) {
     return pos;
   }, [count]);
 
+  // Respect prefers-reduced-motion for accessibility
+  const prefersReducedMotion = useRef(
+    typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  );
+
   // Subtle constant rotation + mouse influence
   useFrame((state, delta) => {
-    if (pointsRef.current) {
+    if (pointsRef.current && !prefersReducedMotion.current) {
       pointsRef.current.rotation.y += delta * 0.05;
       pointsRef.current.rotation.x += delta * 0.03;
       
@@ -77,7 +82,7 @@ export default function SpatialHero3D() {
   const particleColor = mounted && resolvedTheme === "dark" ? "#ffffff" : "#000000";
 
   return (
-    <div className="absolute inset-0 w-full h-full z-0 bg-background pointer-events-auto">
+    <div className="absolute inset-0 w-full h-full z-0 bg-background pointer-events-auto" aria-hidden="true">
       <Canvas 
         camera={{ position: [0, 0, 7], fov: 60 }}
         gl={{ antialias: true, alpha: false }}
