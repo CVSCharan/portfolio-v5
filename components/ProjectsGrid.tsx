@@ -1,34 +1,18 @@
-"use client"
-
-import { useEffect, useState } from "react"
+import React from "react";
 
 interface Project {
-  id: string
-  title: string
-  slug: string
-  description: string
-  techStack: string[]
-  githubUrl?: string
-  demoUrl?: string
-  imageUrl?: string
-  order: number
+  id: number;
+  title: string;
+  slug: string;
+  description: string | null;
+  techStack: readonly string[];
+  githubUrl: string | null;
+  demoUrl: string | null;
+  imageUrl: string | null;
+  order: number;
 }
 
-export default function ProjectsGrid() {
-  const [projects, setProjects] = useState<Project[]>([])
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    fetch("/api/projects")
-      .then((res) => res.json())
-      .then((data) => {
-        setProjects(data)
-        setLoading(false)
-      })
-      .catch(() => setLoading(false))
-  }, [])
-
-  if (loading) return <p className="mt-8 text-zinc-50">Loading projects…</p>
+export default function ProjectsGrid({ projects }: { projects: Project[] }) {
 
   return (
     <section className="py-24 bg-gray-50">
