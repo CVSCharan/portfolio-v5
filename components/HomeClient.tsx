@@ -132,26 +132,34 @@ export function HomeClient({
             <Link href="/experience" className="text-base font-semibold text-foreground hover:text-secondary transition-colors underline-offset-4 hover:underline">
               View Experience
             </Link>
-          </div>
+        </motion.div>
 
-          <div className="flex flex-col sm:flex-row items-start justify-start gap-8 sm:gap-16 pt-8 border-t border-border/60 w-full">
-             <div className="space-y-1.5">
-               <p className="text-xs font-bold tracking-[0.15em] uppercase text-muted-foreground/60">Core Stack</p>
-               <p className="text-sm font-medium text-foreground/80 leading-relaxed">
-                 React, Next.js, Node.js, Python,<br/>PostgreSQL, Prisma, Tailwind, AWS
-               </p>
-             </div>
-             <div className="space-y-1.5">
-               <p className="text-xs font-bold tracking-[0.15em] uppercase text-muted-foreground/60">Status</p>
-               <p className="text-sm font-medium text-foreground flex items-center justify-start gap-2.5">
-                 <span className="relative flex h-2 w-2">
-                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
-                   <span className="relative inline-flex rounded-full h-2 w-2 bg-secondary"></span>
-                 </span>
-                 Available for opportunities
-               </p>
-             </div>
-          </div>
+        {/* Floating Deck: Core Stack & Status (Right side) */}
+        <motion.div 
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
+          className="mt-8 md:mt-0 md:absolute md:bottom-16 md:right-12 lg:right-24 xl:right-32 flex flex-col gap-6 p-6 md:p-8 rounded-2xl border border-border/50 bg-background/40 backdrop-blur-xl shadow-2xl z-20 pointer-events-auto w-full md:w-auto max-w-sm"
+        >
+           <div className="space-y-1.5">
+             <p className="text-xs font-bold tracking-[0.15em] uppercase text-muted-foreground/80">Core Stack</p>
+             <p className="text-sm font-medium text-foreground/90 leading-relaxed">
+               React, Next.js, Node.js, Python,<br/>PostgreSQL, Prisma, Tailwind, AWS
+             </p>
+           </div>
+           
+           <div className="w-full h-px bg-border/50" />
+           
+           <div className="space-y-1.5">
+             <p className="text-xs font-bold tracking-[0.15em] uppercase text-muted-foreground/80">Status</p>
+             <p className="text-sm font-medium text-foreground flex items-center gap-2.5">
+               <span className="relative flex h-2 w-2">
+                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
+                 <span className="relative inline-flex rounded-full h-2 w-2 bg-secondary"></span>
+               </span>
+               Available for opportunities
+             </p>
+           </div>
         </motion.div>
       </div>
 
