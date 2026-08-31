@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { GitFork, Link2, Mail, Twitter } from "lucide-react";
+import { GitFork, Link2, Mail, Hash } from "lucide-react";
 
 export function Footer() {
   return (
@@ -33,7 +33,7 @@ export function Footer() {
                   <GitFork className="w-5 h-5" />
                 </a>
                 <a href="#" className="hover:text-foreground transition-colors">
-                  <Twitter className="w-5 h-5" />
+                  <Hash className="w-5 h-5" />
                 </a>
                 <a href="mailto:charan.cvs@gmail.com" className="hover:text-foreground transition-colors">
                   <Mail className="w-5 h-5" />
