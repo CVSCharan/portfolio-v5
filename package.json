@@ -34,7 +34,8 @@
     "react-dom": "19.2.8",
     "react-markdown": "^10.1.0",
     "tailwind-merge": "^3.6.0",
-    "three": "^0.185.1"
+    "three": "^0.185.1",
+    "zod": "^4.5.4"
   },
   "devDependencies": {
     "@playwright/test": "^1.62.1",

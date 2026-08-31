@@ -16,6 +16,10 @@
       "model": "Experience",
       "namespace": "public"
     },
+    "pageView": {
+      "model": "PageView",
+      "namespace": "public"
+    },
     "project": {
       "model": "Project",
       "namespace": "public"
@@ -260,6 +264,67 @@
               },
               "namespaceId": "public",
               "table": "experience"
+            }
+          },
+          "PageView": {
+            "fields": {
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "path": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "referrer": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "userAgent": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {},
+            "storage": {
+              "fields": {
+                "createdAt": {
+                  "column": "createdAt"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "path": {
+                  "column": "path"
+                },
+                "referrer": {
+                  "column": "referrer"
+                },
+                "userAgent": {
+                  "column": "userAgent"
+                }
+              },
+              "namespaceId": "public",
+              "table": "pageView"
             }
           },
           "Project": {
@@ -697,6 +762,51 @@
               },
               "uniques": []
             },
+            "pageView": {
+              "columns": {
+                "createdAt": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/int4@1",
+                  "default": {
+                    "expression": "autoincrement()",
+                    "kind": "function"
+                  },
+                  "nativeType": "int4",
+                  "nullable": false
+                },
+                "path": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "referrer": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "userAgent": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                }
+              },
+              "foreignKeys": [],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ]
+              },
+              "uniques": []
+            },
             "project": {
               "checks": [
                 {
@@ -883,7 +993,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "30cd17891f84b32ec93e0e3e0132f08161e5a43cde6b1d0814a0caa13624ce4e"
+    "storageHash": "269f10d50c65a9de2aeabf5ce9991079bd3be29b098075b66d6be8c0798c9b4f"
   },
   "capabilities": {
     "postgres": {

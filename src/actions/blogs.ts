@@ -2,6 +2,15 @@
 
 import { db } from "@/src/prisma/db";
 import { revalidatePath } from "next/cache";
+import { z } from "zod";
+
+const blogPostSchema = z.object({
+  title: z.string().min(1).max(200),
+  slug: z.string().min(1).max(200).regex(/^[a-z0-9]+(-[a-z0-9]+)*$/),
+  excerpt: z.string().nullable().optional(),
+  content: z.string().nullable().optional(),
+  published: z.boolean().default(false),
+});
 
 export async function createBlog(data: {
   title: string;
@@ -10,7 +19,8 @@ export async function createBlog(data: {
   content: string | null;
   published: boolean;
 }) {
-  await db.orm.public.BlogPost.create(data);
+  const validated = blogPostSchema.parse(data);
+  await db.orm.public.BlogPost.create(validated);
   revalidatePath("/admin");
   revalidatePath("/admin/blogs");
   revalidatePath("/blog");
@@ -23,7 +33,8 @@ export async function updateBlog(id: number, data: {
   content?: string | null;
   published?: boolean;
 }) {
-  await db.orm.public.BlogPost.where({ id }).update(data);
+  const validated = blogPostSchema.partial().parse(data);
+  await db.orm.public.BlogPost.where({ id }).update(validated);
   revalidatePath("/admin");
   revalidatePath("/admin/blogs");
   revalidatePath("/blog");

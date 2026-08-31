@@ -1,82 +1,47 @@
-# Portfolio Plan
+# Project Plan
 
-## 1. Architecture & Tech Stack
-- **Frontend**: Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS v4
-- **Database & ORM**: PostgreSQL (e.g., Neon) managed via Prisma
-- **Authentication**: NextAuth.js (Auth.js) using custom Credentials provider (Self-hosted, 100% free)
-- **Deployment**: Vercel
+This document outlines the milestones and completed tasks for Portfolio v5.
 
-## 2. Data Schema
+## Completed Milestones
 
-### Prisma Next Data Contract
-Our primary source of truth is the PostgreSQL database managed by Prisma Next. The schema includes models for User (Admin), Project, Skill, Experience, and BlogPost.
-(See `docs/schema.md` for full schema definition or `src/prisma/contract.prisma`).
+### Phase 1: Foundation & Setup
+- [x] Initialized Next.js 15 App Router project.
+- [x] Configured Tailwind CSS v4 and `eslint.config.mjs`.
+- [x] Setup Prisma 8 Composer with PostgreSQL.
+- [x] Implemented NextAuth credentials provider for Admin login.
+- [x] Created database schema (User, Experience, Skill, Project, BlogPost, Admin).
 
-### API Routes & Data Fetching (Next.js App Router)
-Data for the public portfolio is fetched directly from the database using **React Server Components** for optimal performance and SEO.
-Admin management (CRUD operations) is handled either through Server Actions or protected API routes under `app/api/`.
+### Phase 2: Core Components & Layout
+- [x] Implemented Next-Themes (Light/Dark mode).
+- [x] Built responsive "Dynamic Island" Navbar (`MobileNav.tsx`).
+- [x] Defined Classic Professional design constraints (No heavy gradients, high contrast typography).
 
-## 3. Design System
-| Aspect | Recommendation |
-|--------|----------------|
-| **Color palette** | 3-5 colors, use Tailwind `theme.extend.colors` |
-| **Typography** | Inter or DM Sans UI, serif for headings; `tailwindcss` `prose` for blog |
-| **Components** | `Button`, `Card`, `Navbar`, `ProjectCard`, `SkillTag`, `Modal` |
-| **Accessibility** | `aria-label`, `alt` text, keyboard nav, contrast ≥ 4.5:1 |
-| **Responsive** | Mobile-first breakpoints: sm, md, lg, xl |
-| **Animations** | `framer-motion` micro-interactions |
-| **Icons** | `@heroicons/react` or `lucide-react` |
+### Phase 3: 3D Interactions & "Wow" Factors
+- [x] Integrated `three`, `@react-three/fiber`, and `@react-three/drei`.
+- [x] Built `Hero3D` component (Interactive Icosahedron).
+- [x] Built `not-found.tsx` (WebGL Black Hole with particle system).
 
-## 4. Key Pages/Sections
-- `/` — Hero with intro + CTA
-- `/about` — Bio, avatar, download CV
-- `/projects` — Grid/filter, each with image, tech stack, links
-- `/skills` — Progress bars or donut charts
-- `/experience` — Timeline view
-- `/blog` — List of blog posts with pagination and search
-- `/contact` — Form (resend/together/formspree)
-- `/resume` — PDF or rendered from JSON
-- **`/admin`** — Secure dashboard for managing all portfolio data, protected by NextAuth.
+### Phase 4: Error Handling & Analytics
+- [x] Implemented Custom In-App Analytics (`PageView` model & `PageTracker` component).
+- [x] Implemented Classic Professional Error Boundaries (`error.tsx`, `global-error.tsx`).
 
-## 5. Performance & SEO
-- `next/image`, `next/font`, automatic static optimization
-- Dynamic `generateMetadata` per route
-- Schema.org `Person`, `Project`, `Breadcrumb`
-- Lighthouse: Performance >90, Accessibility >80
-- Core Web Vitals monitoring with `next analyze`
+### Phase 5: Dynamic Content & AI Features
+- [x] Extracted actual resume content and seeded DB (`prisma/seed.ts`).
+- [x] Built Interactive Resume Page (`/resume`) with Timeline and Skill Matrix.
+- [x] Built Embedded AI Chatbot simulation (`<AIChatbot />`) to query resume data.
 
-## 6. Authentication & Admin Panel
-- **NextAuth.js**: Configured with a `Credentials` provider for custom login, avoiding external paid services.
-- **Admin Dashboard**: Located at `app/(admin)/page.tsx`, allowing full CRUD operations on portfolio data.
+### Phase 6: Connecting the Core Pages
+- [x] Refactored `app/about/page.tsx` to fetch data directly from Prisma (currently hardcoded or semi-hardcoded).
+- [x] Refactored `app/projects/page.tsx` to fetch from Prisma.
+- [x] Refactored `app/page.tsx` (Home) to fetch user bio from Prisma.
 
-## 7. Deployment Checklist
-1. Connect repo to Vercel
-2. Set env vars (`NEXT_PUBLIC_SITE_URL`, `DATABASE_URL`, `NEXTAUTH_SECRET`, `NEXTAUTH_URL`)
-3. Run database initialization via Vercel build command or manually (`npx prisma db init`)
-4. `vercel deploy` — preview URLs per branch
-5. Custom domain + HTTPS
+## Upcoming Milestones (TODO)
 
-## 8. Quick Start Commands
-```bash
-npm install
-# Setup the database
-npx prisma contract emit
-npx prisma db init
-# Seed data
-npx tsx src/prisma/seed.ts
-# Run app
-npm run dev
-```
+### Phase 7: Admin Dashboard
+- [ ] Build UI for viewing the `PageView` analytics in the Admin panel.
+- [ ] Ensure all CRUD operations (Create/Update/Delete) for Projects, Experience, and Skills are fully functional and secure.
 
-## 9. Folder Structure
-```
-src/
-  app/           # Next.js App Router pages (includes /admin)
-  components/    # Reusable UI components
-  lib/           # Utilities (auth, etc.)
-  prisma/        # Prisma Next contract (contract.prisma) and seed.ts
-  styles/        # Global CSS, Tailwind config
-  types/         # TypeScript shared types
-public/
-  favicon.ico
-```
+### Phase 8: Final Polish
+- [ ] Comprehensive ESLint pass.
+- [ ] Performance and Core Web Vitals audit.
+- [ ] Deploy to Production (Vercel).

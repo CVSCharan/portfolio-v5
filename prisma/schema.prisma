@@ -64,3 +64,11 @@ model BlogPost {
 
   author User? @relation(fields: [authorId], references: [id])
 }
+
+model PageView {
+  id        Int      @id @default(autoincrement)
+  path      String   // the URL path visited
+  referrer  String?  // where they came from
+  userAgent String?  // browser info
+  createdAt DateTime @default(now())
+}

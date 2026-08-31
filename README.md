@@ -1,89 +1,61 @@
-# CVS CHARAN - Personal Portfolio v5
+# Portfolio Client v5
 
-A modern, fast, and secure personal portfolio built with Next.js 16 (App Router), React 19, Tailwind CSS v4, and PostgreSQL via Prisma Next. It features a fully bespoke public frontend and a secure admin dashboard to manage all content dynamically.
+Welcome to the fifth iteration of my personal portfolio. This project is a highly dynamic, AI-augmented web application designed to demonstrate my capabilities as a Full-Stack Developer with deep expertise in Data Analytics, LLM integrations, and modern web architectures.
 
-## Features
+## 🚀 Tech Stack
 
-- **Public Portfolio:**
-  - Dynamic Projects grid with tech stack badges and links.
-  - Interactive Skills view with category grouping and progress bars.
-  - Experience timeline.
-  - Markdown-powered Blog for publishing articles.
-  - Server-Side Rendered (SSR) for optimal SEO and performance (Zero loading flashes).
-- **Admin Dashboard (CMS):**
-  - Custom NextAuth.js credentials login (100% self-hosted, no third-party auth services required).
-  - Full CRUD functionality for managing Projects, Skills, Experiences, and Blog Posts.
-  - Next.js Server Actions used for secure database mutations.
-- **Database:**
-  - PostgreSQL managed by `@prisma/orm-postgres` (Prisma Next).
-  - Strictly typed queries using Prisma Next Data Contracts.
+- **Framework**: Next.js (App Router)
+- **UI/Styling**: React, Tailwind CSS v4, Shadcn UI, Framer Motion, Lucide Icons
+- **Database & ORM**: PostgreSQL, Prisma 8 (Prisma Next / `@prisma/composer`)
+- **3D Interactions**: Three.js, React Three Fiber (R3F), React Three Drei
+- **Language**: TypeScript
 
-## Tech Stack
+## 🏗️ Architecture & Core Features
 
-- **Framework:** [Next.js 16](https://nextjs.org) (App Router)
-- **UI:** [React 19](https://react.dev), [Tailwind CSS v4](https://tailwindcss.com), `@tailwindcss/typography`
-- **Database:** PostgreSQL
-- **ORM:** [Prisma Next](https://prisma.io) (`@prisma/orm-postgres`)
-- **Authentication:** [NextAuth.js](https://next-auth.js.org)
-- **Content:** `react-markdown`
+### 1. Database-Driven Content Management
+Instead of hardcoding portfolio data into React components, the entire site is driven by a PostgreSQL database managed via **Prisma 8 Composer**.
+- **`src/prisma/schema.prisma`**: Defines the data models (`User`, `Project`, `Experience`, `Skill`, `BlogPost`, `PageView`).
+- **Data Seeding**: The `prisma/seed.ts` file automatically ingests real resume data (experiences at Ninex Corp, Senexxel, Providence, etc.) into the database.
 
-## Getting Started
+### 2. Custom In-App Analytics
+We have built a zero-dependency, privacy-focused, custom analytics engine.
+- A `<PageTracker />` client component sits in the root layout, silently observing route changes.
+- It POSTs to `/api/analytics/pageview`, logging the visitor's path, referrer, and user agent directly into the `PageView` table in Postgres.
 
-### 1. Environment Variables
+### 3. Professional Error Boundaries
+The application is wrapped in robust, Next.js standard error boundaries (`app/error.tsx` and `app/global-error.tsx`).
+- These screens explicitly avoid overly flashy or abstract 3D aesthetics in favor of a **Classic Professional** (corporate and clean) design using Shadcn UI. This ensures maximum reliability and user trust during unexpected failures.
 
-Create a `.env` file in the root directory and add the following variables:
+### 4. Interactive Resume (`/resume`)
+A dedicated, highly interactive route that goes beyond a standard PDF:
+- **Timeline**: A vertical timeline mapping out professional experience.
+- **Skill Matrix**: A categorized badge system for technical skills.
+- **AI Chatbot (`<AIChatbot />`)**: An embedded, floating chat widget that simulates a RAG (Retrieval-Augmented Generation) AI. It allows recruiters to "chat" with the resume and ask questions about my experience and tech stack.
 
-```bash
-# Database Connection (e.g., Neon PostgreSQL)
-DATABASE_URL="postgres://username:password@hostname/dbname?sslmode=require"
+### 5. 3D WebGL Elements
+While the overall design is "classic professional," specific areas leverage WebGL for "out-of-the-box" WOW factors:
+- **Hero3D**: An interactive, rotating Icosahedron on the homepage.
+- **404 Black Hole**: A custom GLSL shader rendering a neon black hole and particle starfield for the "Not Found" page.
 
-# NextAuth Configuration
-NEXTAUTH_SECRET="your-super-secret-string-here"
-NEXTAUTH_URL="http://localhost:3000"
-NEXT_PUBLIC_SITE_URL="http://localhost:3000"
-```
-*(Tip: You can generate a `NEXTAUTH_SECRET` by running `openssl rand -base64 32` in your terminal)*
+## 🎨 Design Philosophy
+- **Aesthetic**: Classic Professional. Clean lines, solid backgrounds, high contrast. 
+- **Rule**: NO heavy gradients for backgrounds. We rely on subtle borders, backdrop blurs (glassmorphism), and distinct typography.
+- **Navigation**: Uses a Dynamic Island-inspired responsive top navigation bar with a mobile hamburger menu.
 
-### 2. Install Dependencies
+## 🛠️ Local Development
 
 ```bash
+# Install dependencies
 npm install
-```
 
-### 3. Initialize Database
-
-Emit the Prisma Next data contract and initialize the database schema:
-
-```bash
+# Update Prisma Database & Generate Typings
+npm run postinstall
+npx prisma db update
 npm run contract:emit
-npx prisma db init
+
+# Seed the database with resume data
+npx tsx prisma/seed.ts
+
+# Run the development server
+bun dev
 ```
-
-### 4. Seed Initial Data (Optional)
-
-You can seed the database with an admin user and placeholder data:
-
-```bash
-npx tsx src/prisma/seed.ts
-```
-*Note: Check `src/prisma/seed.ts` for the default admin login credentials!*
-
-### 5. Run Development Server
-
-```bash
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) to view the portfolio.
-Navigate to [http://localhost:3000/admin](http://localhost:3000/admin) to log in to the CMS.
-
-## Deployment
-
-This project is configured to deploy seamlessly on [Vercel](https://vercel.com).
-1. Connect your GitHub repository to Vercel.
-2. Add your `DATABASE_URL` and `NEXTAUTH_SECRET` in the Vercel Environment Variables settings.
-3. The build command `npm run build` will automatically emit the Prisma contract and build the Next.js app.
-
-## License
-
-MIT
