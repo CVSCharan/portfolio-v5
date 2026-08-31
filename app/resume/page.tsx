@@ -1,6 +1,6 @@
 import { db } from "@/src/prisma/db";
 import { PageHeader } from "@/components/PageHeader";
-import { AIChatbot } from "@/components/AIChatbot";
+
 import { Briefcase, GraduationCap, Cpu, Download } from "lucide-react";
 
 export const metadata = {
@@ -136,8 +136,6 @@ export default async function ResumePage() {
         </div>
       </div>
 
-      {/* Floating AI Chatbot */}
-      <AIChatbot />
-    </div>
+      {/* Floating AI Chatbot */}    </div>
   );
 }

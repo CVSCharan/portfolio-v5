@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { PageTracker } from "@/components/PageTracker";
 import { DynamicIslandNav } from "@/components/DynamicIslandNav";
 import { Footer } from "@/components/Footer";
+import { AIChatbot } from "@/components/AIChatbot";
 
 /* ── Fonts ──────────────────────────────────────────── */
 const plusJakarta = Plus_Jakarta_Sans({
@@ -74,6 +75,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
           {/* ── Dynamic Island Navbar ── */}
           <DynamicIslandNav />
+
+          {/* ── Global AI Chatbot ── */}
+          <AIChatbot />
 
           {/* ── Page Content ── */}
           <main className="flex-1 w-full max-w-6xl mx-auto px-5 md:px-10 pt-28 pb-20">
