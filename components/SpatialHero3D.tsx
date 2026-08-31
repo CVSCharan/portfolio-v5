@@ -84,7 +84,7 @@ export default function SpatialHero3D() {
     <div className="absolute inset-0 w-full h-full z-0 bg-background pointer-events-auto" aria-hidden="true">
       <Canvas 
         camera={{ position: [0, 0, 7], fov: 60 }}
-        gl={{ antialias: true, alpha: false }}
+        gl={{ antialias: true }}
       >
         <ParticleSphere color={particleColor} />
       </Canvas>
