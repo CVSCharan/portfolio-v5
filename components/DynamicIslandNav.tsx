@@ -130,29 +130,31 @@ export function DynamicIslandNav() {
           onHoverStart={() => setHovered(true)}
           onHoverEnd={() => setHovered(false)}
           animate={{
-            width: isExpanded ? "min(720px, calc(100vw - 32px))" : "200px",
+            width: isExpanded ? "min(720px, calc(100vw - 32px))" : "220px",
           }}
           transition={{
             type: "spring",
             stiffness: 300,
             damping: 30,
           }}
-          className="pointer-events-auto relative flex items-center h-12 px-4 rounded-full border border-border bg-background shadow-sm overflow-hidden"
+          className="pointer-events-auto relative flex items-center justify-between h-12 px-4 rounded-full border border-border bg-background shadow-sm overflow-hidden"
         >
           {/* Wordmark — always visible */}
-          <Link
-            href="/"
-            className="shrink-0 font-bold text-base text-foreground tracking-tight mr-4"
-            style={{ fontFamily: "var(--font-bricolage)" }}
-          >
-            CVS
-          </Link>
+          <div className="flex items-center justify-start shrink-0 w-20">
+            <Link
+              href="/"
+              className="font-bold text-base text-foreground tracking-tight"
+              style={{ fontFamily: "var(--font-bricolage)" }}
+            >
+              CVS
+            </Link>
+          </div>
 
           {/* Desktop nav links — animate in/out */}
           <AnimatePresence>
             {isExpanded && (
               <motion.div
-                className="hidden md:flex items-center gap-6 flex-1"
+                className="hidden lg:flex items-center justify-center gap-6 flex-1 whitespace-nowrap"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
@@ -165,14 +167,11 @@ export function DynamicIslandNav() {
             )}
           </AnimatePresence>
 
-          {/* Spacer so theme toggle stays right */}
-          <div className="flex-1" />
-
           {/* Controls */}
-          <div className="flex items-center gap-1 shrink-0">
+          <div className="flex items-center justify-end gap-1 shrink-0 w-20">
             <ThemeToggle />
             {/* Hamburger menu: Show on mobile/tablet ONLY. Hidden on desktop. */}
-            <div className="md:hidden flex">
+            <div className="lg:hidden flex">
               <button
                 className="btn btn-ghost w-8 h-8 rounded-full p-0 flex items-center justify-center"
                 onClick={() => setMobileOpen((o) => !o)}
