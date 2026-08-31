@@ -54,8 +54,8 @@
     --primary:             #18181b;
     --primary-foreground:  #fafafa;
 
-    --secondary:           #f4f4f5;
-    --secondary-foreground:#18181b;
+    --secondary:           #2563eb;
+    --secondary-foreground:#ffffff;
 
     --accent:              #f4f4f5;
     --accent-foreground:   #18181b;
@@ -78,8 +78,8 @@
     --primary:             #fafafa;
     --primary-foreground:  #18181b;
 
-    --secondary:           #27272a;
-    --secondary-foreground:#fafafa;
+    --secondary:           #39ff14;
+    --secondary-foreground:#09090b;
 
     --accent:              #27272a;
     --accent-foreground:   #fafafa;
@@ -137,8 +137,8 @@
   }
 
   ::selection {
-    background-color: var(--accent);
-    color: var(--accent-foreground);
+    background-color: var(--secondary);
+    color: var(--secondary-foreground);
   }
 }
 
@@ -194,12 +194,12 @@
     transition: border-color 200ms ease, box-shadow 200ms ease, transform 200ms ease;
   }
   .card-hover:hover {
-    border-color: var(--primary);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    border-color: var(--secondary);
+    box-shadow: 0 8px 30px rgba(37, 99, 235, 0.15); /* Light blue glow */
     transform: translateY(-2px);
   }
   .dark .card-hover:hover {
-    box-shadow: 0 8px 30px rgba(255, 255, 255, 0.04);
+    box-shadow: 0 8px 30px rgba(57, 255, 20, 0.15); /* Neon green glow */
   }
 
   /* ── Buttons ── */
