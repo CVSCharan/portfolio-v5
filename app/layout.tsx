@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, DM_Serif_Display, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { ModeToggle } from "@/components/ModeToggle";
@@ -7,29 +7,62 @@ import { MobileNav } from "@/components/MobileNav";
 import { PageTracker } from "@/components/PageTracker";
 import Link from "next/link";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+  display: "swap",
+});
+
+const dmSerif = DM_Serif_Display({
+  variable: "--font-dm-serif",
+  subsets: ["latin"],
+  weight: "400",
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "CVS CHARAN - Portfolio",
-  description: "Personal portfolio and blog of CVS CHARAN.",
+  title: {
+    default: "CVS Charan — Full-Stack Engineer",
+    template: "%s · CVS Charan",
+  },
+  description:
+    "AI-Augmented Full-Stack Developer specialising in Next.js, cloud architecture, and data-driven web applications.",
+  keywords: ["Full-Stack Developer", "Next.js", "TypeScript", "AI", "React", "Portfolio"],
+  authors: [{ name: "CVS Charan" }],
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    siteName: "CVS Charan",
+    title: "CVS Charan — Full-Stack Engineer",
+    description:
+      "AI-Augmented Full-Stack Developer specialising in Next.js, cloud architecture, and data-driven web applications.",
+  },
 };
+
+const NAV_LINKS = [
+  { href: "/projects",   label: "Projects"   },
+  { href: "/skills",     label: "Skills"     },
+  { href: "/experience", label: "Experience" },
+  { href: "/resume",     label: "Resume"     },
+  { href: "/blog",       label: "Blog"       },
+  { href: "/about",      label: "About"      },
+  { href: "/contact",    label: "Contact"    },
+];
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      className={`${inter.variable} ${dmSerif.variable} ${geistMono.variable}`}
       suppressHydrationWarning
     >
-      <body className="min-h-[100dvh] flex flex-col bg-background text-foreground transition-colors duration-300 relative">
+      <body className="min-h-[100dvh] flex flex-col bg-background text-foreground antialiased">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -37,42 +70,53 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           disableTransitionOnChange
         >
           <PageTracker />
-          {/* Subtle dot pattern background */}
-          <div className="pointer-events-none fixed inset-0 z-[-1] h-full w-full bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] dark:bg-[radial-gradient(#1f2937_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-50"></div>
-          
-          {/* Larger Dynamic Island Navbar */}
-          <header className="fixed top-6 inset-x-0 z-50 flex justify-center pointer-events-none px-4">
-            <nav className="relative pointer-events-auto flex items-center justify-between md:justify-start gap-4 md:gap-8 px-6 py-2 h-16 rounded-full border bg-background/80 backdrop-blur-md shadow-sm w-full md:w-auto max-w-4xl">
-              <Link href="/" className="font-bold text-xl text-primary tracking-tight pr-4 md:border-r border-border shrink-0">
-                CVS
-              </Link>
-              
-              {/* Desktop Links */}
-              <div className="hidden md:flex items-center gap-6 text-[15px] font-medium text-muted-foreground whitespace-nowrap">
-                <Link href="/projects" className="hover:text-primary transition-colors">Projects</Link>
-                <Link href="/skills" className="hover:text-primary transition-colors">Skills</Link>
-                <Link href="/experience" className="hover:text-primary transition-colors">Experience</Link>
-                <Link href="/blog" className="hover:text-primary transition-colors">Blog</Link>
-                <Link href="/about" className="hover:text-primary transition-colors">About</Link>
-                <Link href="/contact" className="hover:text-primary transition-colors">Contact</Link>
-              </div>
 
-              {/* Theme Toggle & Mobile Nav */}
-              <div className="flex items-center gap-2 shrink-0 ml-auto md:ml-0">
+          {/* ── Top Navigation Bar ── */}
+          <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
+            <div className="max-w-6xl mx-auto px-6 md:px-10 flex h-14 items-center justify-between">
+              {/* Wordmark */}
+              <Link
+                href="/"
+                className="font-serif text-lg font-normal tracking-tight text-foreground hover:text-primary transition-colors"
+                style={{ fontFamily: "var(--font-dm-serif)" }}
+              >
+                CVS Charan
+              </Link>
+
+              {/* Desktop Nav */}
+              <nav className="hidden md:flex items-center gap-7" aria-label="Main navigation">
+                {NAV_LINKS.map(({ href, label }) => (
+                  <Link
+                    key={href}
+                    href={href}
+                    className="nav-link text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {label}
+                  </Link>
+                ))}
+              </nav>
+
+              {/* Controls */}
+              <div className="flex items-center gap-2">
                 <ModeToggle />
                 <MobileNav />
               </div>
-            </nav>
+            </div>
           </header>
 
-          <main className="flex-1 w-full max-w-7xl mx-auto px-4 md:px-8 pt-32 pb-12">
+          {/* ── Page Content ── */}
+          <main className="flex-1 w-full max-w-6xl mx-auto px-6 md:px-10 py-16 md:py-24">
             {children}
           </main>
-          
-          <footer className="border-t py-6 md:py-0 bg-background mt-auto">
-            <div className="max-w-7xl mx-auto px-6 flex flex-col items-center justify-between gap-4 md:h-16 md:flex-row text-sm text-muted-foreground">
-              <p>Built with Next.js 16, Tailwind v4 & Prisma.</p>
-              <p>&copy; {new Date().getFullYear()} CVS CHARAN. All rights reserved.</p>
+
+          {/* ── Footer ── */}
+          <footer className="border-t border-border bg-background">
+            <div className="max-w-6xl mx-auto px-6 md:px-10 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
+              <p className="font-medium text-foreground" style={{ fontFamily: "var(--font-dm-serif)" }}>
+                CVS Charan
+              </p>
+              <p>Built with Next.js, Tailwind v4 &amp; Prisma.</p>
+              <p>© {new Date().getFullYear()} All rights reserved.</p>
             </div>
           </footer>
         </ThemeProvider>

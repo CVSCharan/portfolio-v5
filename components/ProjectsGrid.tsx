@@ -1,5 +1,6 @@
-import React from "react";
-import { Button } from "@/components/ui/button";
+"use client";
+
+import { ExternalLink, GitFork } from "lucide-react";
 
 interface Project {
   id: number;
@@ -14,57 +15,86 @@ interface Project {
 }
 
 export default function ProjectsGrid({ projects }: { projects: Project[] }) {
+  if (projects.length === 0) {
+    return (
+      <div className="py-24 text-center text-muted-foreground">
+        <p>No projects yet.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {projects.map((proj) => (
+      {projects.map((proj, i) => (
         <article
           key={proj.id}
-          className="bg-card text-card-foreground rounded-lg border shadow-sm hover:shadow-md transition-shadow overflow-hidden flex flex-col"
+          className="card-classic flex flex-col overflow-hidden"
+          style={{ animationDelay: `${i * 60}ms` }}
         >
+          {/* Image / Placeholder */}
           {proj.imageUrl ? (
             <img
               src={proj.imageUrl}
               alt={proj.title}
-              className="h-48 w-full object-cover"
+              className="h-44 w-full object-cover"
               loading="lazy"
             />
           ) : (
-            <div className="h-48 w-full bg-muted flex items-center justify-center text-muted-foreground text-sm font-medium">
-              No image
+            <div className="h-44 w-full bg-muted flex items-center justify-center">
+              <span className="text-label text-muted-foreground">{proj.title.slice(0, 2).toUpperCase()}</span>
             </div>
           )}
-          <div className="p-6 flex-1 flex flex-col">
-            <h3 className="text-xl font-bold mb-2">{proj.title}</h3>
-            <p className="text-muted-foreground text-sm mb-4 flex-1">{proj.description}</p>
-            <div className="flex flex-wrap gap-2 mb-6">
-              {proj.techStack.map((tech) => (
-                <span
-                  key={tech}
-                  className="inline-flex items-center rounded-md bg-secondary px-2 py-1 text-xs font-semibold text-secondary-foreground"
-                >
-                  {tech}
-                </span>
-              ))}
+
+          {/* Body */}
+          <div className="flex flex-col flex-1 p-6 gap-4">
+            <div className="space-y-1.5">
+              <h3 className="font-semibold text-base text-foreground leading-snug">{proj.title}</h3>
+              {proj.description && (
+                <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2">
+                  {proj.description}
+                </p>
+              )}
             </div>
-            <div className="flex gap-3">
+
+            {/* Tech badges */}
+            {proj.techStack.length > 0 && (
+              <div className="flex flex-wrap gap-1.5 mt-auto">
+                {proj.techStack.slice(0, 5).map((tech) => (
+                  <span key={tech} className="badge text-[11px] px-2 py-0.5">
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            )}
+
+            {/* Links */}
+            <div className="flex gap-2 pt-2 border-t border-border">
               {proj.githubUrl && (
-                <Button className="flex-1" variant="outline" asChild>
-                  <a href={proj.githubUrl} target="_blank" rel="noopener noreferrer">
-                    GitHub
-                  </a>
-                </Button>
+                <a
+                  href={proj.githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-outline text-xs py-1.5 px-3 gap-1.5 flex-1 justify-center"
+                >
+                  <GitFork className="w-3.5 h-3.5" />
+                  Code
+                </a>
               )}
               {proj.demoUrl && (
-                <Button className="flex-1" asChild>
-                  <a href={proj.demoUrl} target="_blank" rel="noopener noreferrer">
-                    Demo
-                  </a>
-                </Button>
+                <a
+                  href={proj.demoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-primary text-xs py-1.5 px-3 gap-1.5 flex-1 justify-center"
+                >
+                  <ExternalLink className="w-3.5 h-3.5" />
+                  Live
+                </a>
               )}
             </div>
           </div>
         </article>
       ))}
     </div>
-  )
+  );
 }

@@ -1,12 +1,10 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button";
-import { motion, Variants } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, Code2, Database, LayoutTemplate, Server } from "lucide-react";
-import Hero3D from "@/components/Hero3D";
+import { ArrowRight, MapPin, ExternalLink } from "lucide-react";
+import { motion } from "framer-motion";
 
-interface PrismaUser {
+interface UserRecord {
   id: number;
   name: string | null;
   email: string;
@@ -15,106 +13,192 @@ interface PrismaUser {
   createdAt: string;
 }
 
-type User = PrismaUser;
+const TECH_STACK = [
+  "Next.js", "React", "TypeScript", "Node.js",
+  "PostgreSQL", "Prisma", "AWS", "Docker",
+  "LangChain", "OpenAI", "Tailwind CSS", "GraphQL",
+];
 
-interface HomeClientUser {
-  id: number;
-  name: string | null;
-  email: string;
-  bio: string | null;
-  avatar: string | null;
-  createdAt: Date | null;
-}
+const STATS = [
+  { label: "Years Experience", value: "4+" },
+  { label: "Projects Shipped", value: "30+" },
+  { label: "Tech Stack", value: "12+" },
+  { label: "Open Source", value: "5+" },
+];
 
-export function HomeClient({ user }: { user: PrismaUser & HomeClientUser | null }) {
-  const containerVariants: Variants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  }
-
-  const itemVariants: Variants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { type: "spring", stiffness: 100 }
-    }
-  }
+export function HomeClient({ user }: { user: UserRecord | null }) {
+  const name = user?.name ?? "CVS Charan";
+  const bio =
+    user?.bio ??
+    "AI-Augmented Full-Stack Developer with a strong foundation in Data Analytics. I specialise in building intelligent and scalable web applications that leverage LLMs, prompt engineering, and AI automation.";
 
   return (
-    <div className="flex flex-col gap-24 py-12 md:py-24">
-      {/* Hero Section */}
-      <section className="grid lg:grid-cols-2 gap-12 items-center min-h-[60vh]">
-        <motion.div 
-          className="space-y-8"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          <motion.div variants={itemVariants} className="inline-flex items-center rounded-full border px-3 py-1 text-sm font-semibold text-primary bg-primary/10">
-            Available for new opportunities
+    <div className="flex flex-col gap-24">
+      {/* ── Hero ── */}
+      <section className="grid lg:grid-cols-[1fr_auto] gap-16 items-start pt-4">
+        <div className="space-y-8 max-w-2xl">
+          {/* Label */}
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+          >
+            <span className="text-label text-primary">
+              Available · Open to Opportunities
+            </span>
           </motion.div>
-          <motion.h1 variants={itemVariants} className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.1]">
-            Build faster. <br/>
-            <span className="text-primary">Scale smarter.</span>
+
+          {/* Heading */}
+          <motion.h1
+            className="text-display text-foreground"
+            style={{ fontFamily: "var(--font-dm-serif)" }}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.08 }}
+          >
+            {name}
           </motion.h1>
-          <motion.p variants={itemVariants} className="text-lg sm:text-xl text-muted-foreground max-w-lg leading-relaxed">
-            {user?.bio || "Hi, I'm CVS CHARAN. I engineer robust, scalable web architectures and beautiful digital experiences using modern cloud technologies."}
+
+          {/* Role line */}
+          <motion.p
+            className="text-xl font-light text-muted-foreground tracking-wide"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.15 }}
+          >
+            Full-Stack Engineer · AI Integration · Cloud Architecture
           </motion.p>
-          <motion.div variants={itemVariants} className="flex flex-wrap items-center gap-4">
-            <Button size="lg" asChild className="group">
-              <Link href="/projects">
-                View My Work
-                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </Link>
-            </Button>
-            <Button size="lg" variant="outline" asChild>
-              <Link href="/contact">Get In Touch</Link>
-            </Button>
+
+          {/* Bio */}
+          <motion.p
+            className="text-base leading-relaxed text-muted-foreground max-w-xl"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.22 }}
+          >
+            {bio}
+          </motion.p>
+
+          {/* Location */}
+          <motion.div
+            className="flex items-center gap-2 text-sm text-muted-foreground"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4, delay: 0.28 }}
+          >
+            <MapPin className="w-3.5 h-3.5" />
+            <span>India — Available for remote worldwide</span>
           </motion.div>
-        </motion.div>
 
-        {/* Interactive 3D Hero Graphic */}
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="relative mx-auto w-full max-w-lg lg:max-w-none"
+          {/* CTAs */}
+          <motion.div
+            className="flex flex-wrap gap-3 pt-2"
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.32 }}
+          >
+            <Link href="/projects" className="btn-primary group">
+              View Projects
+              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+            </Link>
+            <Link href="/resume" className="btn-outline">
+              Resume
+            </Link>
+            <Link href="/contact" className="btn-outline">
+              Get in Touch
+            </Link>
+          </motion.div>
+        </div>
+
+        {/* ── Right: Stats card ── */}
+        <motion.div
+          className="hidden lg:grid grid-cols-2 gap-px bg-border rounded-xl overflow-hidden border border-border w-72 shrink-0 mt-8"
+          initial={{ opacity: 0, x: 12 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
         >
-          <Hero3D />
+          {STATS.map(({ label, value }) => (
+            <div key={label} className="bg-background p-6 flex flex-col gap-1">
+              <span
+                className="text-2xl font-semibold text-foreground"
+                style={{ fontFamily: "var(--font-dm-serif)" }}
+              >
+                {value}
+              </span>
+              <span className="text-xs text-muted-foreground leading-tight">{label}</span>
+            </div>
+          ))}
         </motion.div>
       </section>
 
-      {/* Skills Marquee Replacement (Grid) */}
-      <section className="space-y-8 pt-12 border-t">
-        <div className="text-center space-y-4">
-          <h2 className="text-3xl font-bold tracking-tight">Technical Arsenal</h2>
-          <p className="text-muted-foreground">The tools I use to bring ideas to life.</p>
+      {/* ── Divider ── */}
+      <div className="divider" />
+
+      {/* ── Tech Stack ── */}
+      <motion.section
+        className="space-y-6"
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.4 }}
+      >
+        <div className="space-y-1">
+          <p className="text-label text-muted-foreground">Core Technologies</p>
+          <h2
+            className="text-headline text-foreground"
+            style={{ fontFamily: "var(--font-dm-serif)" }}
+          >
+            What I Work With
+          </h2>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="flex items-center justify-center p-6 bg-card border rounded-lg hover:border-primary/50 transition-colors gap-3">
-            <LayoutTemplate className="w-6 h-6 text-primary" />
-            <span className="font-semibold">Frontend</span>
-          </div>
-          <div className="flex items-center justify-center p-6 bg-card border rounded-lg hover:border-primary/50 transition-colors gap-3">
-            <Server className="w-6 h-6 text-primary" />
-            <span className="font-semibold">Backend</span>
-          </div>
-          <div className="flex items-center justify-center p-6 bg-card border rounded-lg hover:border-primary/50 transition-colors gap-3">
-            <Database className="w-6 h-6 text-primary" />
-            <span className="font-semibold">Database</span>
-          </div>
-          <div className="flex items-center justify-center p-6 bg-card border rounded-lg hover:border-primary/50 transition-colors gap-3">
-            <Code2 className="w-6 h-6 text-primary" />
-            <span className="font-semibold">Architecture</span>
-          </div>
+        <div className="flex flex-wrap gap-2">
+          {TECH_STACK.map((tech) => (
+            <span key={tech} className="badge">
+              {tech}
+            </span>
+          ))}
         </div>
-      </section>
+      </motion.section>
+
+      {/* ── Divider ── */}
+      <div className="divider" />
+
+      {/* ── Quick Links ── */}
+      <motion.section
+        className="grid sm:grid-cols-3 gap-4"
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.5 }}
+      >
+        {[
+          {
+            href: "/projects",
+            title: "Projects",
+            desc: "Explore full-stack apps, AI tools, and open-source work.",
+          },
+          {
+            href: "/experience",
+            title: "Experience",
+            desc: "Professional history, roles, and companies I've worked with.",
+          },
+          {
+            href: "/resume",
+            title: "Resume",
+            desc: "Interactive timeline and downloadable CV.",
+          },
+        ].map(({ href, title, desc }) => (
+          <Link
+            key={href}
+            href={href}
+            className="card-classic p-6 flex flex-col gap-3 group"
+          >
+            <div className="flex items-center justify-between">
+              <h3 className="font-semibold text-foreground">{title}</h3>
+              <ExternalLink className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
+            </div>
+            <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
+          </Link>
+        ))}
+      </motion.section>
     </div>
   );
 }

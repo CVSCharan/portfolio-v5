@@ -1,57 +1,65 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import Link from "next/link"
-import { Menu, X } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import * as React from "react";
+import Link from "next/link";
+import { Menu, X } from "lucide-react";
+
+const NAV_LINKS = [
+  { href: "/projects",   label: "Projects"   },
+  { href: "/skills",     label: "Skills"     },
+  { href: "/experience", label: "Experience" },
+  { href: "/resume",     label: "Resume"     },
+  { href: "/blog",       label: "Blog"       },
+  { href: "/about",      label: "About"      },
+  { href: "/contact",    label: "Contact"    },
+];
 
 export function MobileNav() {
-  const [isOpen, setIsOpen] = React.useState(false)
+  const [isOpen, setIsOpen] = React.useState(false);
 
-  // Close menu when route changes
   React.useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 768) setIsOpen(false)
+    const handleResize = () => { if (window.innerWidth >= 768) setIsOpen(false); };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  React.useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
     }
-    window.addEventListener("resize", handleResize)
-    return () => window.removeEventListener("resize", handleResize)
-  }, [])
+    return () => { document.body.style.overflow = ""; };
+  }, [isOpen]);
 
   return (
     <>
-      <Button 
-        variant="ghost" 
-        size="icon" 
-        className="md:hidden rounded-full h-10 w-10 shrink-0" 
+      <button
+        className="md:hidden flex items-center justify-center h-8 w-8 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
         onClick={() => setIsOpen(!isOpen)}
+        aria-label={isOpen ? "Close menu" : "Open menu"}
+        aria-expanded={isOpen}
       >
-        {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        <span className="sr-only">Toggle Menu</span>
-      </Button>
+        {isOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+      </button>
 
-      {/* Mobile Menu Overlay */}
+      {/* Fullscreen overlay */}
       {isOpen && (
-        <div className="absolute top-[calc(100%+1rem)] left-0 w-full bg-background border rounded-2xl p-6 shadow-xl flex flex-col gap-4 animate-in slide-in-from-top-2 md:hidden">
-          <Link href="/projects" onClick={() => setIsOpen(false)} className="text-lg font-medium p-2 hover:bg-muted rounded-md transition-colors">
-            Projects
-          </Link>
-          <Link href="/skills" onClick={() => setIsOpen(false)} className="text-lg font-medium p-2 hover:bg-muted rounded-md transition-colors">
-            Skills
-          </Link>
-          <Link href="/experience" onClick={() => setIsOpen(false)} className="text-lg font-medium p-2 hover:bg-muted rounded-md transition-colors">
-            Experience
-          </Link>
-          <Link href="/blog" onClick={() => setIsOpen(false)} className="text-lg font-medium p-2 hover:bg-muted rounded-md transition-colors">
-            Blog
-          </Link>
-          <Link href="/about" onClick={() => setIsOpen(false)} className="text-lg font-medium p-2 hover:bg-muted rounded-md transition-colors">
-            About
-          </Link>
-          <Link href="/contact" onClick={() => setIsOpen(false)} className="text-lg font-medium p-2 hover:bg-muted rounded-md transition-colors">
-            Contact
-          </Link>
+        <div className="fixed inset-0 top-14 z-40 bg-background border-t border-border md:hidden">
+          <nav className="flex flex-col px-6 py-8 gap-1" aria-label="Mobile navigation">
+            {NAV_LINKS.map(({ href, label }) => (
+              <Link
+                key={href}
+                href={href}
+                onClick={() => setIsOpen(false)}
+                className="py-3 px-2 text-lg font-medium text-foreground border-b border-border last:border-0 hover:text-primary transition-colors"
+              >
+                {label}
+              </Link>
+            ))}
+          </nav>
         </div>
       )}
     </>
-  )
+  );
 }
