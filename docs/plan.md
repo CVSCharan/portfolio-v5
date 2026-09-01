@@ -40,13 +40,13 @@ This document outlines the milestones and completed tasks for Portfolio v5.
 - [x] Implemented search, proficiency filters, and cross-filtering on the Radar Chart.
 - [x] Resolved `react-icons` build errors by migrating to a dynamic SimpleIcons CDN + Lucide fallback strategy.
 
-## Upcoming Milestones (TODO)
-
 ### Phase 7: Admin Dashboard
-- [ ] Refactor the Admin Dashboard UI to match the new Sarvam-inspired design system.
-- [ ] Fix responsive overflow issues on Admin tables.
-- [ ] Build UI for viewing the `PageView` analytics in the Admin panel.
-- [ ] Ensure all CRUD operations (Create/Update/Delete) for Projects, Experience, and Skills are fully functional and secure.
+- [x] Refactor the Admin Dashboard UI to match the new Sarvam-inspired design system.
+- [x] Fix responsive overflow issues on Admin tables.
+- [x] Build UI for viewing the `PageView` analytics in the Admin panel.
+- [x] Ensure all CRUD operations (Create/Update/Delete) for Projects, Experience, and Skills are fully functional and secure.
+
+## Upcoming Milestones (TODO)
 
 ### Phase 8: Final Polish
 - [ ] Comprehensive ESLint pass and TypeScript strict checks.

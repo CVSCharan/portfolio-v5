@@ -1,13 +1,23 @@
 "use server";
 
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+
+
 import { db } from "@/src/prisma/db";
 import { revalidatePath } from "next/cache";
 
 export async function getEducation() {
+  const session = await getServerSession(authOptions);
+  if (!session) throw new Error("Unauthorized");
+
   return await db.orm.public.Education.orderBy((e) => e.order.asc()).all();
 }
 
 export async function addEducation() {
+  const session = await getServerSession(authOptions);
+  if (!session) throw new Error("Unauthorized");
+
   const result = await db.orm.public.Education.create({
     degree: "New Degree",
     institution: "Institution Name",
@@ -21,6 +31,9 @@ export async function addEducation() {
 }
 
 export async function updateEducation(id: number, data: any) {
+  const session = await getServerSession(authOptions);
+  if (!session) throw new Error("Unauthorized");
+
   let coursesArray = data.courses;
   if (typeof data.courses === "string") {
     coursesArray = data.courses
@@ -40,6 +53,9 @@ export async function updateEducation(id: number, data: any) {
 }
 
 export async function deleteEducation(id: number) {
+  const session = await getServerSession(authOptions);
+  if (!session) throw new Error("Unauthorized");
+
   await db.orm.public.Education.where({ id }).delete();
   revalidatePath("/admin/education");
 }
@@ -47,6 +63,9 @@ export async function deleteEducation(id: number) {
 export async function reorderEducation(
   updates: { id: number; order: number }[],
 ) {
+  const session = await getServerSession(authOptions);
+  if (!session) throw new Error("Unauthorized");
+
   for (const update of updates) {
     await db.orm.public.Education.where({ id: update.id }).update({
       order: update.order,

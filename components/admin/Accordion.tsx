@@ -38,23 +38,23 @@ export function Accordion({
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-      <div className="flex justify-between items-center p-6 border-b border-gray-100">
-        <h2 className="text-xl font-bold text-gray-900">{title}</h2>
+    <div className="card overflow-hidden">
+      <div className="flex justify-between items-center p-6 border-b border-border">
+        <h2 className="text-xl font-bold text-foreground">{title}</h2>
         {onAdd && (
           <button 
             onClick={onAdd}
             type="button"
-            className="bg-black text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors"
+            className="btn btn-primary btn-sm"
           >
             {addButtonText}
           </button>
         )}
       </div>
 
-      <div className="p-6">
+      <div className="p-6 overflow-x-auto">
         {items.length === 0 ? (
-          <div className="text-center py-8 text-gray-500 bg-gray-50 rounded-xl border border-dashed border-gray-200">
+          <div className="text-center py-8 text-muted-foreground bg-muted rounded-xl border border-dashed border-border">
             No items yet. Click "{addButtonText}" to add one.
           </div>
         ) : onReorder ? (
@@ -107,20 +107,20 @@ function AccordionItemCard({
   draggable?: boolean;
 }) {
   return (
-    <div className="border border-gray-200 rounded-xl bg-white overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+    <div className="border border-border rounded-xl bg-background overflow-hidden shadow-sm transition-shadow hover:shadow-md">
       <div 
         className="flex items-center gap-4 p-4 cursor-pointer select-none"
         onClick={onToggle}
       >
         {draggable && (
-          <div className="cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600" onClick={e => e.stopPropagation()}>
+          <div className="cursor-grab active:cursor-grabbing text-muted-foreground hover:text-foreground" onClick={e => e.stopPropagation()}>
             <GripVertical size={20} />
           </div>
         )}
         
         <div className="flex-1">
-          <h3 className="font-semibold text-gray-900">{item.title}</h3>
-          {item.subtitle && <p className="text-sm text-gray-500">{item.subtitle}</p>}
+          <h3 className="font-semibold text-foreground">{item.title}</h3>
+          {item.subtitle && <p className="text-sm text-muted-foreground">{item.subtitle}</p>}
         </div>
 
         <div className="flex items-center gap-3">
@@ -133,7 +133,7 @@ function AccordionItemCard({
                   onDelete();
                 }
               }}
-              className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+              className="p-2 text-muted-foreground hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-colors"
             >
               <Trash2 size={18} />
             </button>
@@ -141,7 +141,7 @@ function AccordionItemCard({
           <motion.div
             animate={{ rotate: isExpanded ? 180 : 0 }}
             transition={{ duration: 0.2 }}
-            className="text-gray-400"
+            className="text-muted-foreground"
           >
             <ChevronDown size={20} />
           </motion.div>
@@ -156,8 +156,8 @@ function AccordionItemCard({
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.2 }}
           >
-            <div className="p-4 pt-0 border-t border-gray-100 bg-gray-50">
-              <div className="pt-4">
+            <div className="p-4 pt-0 border-t border-border bg-muted/50">
+              <div className="pt-4 overflow-x-auto">
                 {content}
               </div>
             </div>

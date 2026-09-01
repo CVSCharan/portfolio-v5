@@ -1,5 +1,9 @@
 "use server";
 
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+
+
 import { db } from "@/src/prisma/db";
 import { revalidatePath } from "next/cache";
 
@@ -16,6 +20,9 @@ const DEFAULT_SECTIONS = [
 ];
 
 export async function getResumeSections() {
+  const session = await getServerSession(authOptions);
+  if (!session) throw new Error("Unauthorized");
+
   let sections = await db.orm.public.ResumeSection.orderBy((s) => s.order.asc()).all();
 
   // Seed if empty
@@ -35,6 +42,9 @@ export async function getResumeSections() {
 }
 
 export async function updateSectionOrder(updates: { id: number; order: number; visible: boolean }[]) {
+  const session = await getServerSession(authOptions);
+  if (!session) throw new Error("Unauthorized");
+
   for (const update of updates) {
     await db.orm.public.ResumeSection.where({ id: update.id }).update({
       order: update.order,

@@ -1,13 +1,23 @@
 "use server";
 
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+
+
 import { db } from "@/src/prisma/db";
 import { revalidatePath } from "next/cache";
 
 export async function getProjects() {
+  const session = await getServerSession(authOptions);
+  if (!session) throw new Error("Unauthorized");
+
   return await db.orm.public.Project.orderBy((p) => p.order.asc()).all();
 }
 
 export async function addProject() {
+  const session = await getServerSession(authOptions);
+  if (!session) throw new Error("Unauthorized");
+
   const result = await db.orm.public.Project.create({
     title: 'New Project',
     slug: 'new-project-' + Date.now(),
@@ -24,6 +34,9 @@ export async function addProject() {
 }
 
 export async function updateProject(id: number, data: any) {
+  const session = await getServerSession(authOptions);
+  if (!session) throw new Error("Unauthorized");
+
   let techStackArray = data.techStack;
   if (typeof data.techStack === 'string') {
     techStackArray = data.techStack.split(',').map((s: string) => s.trim()).filter(Boolean);
@@ -48,11 +61,17 @@ export async function updateProject(id: number, data: any) {
 }
 
 export async function deleteProject(id: number) {
+  const session = await getServerSession(authOptions);
+  if (!session) throw new Error("Unauthorized");
+
   await db.orm.public.Project.where({ id }).delete();
   revalidatePath("/admin/projects");
 }
 
 export async function reorderProjects(updates: { id: number; order: number }[]) {
+  const session = await getServerSession(authOptions);
+  if (!session) throw new Error("Unauthorized");
+
   for (const update of updates) {
     await db.orm.public.Project.where({ id: update.id }).update({ order: update.order });
   }
