@@ -8,7 +8,7 @@ interface Skill {
   id: number;
   name: string;
   level: number;
-  category: string;
+  categories: readonly string[];
 }
 interface UserRecord {
   id: number;
@@ -40,8 +40,10 @@ export function AboutClient({
     "AI-Augmented Full-Stack Developer with a strong foundation in Data Analytics. I specialise in building intelligent and scalable web applications that leverage LLMs, prompt engineering, and AI automation. Experienced in integrating OpenAI APIs, LangChain/N8N, and Pinecone into dynamic real-world solutions.";
 
   const grouped = skills.reduce<Record<string, Skill[]>>((acc, s) => {
-    const cat = s.category || "Other";
-    (acc[cat] = acc[cat] || []).push(s);
+    const cats = s.categories || ["Other"];
+    cats.forEach(cat => {
+      (acc[cat] = acc[cat] || []).push(s);
+    });
     return acc;
   }, {});
 

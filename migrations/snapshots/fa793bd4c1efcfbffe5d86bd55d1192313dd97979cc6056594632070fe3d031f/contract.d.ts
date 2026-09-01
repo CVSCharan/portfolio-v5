@@ -33,7 +33,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'7f9468d34b5ec8cf4dfda20f44d5c7e142443993ca5753a2942c9d56a9d51a0b'>;
+  StorageHashBase<'fa793bd4c1efcfbffe5d86bd55d1192313dd97979cc6056594632070fe3d031f'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
@@ -329,6 +329,7 @@ export type FieldOutputTypes = {
       readonly id: CodecTypes['pg/int4@1']['output'];
       readonly name: CodecTypes['pg/text@1']['output'];
       readonly level: CodecTypes['pg/int4@1']['output'];
+      readonly category: CodecTypes['pg/text@1']['output'];
       readonly categories: ReadonlyArray<CodecTypes['pg/text@1']['output']>;
     };
     readonly User: {
@@ -443,6 +444,7 @@ export type FieldInputTypes = {
       readonly id: CodecTypes['pg/int4@1']['input'];
       readonly name: CodecTypes['pg/text@1']['input'];
       readonly level: CodecTypes['pg/int4@1']['input'];
+      readonly category: CodecTypes['pg/text@1']['input'];
       readonly categories: ReadonlyArray<CodecTypes['pg/text@1']['input']>;
     };
     readonly User: {
@@ -555,6 +557,7 @@ export type StorageColumnTypes = {
     };
     readonly skill: {
       readonly categories: ReadonlyArray<CodecTypes['pg/text@1']['output']>;
+      readonly category: CodecTypes['pg/text@1']['output'];
       readonly id: CodecTypes['pg/int4@1']['output'];
       readonly level: CodecTypes['pg/int4@1']['output'];
       readonly name: CodecTypes['pg/text@1']['output'];
@@ -669,6 +672,7 @@ export type StorageColumnInputTypes = {
     };
     readonly skill: {
       readonly categories: ReadonlyArray<CodecTypes['pg/text@1']['input']>;
+      readonly category: CodecTypes['pg/text@1']['input'];
       readonly id: CodecTypes['pg/int4@1']['input'];
       readonly level: CodecTypes['pg/int4@1']['input'];
       readonly name: CodecTypes['pg/text@1']['input'];
@@ -1268,6 +1272,11 @@ type ContractBase = Omit<
                 readonly level: {
                   readonly nativeType: 'int4';
                   readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                };
+                readonly category: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
                   readonly nullable: false;
                 };
                 readonly categories: {
@@ -1927,6 +1936,10 @@ type ContractBase = Omit<
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
               };
+              readonly category: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
               readonly categories: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
@@ -1941,6 +1954,7 @@ type ContractBase = Omit<
                 readonly id: { readonly column: 'id' };
                 readonly name: { readonly column: 'name' };
                 readonly level: { readonly column: 'level' };
+                readonly category: { readonly column: 'category' };
                 readonly categories: { readonly column: 'categories' };
               };
             };

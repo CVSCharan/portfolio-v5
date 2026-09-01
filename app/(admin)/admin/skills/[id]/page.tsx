@@ -17,7 +17,7 @@ export default async function AdminSkillForm({ params }: { params: { id: string 
     const data = {
       name: formData.get("name") as string,
       level: Number(formData.get("level")),
-      category: formData.get("category") as string,
+      categories: (formData.get("categories") as string).split(",").map(s => s.trim()),
     };
 
     if (isNew) {
@@ -43,8 +43,8 @@ export default async function AdminSkillForm({ params }: { params: { id: string 
           <input name="level" type="number" min="0" max="100" defaultValue={skill?.level || 50} required className="w-full border rounded p-2" />
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1">Category</label>
-          <input name="category" defaultValue={skill?.category || ""} required className="w-full border rounded p-2" />
+          <label className="block text-sm font-medium mb-1">Categories (comma separated)</label>
+          <input name="categories" defaultValue={skill?.categories?.join(", ") || ""} required className="w-full border rounded p-2" />
         </div>
         
         <div className="pt-4 flex gap-4">

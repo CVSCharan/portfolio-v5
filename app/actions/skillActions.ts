@@ -4,13 +4,13 @@ import { db } from "@/src/prisma/db";
 import { revalidatePath } from "next/cache";
 
 export async function getSkills() {
-  return await db.orm.public.Skill.orderBy((s) => s.category.asc()).all();
+  return await db.orm.public.Skill.orderBy((s) => s.name.asc()).all();
 }
 
 export async function addSkill(data: {
   name: string;
   level: number;
-  category: string;
+  categories: string[];
 }) {
   const result = await db.orm.public.Skill.create(data);
   revalidatePath("/admin/skills");
@@ -19,7 +19,7 @@ export async function addSkill(data: {
 
 export async function updateSkill(
   id: number,
-  data: { name: string; level: number; category: string },
+  data: { name: string; level: number; categories: string[] },
 ) {
   await db.orm.public.Skill.where({ id }).update(data);
   revalidatePath("/admin/skills");

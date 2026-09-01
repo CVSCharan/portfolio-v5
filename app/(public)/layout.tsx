@@ -12,16 +12,19 @@ export default function PublicLayout({
     <>
       <PageTracker />
 
-      {/* ── Dynamic Island Navbar ── */}
-      <DynamicIslandNav />
+      {/* ── Main Layout Wrapper (The Curtain) ── */}
+      <div className="relative z-10 bg-background flex flex-col min-h-screen">
+        {/* ── Dynamic Island Navbar ── */}
+        <DynamicIslandNav />
 
-      {/* ── Global AI Chatbot ── */}
-      <AIChatbot />
+        {/* ── Global AI Chatbot ── */}
+        <AIChatbot />
 
-      {/* ── Page Content ── */}
-      <main className="flex-1 w-full max-w-6xl mx-auto px-5 md:px-10 pt-28 pb-20">
-        {children}
-      </main>
+        {/* ── Page Content ── */}
+        <main className="flex-1 w-full max-w-6xl mx-auto px-5 md:px-10 pt-28 pb-20">
+          {children}
+        </main>
+      </div>
 
       {/* ── Footer ── */}
       <Footer />

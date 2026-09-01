@@ -60,6 +60,45 @@
   "domain": {
     "namespaces": {
       "public": {
+        "enum": {
+          "SkillCategory": {
+            "codecId": "pg/text@1",
+            "members": [
+              {
+                "name": "Frontend",
+                "value": "Frontend"
+              },
+              {
+                "name": "Backend",
+                "value": "Backend"
+              },
+              {
+                "name": "Mobile",
+                "value": "Mobile"
+              },
+              {
+                "name": "Database",
+                "value": "Database"
+              },
+              {
+                "name": "CloudDevOps",
+                "value": "CloudDevOps"
+              },
+              {
+                "name": "DataAnalyticsML",
+                "value": "DataAnalyticsML"
+              },
+              {
+                "name": "Languages",
+                "value": "Languages"
+              },
+              {
+                "name": "Tools",
+                "value": "Tools"
+              }
+            ]
+          }
+        },
         "models": {
           "Admin": {
             "fields": {
@@ -844,7 +883,8 @@
           },
           "Skill": {
             "fields": {
-              "category": {
+              "categories": {
+                "many": true,
                 "nullable": false,
                 "type": {
                   "codecId": "pg/text@1",
@@ -876,8 +916,8 @@
             "relations": {},
             "storage": {
               "fields": {
-                "category": {
-                  "column": "category"
+                "categories": {
+                  "column": "categories"
                 },
                 "id": {
                   "column": "id"
@@ -1733,9 +1773,21 @@
               "uniques": []
             },
             "skill": {
+              "checks": [
+                {
+                  "expression": "array_position(\"categories\", NULL) IS NULL",
+                  "name": "skill_categories_elem_not_null_959d4498",
+                  "prefix": "skill_categories_elem_not_null"
+                }
+              ],
               "columns": {
-                "category": {
+                "categories": {
                   "codecId": "pg/text@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": []
+                  },
+                  "many": true,
                   "nativeType": "text",
                   "nullable": false
                 },
@@ -1901,13 +1953,28 @@
               },
               "uniques": []
             }
+          },
+          "valueSet": {
+            "SkillCategory": {
+              "kind": "valueSet",
+              "values": [
+                "Frontend",
+                "Backend",
+                "Mobile",
+                "Database",
+                "CloudDevOps",
+                "DataAnalyticsML",
+                "Languages",
+                "Tools"
+              ]
+            }
           }
         },
         "id": "public",
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "a6c4633afcaae543405aadc086ef52bbcc9ea6baffdf5782461044b404aff39d"
+    "storageHash": "7f9468d34b5ec8cf4dfda20f44d5c7e142443993ca5753a2942c9d56a9d51a0b"
   },
   "capabilities": {
     "postgres": {

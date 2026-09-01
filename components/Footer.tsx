@@ -1,9 +1,30 @@
+"use client";
+
 import Link from "next/link";
 import { GitFork, Link2, Mail, Hash } from "lucide-react";
+import { useScroll, useTransform, motion } from "framer-motion";
+import { useRef, useEffect, useState } from "react";
 
 export function Footer() {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end end"]
+  });
+
+  // Start tucked underneath the main content by 300px, then slide into natural position
+  const y = useTransform(scrollYProgress, [0, 1], [-300, 0]);
+
   return (
-    <footer className="bg-background pt-20 overflow-hidden border-t border-border mt-auto">
+    <div 
+      ref={containerRef}
+      className="relative w-full -z-10"
+    >
+      <motion.footer 
+        style={{ y }}
+        className="bg-background pt-20 border-t border-border w-full flex flex-col"
+      >
       <div className="max-w-6xl mx-auto px-5 md:px-10">
         {/* Top Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-[1.5fr_1fr_1fr_1fr] gap-12 mb-20">
@@ -164,9 +185,9 @@ export function Footer() {
       </div>
 
       {/* Huge bottom text */}
-      <div className="w-full overflow-hidden pointer-events-none select-none flex justify-center">
+      <div className="w-full pointer-events-none select-none flex justify-center mt-auto">
         <h2
-          className="text-[24vw] leading-[0.7] font-bold text-muted-foreground/10 whitespace-nowrap -mb-[4vw]"
+          className="text-[24vw] leading-[0.75] font-bold text-muted-foreground/10 whitespace-nowrap"
           style={{
             fontFamily: "var(--font-bricolage)",
             letterSpacing: "-0.04em",
@@ -175,6 +196,7 @@ export function Footer() {
           charan
         </h2>
       </div>
-    </footer>
+    </motion.footer>
+    </div>
   );
 }

@@ -1,4 +1,4 @@
-import { MapPin, Mail, Globe, Github, Linkedin, Phone } from "lucide-react";
+import { MapPin, Mail, Globe, Link2, Phone } from "lucide-react";
 
 /* ─────────────── Type aliases (mirroring Prisma output shapes) ─────────────── */
 export interface ResumeUser {
@@ -29,7 +29,7 @@ export interface ResumeSkill {
   id: number;
   name: string;
   level: number;
-  category: string;
+  categories: string[];
 }
 export interface ResumeCertification {
   id: number;
@@ -116,8 +116,10 @@ export function TemplateT1({
   /* Group skills by category */
   const skillsByCat = skills.reduce<Record<string, ResumeSkill[]>>(
     (acc, s) => {
-      const cat = s.category || "Other";
-      (acc[cat] = acc[cat] || []).push(s);
+      const cats = s.categories || ["Other"];
+      cats.forEach(cat => {
+        (acc[cat] = acc[cat] || []).push(s);
+      });
       return acc;
     },
     {}
@@ -174,14 +176,14 @@ export function TemplateT1({
               <MapPin className="w-3 h-3" />
               <span>India · Remote Worldwide</span>
             </div>
-            <div className="flex items-center justify-end gap-1.5">
-              <Github className="w-3 h-3" />
+            <a href="https://github.com/CVSCharan" className="flex items-center justify-end gap-1.5 hover:text-foreground">
+              <Globe className="w-3 h-3" />
               <span>github.com/CVSCharan</span>
-            </div>
-            <div className="flex items-center justify-end gap-1.5">
-              <Linkedin className="w-3 h-3" />
+            </a>
+            <a href="https://linkedin.com/in/cvscharan" className="flex items-center justify-end gap-1.5 hover:text-foreground">
+              <Link2 className="w-3 h-3" />
               <span>linkedin.com/in/cvscharan</span>
-            </div>
+            </a>
           </div>
         </div>
       </header>
@@ -248,9 +250,9 @@ export function TemplateT1({
                       </span>
                       <div className="flex gap-2 text-[10px] text-muted-foreground">
                         {p.githubUrl && (
-                          <span className="flex items-center gap-0.5">
-                            <Github className="w-2.5 h-2.5" /> GitHub
-                          </span>
+                          <a href={p.githubUrl} className="flex items-center gap-1 text-muted-foreground hover:text-foreground">
+                            <Globe className="w-2.5 h-2.5" /> GitHub
+                          </a>
                         )}
                         {p.demoUrl && (
                           <span className="flex items-center gap-0.5">

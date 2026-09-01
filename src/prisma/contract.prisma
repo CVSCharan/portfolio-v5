@@ -41,11 +41,22 @@ model Project {
   createdAt TimestamptzString @default(now())
 }
 
+enum SkillCategory {
+  Frontend
+  Backend
+  Mobile
+  Database
+  CloudDevOps
+  DataAnalyticsML
+  Languages
+  Tools
+}
+
 model Skill {
-  id       Int   @id @default(autoincrement())
-  name     String
-  level    Int   
-  category String 
+  id         Int               @id @default(autoincrement())
+  name       String
+  level      Int   
+  categories String[]          @default([])
 }
 
 model Experience {

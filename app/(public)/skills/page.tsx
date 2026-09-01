@@ -1,5 +1,6 @@
 import { db } from "@/src/prisma/db";
-import { SkillsClient } from "@/components/SkillsClient";
+import SkillsClient from "@/components/SkillsClient";
+import { PageHeader } from "@/components/PageHeader";
 
 export const metadata = {
   title: "Skills",
@@ -8,5 +9,14 @@ export const metadata = {
 
 export default async function SkillsPage() {
   const skills = await db.orm.public.Skill.all();
-  return <SkillsClient skills={skills} />;
+  return (
+    <div>
+      <PageHeader
+        label="Capabilities"
+        title="Skills Directory"
+        description="A comprehensive list of technical skills, languages, tools, and frameworks I use."
+      />
+      <SkillsClient skills={skills} />
+    </div>
+  );
 }

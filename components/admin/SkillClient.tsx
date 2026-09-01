@@ -11,23 +11,35 @@ export default function SkillClient({ skills }: { skills: any[] }) {
 
   const [newName, setNewName] = useState("");
   const [newLevel, setNewLevel] = useState(50);
-  const [newCategory, setNewCategory] = useState("");
+  const [newCategories, setNewCategories] = useState<string[]>([]);
+
+  const CATEGORY_OPTIONS = [
+    "Frontend",
+    "Backend",
+    "Mobile",
+    "Database",
+    "CloudDevOps",
+    "DataAnalyticsML",
+    "Languages",
+    "Tools",
+  ];
 
   const router = useRouter();
 
   const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newName || !newCategory) return;
+    if (!newName || newCategories.length === 0) return;
 
     setSaving(true);
     const newSkill = await addSkill({
       name: newName,
       level: newLevel,
-      category: newCategory,
+      categories: newCategories,
     });
     setItems([...items, newSkill]);
     setNewName("");
     setNewLevel(50);
+    setNewCategories([]);
     setSaving(false);
     router.refresh();
   };
@@ -49,17 +61,24 @@ export default function SkillClient({ skills }: { skills: any[] }) {
     router.refresh();
   };
 
-  // Group skills by category
+  // Group skills by category (a skill can appear in multiple categories)
   const groupedSkills = items.reduce(
     (acc, skill) => {
-      if (!acc[skill.category]) {
-        acc[skill.category] = [];
-      }
-      acc[skill.category].push(skill);
+      const cats = skill.categories || [];
+      cats.forEach((cat: string) => {
+        if (!acc[cat]) acc[cat] = [];
+        acc[cat].push(skill);
+      });
       return acc;
     },
     {} as Record<string, any[]>,
   );
+
+  const toggleCategory = (cat: string) => {
+    setNewCategories((prev) =>
+      prev.includes(cat) ? prev.filter((c) => c !== cat) : [...prev, cat],
+    );
+  };
 
   return (
     <div className="space-y-8">
@@ -78,14 +97,21 @@ export default function SkillClient({ skills }: { skills: any[] }) {
             className="p-2 border border-zinc-200 focus:outline-none focus:border-black text-sm w-full"
             required
           />
-          <input
-            type="text"
-            placeholder="Category (e.g. Frontend)"
-            value={newCategory}
-            onChange={(e) => setNewCategory(e.target.value)}
-            className="p-2 border border-zinc-200 focus:outline-none focus:border-black text-sm w-full"
-            required
-          />
+          <div className="flex flex-col gap-2">
+            <span className="text-xs text-zinc-500">Categories</span>
+            <div className="flex flex-wrap gap-2">
+              {CATEGORY_OPTIONS.map((cat) => (
+                <label key={cat} className="flex items-center gap-1 text-xs cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={newCategories.includes(cat)}
+                    onChange={() => toggleCategory(cat)}
+                  />
+                  {cat}
+                </label>
+              ))}
+            </div>
+          </div>
           <div className="flex items-center gap-2">
             <span className="text-xs text-zinc-500 w-12">{newLevel}%</span>
             <input
