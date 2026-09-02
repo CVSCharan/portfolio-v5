@@ -5,13 +5,13 @@ import Link from "next/link";
 import { Menu, X } from "lucide-react";
 
 const NAV_LINKS = [
+  { href: "/about", label: "About" },
   { href: "/projects", label: "Projects" },
-  { href: "/skills", label: "Skills" },
   { href: "/experience", label: "Experience" },
+  { href: "/skills", label: "Skills" },
+  { href: "/contact", label: "Contact" },
   { href: "/resume", label: "Resume" },
   { href: "/blog", label: "Blog" },
-  { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
 ];
 
 export function MobileNav() {
