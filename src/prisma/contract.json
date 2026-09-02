@@ -648,6 +648,13 @@
           },
           "Project": {
             "fields": {
+              "category": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
               "createdAt": {
                 "nullable": false,
                 "type": {
@@ -663,6 +670,13 @@
                 }
               },
               "description": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "fullDescription": {
                 "nullable": true,
                 "type": {
                   "codecId": "pg/text@1",
@@ -698,10 +712,38 @@
                   "kind": "scalar"
                 }
               },
+              "isActive": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/bool@1",
+                  "kind": "scalar"
+                }
+              },
+              "isFeatured": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/bool@1",
+                  "kind": "scalar"
+                }
+              },
+              "metrics": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/json@1",
+                  "kind": "scalar"
+                }
+              },
               "order": {
                 "nullable": false,
                 "type": {
                   "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "role": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
                   "kind": "scalar"
                 }
               },
@@ -720,6 +762,13 @@
                   "kind": "scalar"
                 }
               },
+              "timeline": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
               "title": {
                 "nullable": false,
                 "type": {
@@ -731,6 +780,9 @@
             "relations": {},
             "storage": {
               "fields": {
+                "category": {
+                  "column": "category"
+                },
                 "createdAt": {
                   "column": "createdAt"
                 },
@@ -739,6 +791,9 @@
                 },
                 "description": {
                   "column": "description"
+                },
+                "fullDescription": {
+                  "column": "fullDescription"
                 },
                 "githubUrl": {
                   "column": "githubUrl"
@@ -752,14 +807,29 @@
                 "imageUrl": {
                   "column": "imageUrl"
                 },
+                "isActive": {
+                  "column": "isActive"
+                },
+                "isFeatured": {
+                  "column": "isFeatured"
+                },
+                "metrics": {
+                  "column": "metrics"
+                },
                 "order": {
                   "column": "order"
+                },
+                "role": {
+                  "column": "role"
                 },
                 "slug": {
                   "column": "slug"
                 },
                 "techStack": {
                   "column": "techStack"
+                },
+                "timeline": {
+                  "column": "timeline"
                 },
                 "title": {
                   "column": "title"
@@ -1576,6 +1646,11 @@
                 }
               ],
               "columns": {
+                "category": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
                 "createdAt": {
                   "codecId": "pg/timestamptz-string@1",
                   "default": {
@@ -1591,6 +1666,11 @@
                   "nullable": true
                 },
                 "description": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
+                },
+                "fullDescription": {
                   "codecId": "pg/text@1",
                   "nativeType": "text",
                   "nullable": true
@@ -1624,6 +1704,29 @@
                   "nativeType": "text",
                   "nullable": true
                 },
+                "isActive": {
+                  "codecId": "pg/bool@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": true
+                  },
+                  "nativeType": "bool",
+                  "nullable": false
+                },
+                "isFeatured": {
+                  "codecId": "pg/bool@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": false
+                  },
+                  "nativeType": "bool",
+                  "nullable": false
+                },
+                "metrics": {
+                  "codecId": "pg/json@1",
+                  "nativeType": "json",
+                  "nullable": true
+                },
                 "order": {
                   "codecId": "pg/int4@1",
                   "default": {
@@ -1632,6 +1735,11 @@
                   },
                   "nativeType": "int4",
                   "nullable": false
+                },
+                "role": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
                 },
                 "slug": {
                   "codecId": "pg/text@1",
@@ -1647,6 +1755,11 @@
                   "many": true,
                   "nativeType": "text",
                   "nullable": false
+                },
+                "timeline": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": true
                 },
                 "title": {
                   "codecId": "pg/text@1",
@@ -1974,7 +2087,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "7f9468d34b5ec8cf4dfda20f44d5c7e142443993ca5753a2942c9d56a9d51a0b"
+    "storageHash": "ffd85df976a621c209cff2bd77f324acbe1a4adba5889a6d3886af2f1a40dfb6"
   },
   "capabilities": {
     "postgres": {

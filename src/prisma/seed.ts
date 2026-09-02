@@ -9,17 +9,8 @@ async function main() {
   });
   console.log({ admin });
 
-  const project1 = await db.orm.public.Project.create({
-    title: "Portfolio v5",
-    slug: "portfolio-v5",
-    description: "Next.js 16 portfolio with App Router",
-    techStack: ["Next.js", "React", "Tailwind CSS"],
-    githubUrl: "https://github.com/your-org/portfolio",
-    demoUrl: "https://your-portfolio.vercel.app",
-    imageUrl: "/projects/1.jpg",
-    order: 0,
-  });
-  console.log({ project1 });
+  // Skipping mock project seeding as we migrated real projects
+  console.log("Projects seeded (skipped mock, real projects are migrated).");
 
   const skillsData = [
     { name: "React", level: 5, category: "frontend" },

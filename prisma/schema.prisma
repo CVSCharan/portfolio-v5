@@ -39,11 +39,15 @@ model Project {
   title     String
   slug      String    @unique
   description String?
+  fullDescription String?
   techStack String[]
   highlights String[]
   githubUrl String?
   demoUrl   String?
   imageUrl  String?
+  category  String?
+  isActive  Boolean   @default(true)
+  isFeatured Boolean  @default(false)
   order     Int       @default(0)
   createdAt DateTime @default(now)
 }

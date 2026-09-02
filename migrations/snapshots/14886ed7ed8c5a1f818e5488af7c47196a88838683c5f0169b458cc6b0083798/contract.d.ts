@@ -33,7 +33,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'ffd85df976a621c209cff2bd77f324acbe1a4adba5889a6d3886af2f1a40dfb6'>;
+  StorageHashBase<'14886ed7ed8c5a1f818e5488af7c47196a88838683c5f0169b458cc6b0083798'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
@@ -306,11 +306,8 @@ export type FieldOutputTypes = {
       readonly description: CodecTypes['pg/text@1']['output'] | null;
       readonly fullDescription: CodecTypes['pg/text@1']['output'] | null;
       readonly category: CodecTypes['pg/text@1']['output'] | null;
-      readonly role: CodecTypes['pg/text@1']['output'] | null;
-      readonly timeline: CodecTypes['pg/text@1']['output'] | null;
       readonly techStack: ReadonlyArray<CodecTypes['pg/text@1']['output']>;
       readonly highlights: ReadonlyArray<CodecTypes['pg/text@1']['output']>;
-      readonly metrics: CodecTypes['pg/json@1']['output'] | null;
       readonly githubUrl: CodecTypes['pg/text@1']['output'] | null;
       readonly demoUrl: CodecTypes['pg/text@1']['output'] | null;
       readonly imageUrl: CodecTypes['pg/text@1']['output'] | null;
@@ -427,11 +424,8 @@ export type FieldInputTypes = {
       readonly description: CodecTypes['pg/text@1']['input'] | null;
       readonly fullDescription: CodecTypes['pg/text@1']['input'] | null;
       readonly category: CodecTypes['pg/text@1']['input'] | null;
-      readonly role: CodecTypes['pg/text@1']['input'] | null;
-      readonly timeline: CodecTypes['pg/text@1']['input'] | null;
       readonly techStack: ReadonlyArray<CodecTypes['pg/text@1']['input']>;
       readonly highlights: ReadonlyArray<CodecTypes['pg/text@1']['input']>;
-      readonly metrics: CodecTypes['pg/json@1']['input'] | null;
       readonly githubUrl: CodecTypes['pg/text@1']['input'] | null;
       readonly demoUrl: CodecTypes['pg/text@1']['input'] | null;
       readonly imageUrl: CodecTypes['pg/text@1']['input'] | null;
@@ -553,12 +547,9 @@ export type StorageColumnTypes = {
       readonly imageUrl: CodecTypes['pg/text@1']['output'] | null;
       readonly isActive: CodecTypes['pg/bool@1']['output'];
       readonly isFeatured: CodecTypes['pg/bool@1']['output'];
-      readonly metrics: CodecTypes['pg/json@1']['output'] | null;
       readonly order: CodecTypes['pg/int4@1']['output'];
-      readonly role: CodecTypes['pg/text@1']['output'] | null;
       readonly slug: CodecTypes['pg/text@1']['output'];
       readonly techStack: ReadonlyArray<CodecTypes['pg/text@1']['output']>;
-      readonly timeline: CodecTypes['pg/text@1']['output'] | null;
       readonly title: CodecTypes['pg/text@1']['output'];
     };
     readonly resumeSection: {
@@ -674,12 +665,9 @@ export type StorageColumnInputTypes = {
       readonly imageUrl: CodecTypes['pg/text@1']['input'] | null;
       readonly isActive: CodecTypes['pg/bool@1']['input'];
       readonly isFeatured: CodecTypes['pg/bool@1']['input'];
-      readonly metrics: CodecTypes['pg/json@1']['input'] | null;
       readonly order: CodecTypes['pg/int4@1']['input'];
-      readonly role: CodecTypes['pg/text@1']['input'] | null;
       readonly slug: CodecTypes['pg/text@1']['input'];
       readonly techStack: ReadonlyArray<CodecTypes['pg/text@1']['input']>;
-      readonly timeline: CodecTypes['pg/text@1']['input'] | null;
       readonly title: CodecTypes['pg/text@1']['input'];
     };
     readonly resumeSection: {
@@ -1144,16 +1132,6 @@ type ContractBase = Omit<
                   readonly codecId: 'pg/text@1';
                   readonly nullable: true;
                 };
-                readonly role: {
-                  readonly nativeType: 'text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: true;
-                };
-                readonly timeline: {
-                  readonly nativeType: 'text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: true;
-                };
                 readonly techStack: {
                   readonly nativeType: 'text';
                   readonly codecId: 'pg/text@1';
@@ -1171,11 +1149,6 @@ type ContractBase = Omit<
                     readonly kind: 'literal';
                     readonly value: DefaultLiteralValue<'pg/text@1', readonly []>;
                   };
-                };
-                readonly metrics: {
-                  readonly nativeType: 'json';
-                  readonly codecId: 'pg/json@1';
-                  readonly nullable: true;
                 };
                 readonly githubUrl: {
                   readonly nativeType: 'text';
@@ -1872,14 +1845,6 @@ type ContractBase = Omit<
                 readonly nullable: true;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
-              readonly role: {
-                readonly nullable: true;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly timeline: {
-                readonly nullable: true;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
               readonly techStack: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
@@ -1889,10 +1854,6 @@ type ContractBase = Omit<
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
                 readonly many: true;
-              };
-              readonly metrics: {
-                readonly nullable: true;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/json@1' };
               };
               readonly githubUrl: {
                 readonly nullable: true;
@@ -1937,11 +1898,8 @@ type ContractBase = Omit<
                 readonly description: { readonly column: 'description' };
                 readonly fullDescription: { readonly column: 'fullDescription' };
                 readonly category: { readonly column: 'category' };
-                readonly role: { readonly column: 'role' };
-                readonly timeline: { readonly column: 'timeline' };
                 readonly techStack: { readonly column: 'techStack' };
                 readonly highlights: { readonly column: 'highlights' };
-                readonly metrics: { readonly column: 'metrics' };
                 readonly githubUrl: { readonly column: 'githubUrl' };
                 readonly demoUrl: { readonly column: 'demoUrl' };
                 readonly imageUrl: { readonly column: 'imageUrl' };

@@ -1,48 +1,76 @@
 # Portfolio Client v5
 
-Welcome to the fifth iteration of my personal portfolio. This project is a highly dynamic, AI-augmented web application designed to demonstrate my capabilities as a Full-Stack Developer with deep expertise in Data Analytics, LLM integrations, and modern web architectures.
+Fifth iteration of my personal portfolio — a database-driven, AI-augmented web application built to showcase full-stack engineering, data analytics, and LLM integration skills.
 
 ## 🚀 Tech Stack
 
-- **Framework**: Next.js (App Router)
-- **UI/Styling**: React, Tailwind CSS v4, Framer Motion, Lucide Icons
-- **Typography**: Bricolage Grotesque (Display) & Plus Jakarta Sans (UI)
-- **Database & ORM**: PostgreSQL, Prisma 8 (Prisma Next / `@prisma/composer`)
-- **Language**: TypeScript
+| Layer | Technology |
+|---|---|
+| Framework | Next.js 16 (App Router, Turbopack) |
+| Language | TypeScript |
+| Styling | Vanilla CSS via Tailwind CSS v4 + design tokens |
+| Animation | Framer Motion |
+| Icons | Lucide React |
+| Typography | Bricolage Grotesque (Display) · Plus Jakarta Sans (UI) |
+| Database | PostgreSQL (Neon serverless) |
+| ORM | Prisma 8 (`@prisma/orm-postgres`) — contract-first |
+| Deployment | Vercel |
 
-## 🏗️ Architecture & Core Features
+## 🏗️ Architecture & Features
 
-### 1. Database-Driven Content Management
-Instead of hardcoding portfolio data into React components, the entire site is driven by a PostgreSQL database managed via **Prisma 8 Composer**.
-- **`src/prisma/schema.prisma`**: Defines the data models (`User`, `Project`, `Experience`, `Skill`, `BlogPost`, `PageView`).
-- **Data Seeding**: The `prisma/seed.ts` file automatically ingests real resume data (e.g., hybrid roles at Ninex Corp, Senexxel, Providence) into the database.
+### 1. Database-Driven Content
+Every page is driven by PostgreSQL. No hardcoded data in components.
 
-### 2. Global AI Chatbot (`<AIChatbot />`)
-An embedded, floating chat widget that simulates a RAG (Retrieval-Augmented Generation) AI. Available globally across the entire application, it allows recruiters to "chat" with the resume and ask contextual questions about my experience and tech stack.
+**Models:** `User`, `Project`, `Experience`, `Skill`, `Education`, `BlogPost`, `Certification`, `Language`, `VolunteerWork`, `PageView`, `ResumeSection`, `ResumeSettings`
 
-### 3. Advanced Experience Mapping
-The UI intelligently handles complex career trajectories:
-- **Hybrid Role Grouping**: The `/experience` and `/resume` routes use data-reduction algorithms to group multiple discrete roles (e.g., Full Stack Engineer AND Data Analyst) under a single parent company umbrella, rendering them as a unified nested timeline.
+**Project model fields (v5):**
+- Core: `title`, `slug`, `description`, `category`, `order`, `isActive`, `isFeatured`
+- Rich content: `fullDescription`, `highlights[]`, `role`, `timeline`
+- Media: `imageUrl`, `githubUrl`, `demoUrl`
+- Stack: `techStack[]`
+- Impact: `metrics: Json?` — `[{ label, value }]` shape — conditionally rendered, never placeholder
 
-### 4. Interactive Skill Matrix Dashboard
-The `/skills` route features a complex, highly interactive data dashboard built using a "Spatial Bento" design language:
-- **Real-time Filtering & Search**: Users can search skills instantly or toggle between "Core Stack" and "Learning" proficiencies.
-- **Cross-filtering Radar Chart**: Hovering over categories on the custom SVG Radar Chart dynamically dims unrelated skills in the bento grid.
-- **Micro-interactions**: Hovering over individual skill cards reveals glassmorphic tooltips containing exact proficiency percentages and micro-bar charts.
-- **Robust Icon Strategy**: Dynamically loads official SVGs from SimpleIcons CDN, with native Lucide icons acting as a bulletproof fallback, completely removing reliance on brittle icon libraries like `react-icons`.
+### 2. v5 Design System
+All pages share a unified structural DNA:
+- `-mx-5 md:-mx-10` full-bleed wrapper
+- Ghost number: `clamp(8rem, 22vw, 22rem)`, `opacity: 0.04`
+- Meta bar: section label left · chapter number right · `border-b border-border`
+- Headline: `text-page-title` with clip-reveal (`animate`, not `whileInView`)
+- Accent rule: `h-px bg-border` with `scaleX` reveal
+- Accent color: reserved for moments — numbers, label pulses, punctuation — never repeated title text
 
-### 4. Custom In-App Analytics
-We have built a zero-dependency, privacy-focused, custom analytics engine.
-- A `<PageTracker />` client component sits in the root layout, silently observing route changes.
-- It logs the visitor's path, referrer, and user agent directly into the `PageView` table in Postgres.
+### 3. Project Detail Pages (`/projects/[slug]`)
+Each project page is a full editorial case study:
+- **At-a-Glance strip** — computed from existing data (stack count, category, status)
+- **The Brief** — `fullDescription` split on `\n\n` into Problem + Approach columns; single-block fallback if unseparated
+- **Impact Metrics** — renders only when `metrics` JSON field has real data
+- **Key Highlights** — `divide-y` list with accent-numbered entries
+- **Tech Stack** — grouped by inferred category (Frontend / Backend / Database / DevOps / AI / Other)
+- **Next Project** — walks canonical `order ASC` (matches ghost number, no featured filter)
 
-### 5. Professional Error Boundaries & 404s
-The application is wrapped in robust, Next.js standard error boundaries (`app/global-error.tsx`) and custom `not-found` handlers. They utilize a **Classic Professional** (corporate and clean) typographic design to ensure maximum reliability and user trust.
+### 4. Admin Panel (`/admin`)
+Full content management for all models. Project editor supports all fields:
+- `fullDescription` with blank-line separator hint
+- `highlights` as line-separated textarea
+- `metrics` as JSON textarea — validated server-side before any DB write; malformed JSON returns a readable error
 
-## 🎨 Design Philosophy
-- **Aesthetic**: Warm, high-contrast, Classic Professional UI. Clean lines, subtle borders, and distinct typography.
-- **Rule**: NO heavy generic gradients or bloated component libraries. We rely on a streamlined CSS custom property system (`btn`, `card`, `badge`) that automatically adapts to Light and Dark modes.
-- **Navigation**: Uses a fluid, "Dynamic Island"-inspired responsive top navigation bar with a smooth collapsing mobile drawer.
+### 5. Global AI Chatbot
+Floating chat widget (RAG-style) available across all pages — allows recruiters to query resume content contextually.
+
+### 6. Custom Analytics
+`<PageTracker />` silently logs path, referrer, and user agent into `PageView` table on every route change. Zero external dependencies.
+
+## 🗄️ Database Migrations
+
+New columns are added via safe, additive migration scripts — never destructive:
+
+```bash
+# Add role, timeline, metrics columns to project table
+npx tsx scripts/add-project-fields.ts
+
+# Re-emit contract types after schema changes
+npx prisma contract emit
+```
 
 ## 🛠️ Local Development
 
@@ -50,12 +78,32 @@ The application is wrapped in robust, Next.js standard error boundaries (`app/gl
 # Install dependencies
 bun install
 
-# Apply database schema
-bun prisma db push
+# Emit Prisma contract (generates contract.json + contract.d.ts)
+npx prisma contract emit
 
-# Seed the database with resume data
-bun run prisma/seed.ts
-
-# Run the development server
+# Run dev server
 bun dev
+```
+
+## 📁 Key Files
+
+```
+src/prisma/
+  contract.prisma     # Source of truth for all models
+  contract.json       # Auto-generated — do not edit
+  contract.d.ts       # Auto-generated — do not edit
+  db.ts               # Prisma runtime instance
+
+src/actions/
+  projects.ts         # Server actions: createProject, updateProject, deleteProject
+                      # Includes JSON validation for metrics field
+
+components/
+  ProjectDetailClient.tsx   # Project case study page
+  ProjectsClient.tsx        # Projects grid page
+  AboutClient.tsx           # About page
+  ExperienceClient.tsx      # Experience page
+
+scripts/
+  add-project-fields.ts     # Migration: adds role, timeline, metrics columns
 ```

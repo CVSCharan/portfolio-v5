@@ -28,17 +28,24 @@ model Education {
 }
 
 model Project {
-  id        Int       @id @default(autoincrement())
-  title     String
-  slug      String    @unique
-  description String?
-  techStack String[] @default([])
-  highlights String[] @default([])
-  githubUrl String?
-  demoUrl   String?
-  imageUrl  String?
-  order     Int       @default(0)
-  createdAt TimestamptzString @default(now())
+  id              Int       @id @default(autoincrement())
+  title           String
+  slug            String    @unique
+  description     String?
+  fullDescription String?
+  category        String?
+  role            String?
+  timeline        String?
+  techStack       String[]  @default([])
+  highlights      String[]  @default([])
+  metrics         Json?
+  githubUrl       String?
+  demoUrl         String?
+  imageUrl        String?
+  order           Int       @default(0)
+  isActive        Boolean   @default(true)
+  isFeatured      Boolean   @default(false)
+  createdAt       TimestamptzString @default(now())
 }
 
 enum SkillCategory {

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, ExternalLink, GitFork } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -138,34 +139,39 @@ export default function ProjectsClient({
                 >
                   {/* Image Area */}
                   {proj.imageUrl ? (
-                    <div className="h-48 w-full overflow-hidden border-b border-border/50">
-                      <img
+                    <Link href={`/projects/${proj.slug}`} className="h-48 w-full overflow-hidden border-b border-border/50 block relative">
+                      <Image
                         src={proj.imageUrl}
                         alt={proj.title}
-                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                        loading="lazy"
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        placeholder="blur"
+                        blurDataURL="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxIiBoZWlnaHQ9IjEiPjxyZWN0IHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9IiNmNGY0ZjUiLz48L3N2Zz4="
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       />
-                    </div>
+                    </Link>
                   ) : (
-                    <div className="h-48 w-full bg-muted/40 border-b border-border/50 flex items-center justify-center">
+                    <Link href={`/projects/${proj.slug}`} className="h-48 w-full bg-muted/40 border-b border-border/50 flex items-center justify-center block">
                       <span
                         className="text-3xl font-bold text-muted-foreground/30"
                         style={{ fontFamily: "var(--font-bricolage)" }}
                       >
                         {proj.title.slice(0, 2).toUpperCase()}
                       </span>
-                    </div>
+                    </Link>
                   )}
 
                   {/* Content Area */}
                   <div className="flex flex-col flex-1 p-5 md:p-6 gap-5">
                     <div className="space-y-2">
-                      <h3
-                        className="text-lg font-semibold text-foreground leading-snug group-hover:text-secondary transition-colors"
-                        style={{ fontFamily: "var(--font-bricolage)" }}
-                      >
-                        {proj.title}
-                      </h3>
+                      <Link href={`/projects/${proj.slug}`}>
+                        <h3
+                          className="text-lg font-semibold text-foreground leading-snug group-hover:text-secondary transition-colors"
+                          style={{ fontFamily: "var(--font-bricolage)" }}
+                        >
+                          {proj.title}
+                        </h3>
+                      </Link>
                       {proj.description && (
                         <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3">
                           {proj.description}

@@ -53,3 +53,7 @@ playwright/.cache/
 .cursor/
 .agents/
 .vscode/
+
+
+# Scripts
+scripts/
