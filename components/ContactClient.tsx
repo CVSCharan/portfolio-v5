@@ -75,13 +75,6 @@ export default function ContactClient() {
             Feel free to reach out.
           </motion.p>
 
-          {/* Animated rule */}
-          <motion.div
-            initial={{ scaleX: 0, originX: 0 }}
-            animate={{ scaleX: 1 }}
-            transition={{ duration: 0.7, delay: 0.48, ease: "easeOut" }}
-            className="mt-8 mb-14 md:mb-20 h-px bg-border"
-          />
         </div>
       </section>
 
