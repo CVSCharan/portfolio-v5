@@ -281,7 +281,7 @@ export function HomeClient({ user, featuredProjects, experiences }: {
             </Link>
           </motion.div>
 
-          {/* Tech chips — 3 cols */}
+          {/* AI Assistant — 3 cols */}
           <motion.div
             initial={{ opacity: 0, y: 18 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -289,15 +289,40 @@ export function HomeClient({ user, featuredProjects, experiences }: {
             transition={{ duration: 0.5, delay: 0.16 }}
             className="col-span-2 md:col-span-3"
           >
-            <div className="card h-full min-h-[130px] p-6 md:p-7 flex flex-col justify-between gap-4 overflow-hidden">
-              <p className="text-label text-muted-foreground">Technology</p>
-              <div className="overflow-hidden">
-                <div className="flex animate-marquee whitespace-nowrap">
-                  {[...STACK, ...STACK].map((t, i) => (
-                    <span key={i} className="badge mx-1.5 shrink-0">{t}</span>
-                  ))}
-                </div>
+            <div className="group card h-full min-h-[130px] p-6 md:p-7 flex flex-col justify-between relative overflow-hidden">
+              <div className="flex items-center gap-2 relative z-10">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
+                </span>
+                <p className="text-label text-muted-foreground">Ask AI</p>
               </div>
+              
+              <div className="mt-4 md:mt-0 relative z-10 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                <div>
+                  <h3
+                    className="text-xl md:text-2xl font-bold text-foreground leading-snug group-hover:text-secondary transition-colors"
+                    style={{ fontFamily: "var(--font-bricolage)" }}
+                  >
+                    Chat with Resume.
+                  </h3>
+                  <p className="text-sm text-muted-foreground mt-1 max-w-sm">
+                    Ask my AI clone about my experience, skills, and projects.
+                  </p>
+                </div>
+                <button
+                  onClick={() => alert("Chat feature coming soon")}
+                  className="btn btn-outline btn-sm shrink-0 w-fit group-hover:border-foreground/30 group-hover:text-foreground transition-all"
+                >
+                  Start Chat
+                </button>
+              </div>
+
+              {/* Subtle background accent */}
+              <div
+                className="absolute bottom-0 right-0 w-64 h-64 opacity-[0.06] pointer-events-none transition-opacity duration-500 group-hover:opacity-[0.12]"
+                style={{ background: "radial-gradient(circle, var(--foreground), transparent 70%)", transform: "translate(20%, 40%)" }}
+              />
             </div>
           </motion.div>
 
