@@ -173,12 +173,7 @@ export function Footer() {
               >
                 Source Code
               </a>
-              <Link
-                href="/admin"
-                className="hover:text-foreground transition-colors w-fit"
-              >
-                Admin Dashboard
-              </Link>
+
             </div>
           </div>
         </div>
