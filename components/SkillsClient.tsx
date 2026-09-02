@@ -1,70 +1,112 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { 
-  Terminal, Database, Globe, Smartphone, 
-  Cloud, LineChart, Code2, Wrench, Search
-} from "lucide-react";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import { motion } from "framer-motion";
 import * as SimpleIcons from "simple-icons";
 import React from "react";
 
-const CATEGORY_META: Record<string, { icon: any; label: string }> = {
-  All: { icon: Globe, label: "All Skills" },
-  Frontend: { icon: Globe, label: "Frontend" },
-  Backend: { icon: Terminal, label: "Backend" },
-  Mobile: { icon: Smartphone, label: "Mobile" },
-  Database: { icon: Database, label: "Database" },
-  CloudDevOps: { icon: Cloud, label: "Cloud & DevOps" },
-  DataAnalyticsML: { icon: LineChart, label: "Data & ML" },
-  Languages: { icon: Code2, label: "Languages" },
-  Tools: { icon: Wrench, label: "Tools" },
-};
+/* ── Types ─────────────────────────────────────────────────── */
+interface SkillRecord {
+  id: number;
+  name: string;
+  level: number;
+  categories: readonly string[];
+}
 
 const SKILL_SLUGS: Record<string, string> = {
-  "HTML5": "html5", "CSS3": "css3", "React JS": "react", "Next JS": "nextdotjs",
-  "Redux": "redux", "Bootstrap": "bootstrap", "Tailwind CSS": "tailwindcss",
-  "Node JS": "nodedotjs", "Express.js": "express", "Django": "django",
-  "Flask": "flask", "FastAPI": "fastapi", "GraphQL": "graphql",
-  "React Native": "react", "Flutter": "flutter", "Expo": "expo",
-  "MongoDB": "mongodb", "MySQL": "mysql", "PostgreSQL": "postgresql",
-  "SQLite": "sqlite", "Oracle": "oracle", "Redis": "redis",
-  "Azure": "microsoftazure", "AWS": "amazonaws", "Google Cloud": "googlecloud",
-  "Docker": "docker", "Kubernetes": "kubernetes", "Heroku": "heroku",
-  "Vercel": "vercel", "GitHub Actions": "githubactions", "ArgoCD": "argocd",
-  "Pandas": "pandas", "Numpy": "numpy", "Scikit Learn": "scikitlearn",
-  "Tensorflow": "tensorflow", "OpenAI API": "openai", "Hugging Face": "huggingface",
-  "JavaScript": "javascript", "TypeScript": "typescript", "Python": "python",
-  "C++": "cplusplus", "Java": "java", "Git": "git", "Github": "github",
-  "VS Code": "visualstudiocode", "Figma": "figma", "Postman": "postman",
+  HTML5: "html5",
+  CSS3: "css3",
+  "React JS": "react",
+  "Next JS": "nextdotjs",
+  Redux: "redux",
+  Bootstrap: "bootstrap",
+  "Tailwind CSS": "tailwindcss",
+  "Node JS": "nodedotjs",
+  "Express.js": "express",
+  Django: "django",
+  Flask: "flask",
+  FastAPI: "fastapi",
+  GraphQL: "graphql",
+  "React Native": "react",
+  Flutter: "flutter",
+  Expo: "expo",
+  MongoDB: "mongodb",
+  MySQL: "mysql",
+  PostgreSQL: "postgresql",
+  SQLite: "sqlite",
+  Oracle: "oracle",
+  Redis: "redis",
+  Azure: "microsoftazure",
+  AWS: "amazonaws",
+  "Google Cloud": "googlecloud",
+  Docker: "docker",
+  Kubernetes: "kubernetes",
+  Heroku: "heroku",
+  Vercel: "vercel",
+  "GitHub Actions": "githubactions",
+  ArgoCD: "argocd",
+  Pandas: "pandas",
+  Numpy: "numpy",
+  "Scikit Learn": "scikitlearn",
+  Tensorflow: "tensorflow",
+  "OpenAI API": "openai",
+  "Hugging Face": "huggingface",
+  JavaScript: "javascript",
+  TypeScript: "typescript",
+  Python: "python",
+  "C++": "cplusplus",
+  Java: "java",
+  Git: "git",
+  Github: "github",
+  "VS Code": "visualstudiocode",
+  Figma: "figma",
+  Postman: "postman",
 };
 
-export default function SkillsClient({ skills }: { skills: any[] }) {
-  const [activeTab, setActiveTab] = useState("All");
-  const [searchQuery, setSearchQuery] = useState("");
+/* ── Animation helpers ──────────────────────────────────────── */
+function fadeUp(delay = 0) {
+  return {
+    initial: { opacity: 0, y: 24 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.6, delay, ease: "easeOut" as const },
+  };
+}
 
-  const filteredSkills = skills.filter((skill) => {
-    const matchesSearch = skill.name.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesTab = activeTab === "All" || (skill.categories && skill.categories.includes(activeTab));
-    return matchesSearch && matchesTab;
-  }).sort((a, b) => b.level - a.level);
+function reveal(delay = 0) {
+  return {
+    initial: { y: "105%", opacity: 0 },
+    animate: { y: "0%", opacity: 1 },
+    transition: { duration: 0.75, delay, ease: "easeOut" as const },
+  };
+}
+
+export default function SkillsClient({ skills }: { skills: SkillRecord[] }) {
+  /* Group skills by category */
+  const grouped = skills.reduce<Record<string, SkillRecord[]>>((acc, s) => {
+    const cats = s.categories?.length ? [...s.categories] : ["Other"];
+    cats.forEach((cat) => {
+      (acc[cat] = acc[cat] ?? []).push(s);
+    });
+    return acc;
+  }, {});
 
   const getIcon = (name: string) => {
     const slug = SKILL_SLUGS[name];
     if (!slug) return null;
-    
+
     const IconObj = Object.values(SimpleIcons).find(
       (icon: any) => icon.slug === slug
     ) as any;
-    
+
     if (!IconObj) return null;
-    
+
     return (
       <svg
         role="img"
         viewBox="0 0 24 24"
-        className="w-5 h-5 transition-transform duration-300 group-hover:scale-110"
-        fill={`#${IconObj.hex}`}
+        className="w-4 h-4 text-muted-foreground transition-colors group-hover:text-foreground"
+        fill="currentColor"
         xmlns="http://www.w3.org/2000/svg"
       >
         <path d={IconObj.path} />
@@ -72,86 +114,169 @@ export default function SkillsClient({ skills }: { skills: any[] }) {
     );
   };
 
-  const categories = Object.keys(CATEGORY_META);
-
   return (
-    <div className="flex flex-col md:flex-row gap-8 w-full mt-4">
-      
-      {/* Sidebar (Sticky) */}
-      <div className="w-full md:w-64 shrink-0 md:sticky md:top-24 self-start space-y-6 z-10">
-        
-        {/* Search */}
-        <div className="relative w-full">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-          <input
-            type="text"
-            placeholder="Search skills..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-4 py-2.5 text-sm bg-muted/50 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all text-foreground shadow-sm"
-          />
+    <div className="-mx-5 md:-mx-10 bg-background overflow-x-hidden">
+      {/* ════════════════════════════════════════════════════
+          HERO
+      ════════════════════════════════════════════════════ */}
+      <section
+        className="relative flex flex-col px-5 sm:px-10 xl:px-16 overflow-hidden"
+        style={{
+          background:
+            "radial-gradient(ellipse at 85% 15%, rgba(37,99,235,0.04) 0%, transparent 52%)",
+        }}
+      >
+        {/* Ghost "05" */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none select-none absolute top-0 right-4 sm:right-10 xl:right-16 font-bold text-foreground leading-none"
+          style={{
+            fontFamily: "var(--font-bricolage)",
+            fontSize: "clamp(8rem, 22vw, 22rem)",
+            opacity: 0.04,
+            letterSpacing: "-0.05em",
+          }}
+        >
+          05
         </div>
 
-        {/* Categories Menu */}
-        <div className="flex flex-row md:flex-col gap-1.5 overflow-x-auto md:overflow-visible pb-4 md:pb-0 scrollbar-hide">
-          {categories.map((cat) => {
-            const isActive = activeTab === cat;
-            const CatIcon = CATEGORY_META[cat].icon;
-            return (
-              <button
-                key={cat}
-                onClick={() => setActiveTab(cat)}
-                className={`flex items-center gap-3 px-4 py-2.5 text-sm rounded-lg transition-all duration-200 border whitespace-nowrap md:whitespace-normal text-left ${
-                  isActive 
-                    ? "bg-foreground text-background border-foreground shadow-sm font-medium" 
-                    : "bg-background text-muted-foreground border-transparent hover:bg-muted hover:text-foreground hover:border-border"
-                }`}
-              >
-                <CatIcon className={`w-4 h-4 ${isActive ? 'text-background' : 'text-muted-foreground group-hover:text-foreground'}`} />
-                {CATEGORY_META[cat].label}
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Grid Content */}
-      <div className="flex-1 min-w-0">
-        <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <AnimatePresence>
-            {filteredSkills.map((skill) => (
-              <motion.div
-                layout
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.2 }}
-                key={skill.id}
-                className="group flex items-center gap-4 p-4 bg-background border border-border rounded-xl hover:border-foreground/30 hover:shadow-sm transition-all duration-300 cursor-default"
-              >
-                <div className="w-10 h-10 shrink-0 flex items-center justify-center bg-muted/30 rounded-lg shadow-sm border border-border/50 group-hover:bg-muted transition-colors">
-                  {getIcon(skill.name) || <Code2 className="w-5 h-5 text-muted-foreground" />}
-                </div>
-                <div className="flex-1 overflow-hidden">
-                  <p className="text-sm font-semibold text-foreground truncate">{skill.name}</p>
-                  <p className="text-[11px] text-muted-foreground uppercase tracking-wider truncate">
-                    {skill.categories?.[0] || 'Skill'}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
+        {/* ── Meta bar ── */}
+        <motion.div
+          {...fadeUp(0)}
+          className="flex items-center justify-between pt-4 pb-6 border-b border-border"
+        >
+          <span className="text-label text-muted-foreground">Capabilities</span>
+          <span className="text-label text-muted-foreground">Chapter 05</span>
         </motion.div>
 
-        {filteredSkills.length === 0 && (
-          <div className="py-20 flex flex-col items-center justify-center text-center text-muted-foreground border border-dashed border-border rounded-2xl bg-muted/10 mt-2">
-            <Search className="w-8 h-8 mb-3 text-muted-foreground/30" />
-            <p className="font-medium text-foreground">No skills found</p>
-            <p className="text-sm mt-1">Try adjusting your search or category filter.</p>
+        {/* ── Headline ── */}
+        <div className="flex flex-col justify-center py-12 md:py-16 max-w-4xl">
+          <div className="text-page-title overflow-hidden">
+            <motion.div {...reveal(0.1)} className="block leading-[0.95]">
+              <span className="text-foreground">The </span>
+              <span className="text-secondary">Arsenal.</span>
+            </motion.div>
           </div>
-        )}
-      </div>
 
+          {/* Role line */}
+          <motion.p
+            {...fadeUp(0.38)}
+            className="mt-5 md:mt-6 text-base md:text-lg font-medium text-muted-foreground tracking-tight"
+          >
+            A comprehensive list of technical skills, languages, tools, and
+            frameworks I use.
+          </motion.p>
+
+          {/* Animated rule */}
+          <motion.div
+            initial={{ scaleX: 0, originX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ duration: 0.7, delay: 0.48, ease: "easeOut" }}
+            className="mt-8 mb-14 md:mb-20 h-px bg-border"
+          />
+        </div>
+      </section>
+
+      {/* ════════════════════════════════════════════════════
+          SKILLS — editorial category rows
+      ════════════════════════════════════════════════════ */}
+      <section className="w-full border-t border-border px-5 sm:px-10 xl:px-16 py-16 md:py-24">
+        <div className="max-w-6xl mx-auto">
+          {/* Section header */}
+          <motion.div
+            initial={{ opacity: 0, y: 14 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.5 }}
+            className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12"
+          >
+            <div>
+              <p className="text-label text-muted-foreground mb-2">Inventory</p>
+              <h2
+                className="text-headline text-foreground"
+                style={{ fontFamily: "var(--font-bricolage)" }}
+              >
+                Full Stack.
+              </h2>
+            </div>
+          </motion.div>
+
+          {/* Category rows — editorial grid */}
+          <div>
+            {Object.keys(grouped).length === 0 ? (
+              <p className="text-muted-foreground">No skills found.</p>
+            ) : (
+              Object.entries(grouped).map(([cat, items], i) => (
+                <motion.div
+                  key={cat}
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-60px" }}
+                  transition={{
+                    duration: 0.4,
+                    delay: i * 0.06,
+                    ease: "easeOut",
+                  }}
+                  className="grid grid-cols-[120px_1fr] sm:grid-cols-[160px_1fr] items-start gap-x-6 gap-y-4 py-6 border-b border-border last:border-b-0"
+                >
+                  <span className="text-label text-muted-foreground pt-1.5">
+                    {cat}
+                  </span>
+                  <div className="flex flex-wrap gap-2.5">
+                    {items.map((s) => (
+                      <span
+                        key={s.id}
+                        className="group flex items-center gap-2 px-3 py-1.5 bg-background border border-border rounded-lg text-sm font-medium text-foreground hover:border-foreground/30 hover:shadow-sm transition-all duration-200 cursor-default"
+                      >
+                        {getIcon(s.name)}
+                        {s.name}
+                      </span>
+                    ))}
+                  </div>
+                </motion.div>
+              ))
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* ════════════════════════════════════════════════════
+          CTA — identical to home + about + experience
+      ════════════════════════════════════════════════════ */}
+      <section className="w-full border-t border-border bg-muted/20 px-5 sm:px-10 xl:px-16 py-16 md:py-24">
+        <motion.div
+          initial={{ opacity: 0, y: 14 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.5 }}
+          className="max-w-6xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-8"
+        >
+          <div className="max-w-xl">
+            <p className="text-label text-muted-foreground mb-2">
+              Let&apos;s Collaborate
+            </p>
+            <h2
+              className="text-headline text-foreground"
+              style={{ fontFamily: "var(--font-bricolage)" }}
+            >
+              Have a project in mind?
+            </h2>
+            <p className="text-base text-muted-foreground leading-relaxed mt-3">
+              Open to ambitious projects, creative ideas, and new opportunities
+              to build something meaningful.
+            </p>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-3 shrink-0">
+            <Link href="/contact" className="btn btn-primary btn-lg group">
+              Get in Touch{" "}
+              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+            </Link>
+            <Link href="/projects" className="btn btn-outline btn-lg">
+              View Work
+            </Link>
+          </div>
+        </motion.div>
+      </section>
     </div>
   );
 }
