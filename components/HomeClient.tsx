@@ -270,8 +270,8 @@ export function HomeClient({ user, featuredProjects, experiences }: {
             <Link href="/contact" className="group card card-hover h-full min-h-[150px] p-6 md:p-7 flex flex-col justify-between">
               <div className="flex items-center gap-2">
                 <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-secondary" />
                 </span>
                 <p className="text-label text-muted-foreground">Status</p>
               </div>
@@ -292,8 +292,8 @@ export function HomeClient({ user, featuredProjects, experiences }: {
             <div className="group card h-full min-h-[130px] p-6 md:p-7 flex flex-col justify-between relative overflow-hidden">
               <div className="flex items-center gap-2 relative z-10">
                 <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-secondary" />
                 </span>
                 <p className="text-label text-muted-foreground">Ask AI</p>
               </div>
