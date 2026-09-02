@@ -61,7 +61,15 @@ export function HomeClient({ user, featuredProjects, experiences }: {
       {/* ════════════════════════════════════════════════════
           HERO — Manifesto style
       ════════════════════════════════════════════════════ */}
-      <section className="relative min-h-[100svh] flex flex-col px-5 sm:px-10 xl:px-16 overflow-hidden">
+      <section
+        className="relative min-h-[100svh] flex flex-col px-5 sm:px-10 xl:px-16 overflow-hidden"
+        style={{
+          background: [
+            "radial-gradient(ellipse at 12% 55%, rgba(37,99,235,0.055) 0%, transparent 52%)",
+            "radial-gradient(ellipse at 88% 18%, rgba(37,99,235,0.03) 0%, transparent 48%)",
+          ].join(", "),
+        }}
+      >
 
         {/* Ghost "01" background decoration */}
         <div
@@ -99,15 +107,7 @@ export function HomeClient({ user, featuredProjects, experiences }: {
         <div className="flex-1 flex flex-col justify-center py-10 md:py-14">
 
           {/* Two-line clip-reveal headline */}
-          <div
-            style={{
-              fontFamily: "var(--font-bricolage)",
-              fontSize: "clamp(3.2rem, 10vw, 9rem)",
-              fontWeight: 700,
-              lineHeight: 0.9,
-              letterSpacing: "-0.035em",
-            }}
-          >
+          <div className="text-hero">
             <div className="overflow-hidden">
               <motion.span {...reveal(0.1)} className="block text-foreground">
                 I build things
@@ -254,7 +254,7 @@ export function HomeClient({ user, featuredProjects, experiences }: {
             <div className="card h-full min-h-[150px] p-6 md:p-7 flex flex-col justify-between">
               <p className="text-label text-muted-foreground">Experience</p>
               <div>
-                <p className="text-5xl md:text-6xl font-bold text-foreground tracking-tighter leading-none" style={{ fontFamily: "var(--font-bricolage)" }}>4+</p>
+                <p className="text-5xl md:text-6xl font-bold text-secondary tracking-tighter leading-none" style={{ fontFamily: "var(--font-bricolage)" }}>4+</p>
                 <p className="text-xs text-muted-foreground mt-1.5 font-medium">years</p>
               </div>
             </div>
@@ -311,7 +311,7 @@ export function HomeClient({ user, featuredProjects, experiences }: {
             <div className="card h-full min-h-[130px] p-6 md:p-7 flex flex-col justify-between">
               <p className="text-label text-muted-foreground">Shipped</p>
               <div>
-                <p className="text-5xl md:text-6xl font-bold text-foreground tracking-tighter leading-none" style={{ fontFamily: "var(--font-bricolage)" }}>20+</p>
+                <p className="text-5xl md:text-6xl font-bold text-secondary tracking-tighter leading-none" style={{ fontFamily: "var(--font-bricolage)" }}>20+</p>
                 <p className="text-xs text-muted-foreground mt-1.5 font-medium">projects</p>
               </div>
             </div>

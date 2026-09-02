@@ -98,6 +98,20 @@
     padding: 0;
   }
 
+  /* ── Accessibility: respect reduced-motion OS setting ─────────────
+     Covers ALL CSS @keyframes site-wide (marquee, island-in, fade-up,
+     slide-down, etc.). Framer Motion v10+ additionally auto-respects
+     prefers-reduced-motion for all motion.* components.
+  ─────────────────────────────────────────────────────────────────── */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
   html {
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
@@ -144,6 +158,24 @@
 
 /* ─── Typography Utilities ─── */
 @layer utilities {
+  /* Hero display — extracted from HomeClient inline style */
+  .text-hero {
+    font-family: var(--font-bricolage, "Bricolage Grotesque", system-ui, sans-serif);
+    font-size: clamp(3rem, 10vw, 9rem);
+    font-weight: 700;
+    line-height: 0.9;
+    letter-spacing: -0.035em;
+  }
+
+  /* Page-level display — for /about, /experience, /skills, /contact heroes */
+  .text-page-title {
+    font-family: var(--font-bricolage, "Bricolage Grotesque", system-ui, sans-serif);
+    font-size: clamp(2.5rem, 7vw, 5.5rem);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+  }
+
   /* Extra-large display — Bricolage */
   .text-display {
     font-family: var(--font-bricolage, "Bricolage Grotesque", system-ui, sans-serif);
