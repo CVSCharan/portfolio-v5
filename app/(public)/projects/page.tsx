@@ -1,24 +1,16 @@
 import { db } from "@/src/prisma/db";
-import { PageHeader } from "@/components/PageHeader";
-import ProjectsGrid from "@/components/ProjectsGrid";
+import ProjectsClient from "@/components/ProjectsClient";
 
 export const metadata = {
   title: "Projects",
-  description: "A collection of full-stack apps, AI tools, and open-source work.",
+  description:
+    "A collection of full-stack apps, AI tools, and open-source work.",
 };
 
 export default async function ProjectsPage() {
-  const projects = await db.orm.public.Project.all();
-  projects.sort((a, b) => a.order - b.order);
+  const projects = await db.orm.public.Project.orderBy((p) =>
+    p.order.asc()
+  ).all();
 
-  return (
-    <div>
-      <PageHeader
-        label="Work"
-        title="Projects"
-        description="A selection of things I've built — full-stack apps, AI integrations, and open-source tools."
-      />
-      <ProjectsGrid projects={projects} />
-    </div>
-  );
+  return <ProjectsClient projects={projects} />;
 }
