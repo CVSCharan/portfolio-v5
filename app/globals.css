@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
+@custom-variant dark (&:where(.dark, .dark *));
 
 /* ══════════════════════════════════════════════════════
    CVS CHARAN — PORTFOLIO DESIGN SYSTEM
@@ -39,54 +40,52 @@
 }
 
 /* ─── Light/Dark Colour Tokens ─── */
-@layer base {
-  :root {
-    --background:          #ffffff;
-    --foreground:          #09090b;
+:root {
+  --background:          #ffffff;
+  --foreground:          #09090b;
 
-    --card:                #ffffff;
-    --card-foreground:     #09090b;
-    --card-elevated:       #ffffff;
+  --card:                #ffffff;
+  --card-foreground:     #09090b;
+  --card-elevated:       #ffffff;
 
-    --muted:               #f4f4f5;
-    --muted-foreground:    #71717a;
+  --muted:               #f4f4f5;
+  --muted-foreground:    #71717a;
 
-    --primary:             #18181b;
-    --primary-foreground:  #fafafa;
+  --primary:             #18181b;
+  --primary-foreground:  #fafafa;
 
-    --secondary:           #2563eb;
-    --secondary-foreground:#ffffff;
+  --secondary:           #2563eb;
+  --secondary-foreground:#ffffff;
 
-    --accent:              #f4f4f5;
-    --accent-foreground:   #18181b;
+  --accent:              #f4f4f5;
+  --accent-foreground:   #18181b;
 
-    --border:              #e4e4e7;
-    --ring:                #18181b;
-  }
+  --border:              #e4e4e7;
+  --ring:                #18181b;
+}
 
-  .dark {
-    --background:          #09090b;
-    --foreground:          #fafafa;
+.dark {
+  --background:          #09090b;
+  --foreground:          #fafafa;
 
-    --card:                #09090b;
-    --card-foreground:     #fafafa;
-    --card-elevated:       #18181b;
+  --card:                #09090b;
+  --card-foreground:     #fafafa;
+  --card-elevated:       #18181b;
 
-    --muted:               #27272a;
-    --muted-foreground:    #a1a1aa;
+  --muted:               #27272a;
+  --muted-foreground:    #a1a1aa;
 
-    --primary:             #fafafa;
-    --primary-foreground:  #18181b;
+  --primary:             #fafafa;
+  --primary-foreground:  #18181b;
 
-    --secondary:           #39ff14;
-    --secondary-foreground:#09090b;
+  --secondary:           #39ff14;
+  --secondary-foreground:#09090b;
 
-    --accent:              #27272a;
-    --accent-foreground:   #fafafa;
+  --accent:              #27272a;
+  --accent-foreground:   #fafafa;
 
-    --border:              #27272a;
-    --ring:                #fafafa;
-  }
+  --border:              #27272a;
+  --ring:                #fafafa;
 }
 
 /* ─── Global Reset & Base ─── */
