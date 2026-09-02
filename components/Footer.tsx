@@ -179,12 +179,14 @@ export function Footer() {
         </div>
       </div>
 
-      {/* Huge bottom text */}
-      <div className="w-full pointer-events-none select-none flex justify-center mt-auto">
+      {/* Huge bottom text — flush to footer bottom edge (Sarvam AI style) */}
+      <div className="w-full pointer-events-none select-none overflow-hidden leading-none mt-auto">
         <h2
-          className="text-[24vw] leading-[0.75] font-bold text-muted-foreground/10 whitespace-nowrap"
+          className="w-full text-center font-bold text-muted-foreground/10 whitespace-nowrap translate-y-[18%]"
           style={{
             fontFamily: "var(--font-bricolage)",
+            fontSize: "clamp(4rem, 24vw, 24vw)",
+            lineHeight: 1,
             letterSpacing: "-0.04em",
           }}
         >
