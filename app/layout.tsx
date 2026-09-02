@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans, Bricolage_Grotesque, Geist_Mono } from "next/font/go
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { SuppressNextThemesWarning } from "@/components/SuppressNextThemesWarning";
+import { HackerTerminal } from "@/components/HackerTerminal";
 
 /* ── Fonts ──────────────────────────────────────────── */
 const plusJakarta = Plus_Jakarta_Sans({
@@ -72,6 +73,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           disableTransitionOnChange
         >
           {children}
+          <HackerTerminal />
         </ThemeProvider>
       </body>
     </html>
