@@ -37,7 +37,9 @@ export default async function AdminProjectForm({
         .map((s) => s.trim())
         .filter(Boolean),
       metricsRaw: (formData.get("metrics") as string).trim() || null,
-      githubUrl: (formData.get("githubUrl") as string) || null,
+      githubUrls: (formData.get("githubUrls") as string)
+        ? (formData.get("githubUrls") as string).split(",").map((s) => s.trim()).filter(Boolean)
+        : [],
       demoUrl: (formData.get("demoUrl") as string) || null,
       imageUrl: (formData.get("imageUrl") as string) || null,
       isFeatured: formData.get("isFeatured") === "on",
@@ -157,8 +159,8 @@ export default async function AdminProjectForm({
           <legend className="text-xs font-semibold uppercase tracking-widest text-gray-500 px-1">Links &amp; Media</legend>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium mb-1">GitHub URL</label>
-              <input name="githubUrl" defaultValue={project?.githubUrl ?? ""} placeholder="https://github.com/..." className="w-full border rounded p-2 text-sm" />
+              <label className="block text-sm font-medium mb-1">GitHub URLs</label>
+              <input name="githubUrls" defaultValue={project?.githubUrls?.join(", ") ?? ""} placeholder="https://github.com/..." className="w-full border rounded p-2 text-sm" />
             </div>
             <div>
               <label className="block text-sm font-medium mb-1">Demo URL</label>

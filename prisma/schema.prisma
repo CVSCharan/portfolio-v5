@@ -42,7 +42,7 @@ model Project {
   fullDescription String?
   techStack String[]
   highlights String[]
-  githubUrl String?
+  githubUrls String[] @default([])
   demoUrl   String?
   imageUrl  String?
   category  String?

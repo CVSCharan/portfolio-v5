@@ -683,8 +683,9 @@
                   "kind": "scalar"
                 }
               },
-              "githubUrl": {
-                "nullable": true,
+              "githubUrls": {
+                "many": true,
+                "nullable": false,
                 "type": {
                   "codecId": "pg/text@1",
                   "kind": "scalar"
@@ -795,8 +796,8 @@
                 "fullDescription": {
                   "column": "fullDescription"
                 },
-                "githubUrl": {
-                  "column": "githubUrl"
+                "githubUrls": {
+                  "column": "githubUrls"
                 },
                 "highlights": {
                   "column": "highlights"
@@ -1635,6 +1636,11 @@
             "project": {
               "checks": [
                 {
+                  "expression": "array_position(\"githubUrls\", NULL) IS NULL",
+                  "name": "project_githubUrls_elem_not_null_b11d837b",
+                  "prefix": "project_githubUrls_elem_not_null"
+                },
+                {
                   "expression": "array_position(\"highlights\", NULL) IS NULL",
                   "name": "project_highlights_elem_not_null_1a2363a4",
                   "prefix": "project_highlights_elem_not_null"
@@ -1675,10 +1681,15 @@
                   "nativeType": "text",
                   "nullable": true
                 },
-                "githubUrl": {
+                "githubUrls": {
                   "codecId": "pg/text@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": []
+                  },
+                  "many": true,
                   "nativeType": "text",
-                  "nullable": true
+                  "nullable": false
                 },
                 "highlights": {
                   "codecId": "pg/text@1",
@@ -2087,7 +2098,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "ffd85df976a621c209cff2bd77f324acbe1a4adba5889a6d3886af2f1a40dfb6"
+    "storageHash": "cea290e76d9d161255687e7ad4f3d1b2e11e3aad85389a64ea466f81b0add665"
   },
   "capabilities": {
     "postgres": {

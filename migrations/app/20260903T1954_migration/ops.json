@@ -1,0 +1,128 @@
+[
+  {
+    "id": "column.public.project.metrics",
+    "label": "Add column \"metrics\" to \"project\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "metrics",
+        "table": "project"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"metrics\" is missing",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "project",
+          "metrics"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add column \"metrics\"",
+        "sql": "ALTER TABLE \"public\".\"project\" ADD COLUMN \"metrics\" json"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"metrics\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "project",
+          "metrics"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "column.public.project.role",
+    "label": "Add column \"role\" to \"project\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "role",
+        "table": "project"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"role\" is missing",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "project",
+          "role"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add column \"role\"",
+        "sql": "ALTER TABLE \"public\".\"project\" ADD COLUMN \"role\" text"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"role\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "project",
+          "role"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "column.public.project.timeline",
+    "label": "Add column \"timeline\" to \"project\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "timeline",
+        "table": "project"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"timeline\" is missing",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "project",
+          "timeline"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add column \"timeline\"",
+        "sql": "ALTER TABLE \"public\".\"project\" ADD COLUMN \"timeline\" text"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"timeline\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "project",
+          "timeline"
+        ]
+      }
+    ]
+  }
+]

@@ -48,7 +48,7 @@ const projectWriteSchema = z.object({
   role:            z.string().nullable().optional(),
   timeline:        z.string().nullable().optional(),
   techStack:       z.array(z.string()).max(20).default([]),
-  githubUrl:       z.string().url().nullable().optional(),
+  githubUrls:      z.array(z.string().url()).default([]),
   demoUrl:         z.string().url().nullable().optional(),
   imageUrl:        z.string().nullable().optional(),
   isFeatured:      z.boolean().default(false),
@@ -68,7 +68,7 @@ type ProjectInput = {
   timeline: string | null;
   techStack: string[];
   metricsRaw: string | null; // raw JSON string from form — validated here
-  githubUrl: string | null;
+  githubUrls: string[];
   demoUrl: string | null;
   imageUrl: string | null;
   isFeatured: boolean;

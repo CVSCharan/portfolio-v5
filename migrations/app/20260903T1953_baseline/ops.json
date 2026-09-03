@@ -1,0 +1,817 @@
+[
+  {
+    "id": "schema.public",
+    "label": "Create schema \"public\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres"
+    },
+    "precheck": [],
+    "execute": [
+      {
+        "description": "Create schema \"public\"",
+        "sql": "CREATE SCHEMA IF NOT EXISTS \"public\"",
+        "params": []
+      }
+    ],
+    "postcheck": []
+  },
+  {
+    "id": "table.admin",
+    "label": "Create table \"admin\"",
+    "summary": "Creates table \"admin\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "admin"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"admin\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"admin\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"admin\"",
+        "sql": "CREATE TABLE \"public\".\"admin\" (\n  \"createdAt\" timestamptz DEFAULT (now()) NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"password\" text NOT NULL,\n  \"username\" text NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"admin\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"admin\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.blogPost",
+    "label": "Create table \"blogPost\"",
+    "summary": "Creates table \"blogPost\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "blogPost"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"blogPost\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"blogPost\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"blogPost\"",
+        "sql": "CREATE TABLE \"public\".\"blogPost\" (\n  \"authorId\" int4,\n  \"content\" text,\n  \"createdAt\" timestamptz DEFAULT (now()) NOT NULL,\n  \"excerpt\" text,\n  \"id\" SERIAL NOT NULL,\n  \"published\" bool DEFAULT false NOT NULL,\n  \"slug\" text NOT NULL,\n  \"title\" text NOT NULL,\n  \"viewCount\" int4 DEFAULT 0 NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"blogPost\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"blogPost\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.certification",
+    "label": "Create table \"certification\"",
+    "summary": "Creates table \"certification\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "certification"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"certification\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"certification\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"certification\"",
+        "sql": "CREATE TABLE \"public\".\"certification\" (\n  \"date\" text,\n  \"id\" SERIAL NOT NULL,\n  \"issuer\" text,\n  \"order\" int4 DEFAULT 0 NOT NULL,\n  \"title\" text NOT NULL,\n  \"url\" text,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"certification\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"certification\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.education",
+    "label": "Create table \"education\"",
+    "summary": "Creates table \"education\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "education"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"education\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"education\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"education\"",
+        "sql": "CREATE TABLE \"public\".\"education\" (\n  \"courses\" text[] DEFAULT '{}' NOT NULL,\n  \"degree\" text NOT NULL,\n  \"description\" text,\n  \"id\" SERIAL NOT NULL,\n  \"institution\" text NOT NULL,\n  \"order\" int4 DEFAULT 0 NOT NULL,\n  \"period\" text NOT NULL,\n  PRIMARY KEY (\"id\"),\n  CONSTRAINT \"education_courses_elem_not_null_cc871872\" CHECK (array_position(\"courses\", NULL) IS NULL)\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"education\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"education\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.experience",
+    "label": "Create table \"experience\"",
+    "summary": "Creates table \"experience\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "experience"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"experience\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"experience\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"experience\"",
+        "sql": "CREATE TABLE \"public\".\"experience\" (\n  \"company\" text NOT NULL,\n  \"description\" text,\n  \"highlights\" text[] DEFAULT '{}' NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"order\" int4 DEFAULT 0 NOT NULL,\n  \"period\" text NOT NULL,\n  \"title\" text NOT NULL,\n  PRIMARY KEY (\"id\"),\n  CONSTRAINT \"experience_highlights_elem_not_null_1a2363a4\" CHECK (array_position(\"highlights\", NULL) IS NULL)\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"experience\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"experience\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.language",
+    "label": "Create table \"language\"",
+    "summary": "Creates table \"language\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "language"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"language\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"language\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"language\"",
+        "sql": "CREATE TABLE \"public\".\"language\" (\n  \"additionalInfo\" text,\n  \"extraDetails\" text,\n  \"highlights\" text[] DEFAULT '{}' NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"order\" int4 DEFAULT 0 NOT NULL,\n  \"proficiency\" text NOT NULL,\n  \"title\" text NOT NULL,\n  PRIMARY KEY (\"id\"),\n  CONSTRAINT \"language_highlights_elem_not_null_1a2363a4\" CHECK (array_position(\"highlights\", NULL) IS NULL)\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"language\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"language\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.pageView",
+    "label": "Create table \"pageView\"",
+    "summary": "Creates table \"pageView\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "pageView"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"pageView\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"pageView\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"pageView\"",
+        "sql": "CREATE TABLE \"public\".\"pageView\" (\n  \"createdAt\" timestamptz DEFAULT (now()) NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"path\" text NOT NULL,\n  \"referrer\" text,\n  \"userAgent\" text,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"pageView\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"pageView\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.project",
+    "label": "Create table \"project\"",
+    "summary": "Creates table \"project\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "project"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"project\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"project\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"project\"",
+        "sql": "CREATE TABLE \"public\".\"project\" (\n  \"category\" text,\n  \"createdAt\" timestamptz DEFAULT (now()) NOT NULL,\n  \"demoUrl\" text,\n  \"description\" text,\n  \"fullDescription\" text,\n  \"githubUrl\" text,\n  \"highlights\" text[] DEFAULT '{}' NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"imageUrl\" text,\n  \"isActive\" bool DEFAULT true NOT NULL,\n  \"isFeatured\" bool DEFAULT false NOT NULL,\n  \"order\" int4 DEFAULT 0 NOT NULL,\n  \"slug\" text NOT NULL,\n  \"techStack\" text[] DEFAULT '{}' NOT NULL,\n  \"title\" text NOT NULL,\n  PRIMARY KEY (\"id\"),\n  CONSTRAINT \"project_highlights_elem_not_null_1a2363a4\" CHECK (array_position(\"highlights\", NULL) IS NULL),\n  CONSTRAINT \"project_techStack_elem_not_null_54034c45\" CHECK (array_position(\"techStack\", NULL) IS NULL)\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"project\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"project\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.resumeSection",
+    "label": "Create table \"resumeSection\"",
+    "summary": "Creates table \"resumeSection\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "resumeSection"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"resumeSection\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"resumeSection\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"resumeSection\"",
+        "sql": "CREATE TABLE \"public\".\"resumeSection\" (\n  \"id\" SERIAL NOT NULL,\n  \"name\" text NOT NULL,\n  \"order\" int4 DEFAULT 0 NOT NULL,\n  \"title\" text NOT NULL,\n  \"visible\" bool DEFAULT true NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"resumeSection\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"resumeSection\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.resumeSettings",
+    "label": "Create table \"resumeSettings\"",
+    "summary": "Creates table \"resumeSettings\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "resumeSettings"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"resumeSettings\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"resumeSettings\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"resumeSettings\"",
+        "sql": "CREATE TABLE \"public\".\"resumeSettings\" (\n  \"activeLayout\" text DEFAULT 'Standard' NOT NULL,\n  \"activeTemplate\" text DEFAULT 'T1' NOT NULL,\n  \"activeTheme\" text DEFAULT 'Black' NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"resumeSettings\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"resumeSettings\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.skill",
+    "label": "Create table \"skill\"",
+    "summary": "Creates table \"skill\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "skill"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"skill\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"skill\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"skill\"",
+        "sql": "CREATE TABLE \"public\".\"skill\" (\n  \"categories\" text[] DEFAULT '{}' NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"level\" int4 NOT NULL,\n  \"name\" text NOT NULL,\n  PRIMARY KEY (\"id\"),\n  CONSTRAINT \"skill_categories_elem_not_null_959d4498\" CHECK (array_position(\"categories\", NULL) IS NULL)\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"skill\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"skill\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.user",
+    "label": "Create table \"user\"",
+    "summary": "Creates table \"user\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "user"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"user\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"user\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"user\"",
+        "sql": "CREATE TABLE \"public\".\"user\" (\n  \"avatar\" text,\n  \"bio\" text,\n  \"createdAt\" timestamptz DEFAULT (now()) NOT NULL,\n  \"email\" text NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"name\" text NOT NULL,\n  \"story\" text,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"user\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"user\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.volunteerWork",
+    "label": "Create table \"volunteerWork\"",
+    "summary": "Creates table \"volunteerWork\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "volunteerWork"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"volunteerWork\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"volunteerWork\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"volunteerWork\"",
+        "sql": "CREATE TABLE \"public\".\"volunteerWork\" (\n  \"additionalInfo\" text,\n  \"date\" text,\n  \"extraDetails\" text,\n  \"highlights\" text[] DEFAULT '{}' NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"order\" int4 DEFAULT 0 NOT NULL,\n  \"organization\" text NOT NULL,\n  \"role\" text NOT NULL,\n  PRIMARY KEY (\"id\"),\n  CONSTRAINT \"volunteerWork_highlights_elem_not_null_1a2363a4\" CHECK (array_position(\"highlights\", NULL) IS NULL)\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"volunteerWork\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"volunteerWork\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.admin.admin_username_key",
+    "label": "Add unique constraint on \"admin\" (username)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "admin_username_key",
+        "table": "admin"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"admin_username_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "admin_username_key",
+          "public",
+          "\"public\".\"admin\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"admin_username_key\"",
+        "sql": "ALTER TABLE \"public\".\"admin\" ADD CONSTRAINT \"admin_username_key\" UNIQUE (\"username\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"admin_username_key\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "admin_username_key",
+          "public",
+          "\"public\".\"admin\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.blogPost.blogPost_slug_key",
+    "label": "Add unique constraint on \"blogPost\" (slug)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "blogPost_slug_key",
+        "table": "blogPost"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"blogPost_slug_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "blogPost_slug_key",
+          "public",
+          "\"public\".\"blogPost\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"blogPost_slug_key\"",
+        "sql": "ALTER TABLE \"public\".\"blogPost\" ADD CONSTRAINT \"blogPost_slug_key\" UNIQUE (\"slug\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"blogPost_slug_key\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "blogPost_slug_key",
+          "public",
+          "\"public\".\"blogPost\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.project.project_slug_key",
+    "label": "Add unique constraint on \"project\" (slug)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "project_slug_key",
+        "table": "project"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"project_slug_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "project_slug_key",
+          "public",
+          "\"public\".\"project\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"project_slug_key\"",
+        "sql": "ALTER TABLE \"public\".\"project\" ADD CONSTRAINT \"project_slug_key\" UNIQUE (\"slug\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"project_slug_key\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "project_slug_key",
+          "public",
+          "\"public\".\"project\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.resumeSection.resumeSection_name_key",
+    "label": "Add unique constraint on \"resumeSection\" (name)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "resumeSection_name_key",
+        "table": "resumeSection"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"resumeSection_name_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "resumeSection_name_key",
+          "public",
+          "\"public\".\"resumeSection\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"resumeSection_name_key\"",
+        "sql": "ALTER TABLE \"public\".\"resumeSection\" ADD CONSTRAINT \"resumeSection_name_key\" UNIQUE (\"name\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"resumeSection_name_key\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "resumeSection_name_key",
+          "public",
+          "\"public\".\"resumeSection\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.user.user_email_key",
+    "label": "Add unique constraint on \"user\" (email)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "user_email_key",
+        "table": "user"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"user_email_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "user_email_key",
+          "public",
+          "\"public\".\"user\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"user_email_key\"",
+        "sql": "ALTER TABLE \"public\".\"user\" ADD CONSTRAINT \"user_email_key\" UNIQUE (\"email\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"user_email_key\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "user_email_key",
+          "public",
+          "\"public\".\"user\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.blogPost.blogPost_authorId_idx_e47547ed",
+    "label": "Create index \"blogPost_authorId_idx_e47547ed\" on \"blogPost\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "blogPost_authorId_idx_e47547ed",
+        "table": "blogPost"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"blogPost_authorId_idx_e47547ed\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"blogPost_authorId_idx_e47547ed\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"blogPost_authorId_idx_e47547ed\"",
+        "sql": "CREATE INDEX \"blogPost_authorId_idx_e47547ed\" ON \"public\".\"blogPost\" (\"authorId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"blogPost_authorId_idx_e47547ed\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"blogPost_authorId_idx_e47547ed\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.blogPost.blogPost_authorId_fkey",
+    "label": "Add foreign key \"blogPost_authorId_fkey\" on \"blogPost\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "blogPost_authorId_fkey",
+        "table": "blogPost"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"blogPost_authorId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "blogPost_authorId_fkey",
+          "public",
+          "\"public\".\"blogPost\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"blogPost_authorId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"blogPost\"\nADD CONSTRAINT \"blogPost_authorId_fkey\"\nFOREIGN KEY (\"authorId\")\nREFERENCES \"public\".\"user\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"blogPost_authorId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "blogPost_authorId_fkey",
+          "public",
+          "\"public\".\"blogPost\""
+        ]
+      }
+    ]
+  }
+]

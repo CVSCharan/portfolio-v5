@@ -39,7 +39,7 @@ model Project {
   techStack       String[]  @default([])
   highlights      String[]  @default([])
   metrics         Json?
-  githubUrl       String?
+  githubUrls      String[]  @default([])
   demoUrl         String?
   imageUrl        String?
   order           Int       @default(0)

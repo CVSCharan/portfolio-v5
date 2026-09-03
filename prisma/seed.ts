@@ -126,7 +126,7 @@ async function main() {
       slug: "nlp-resume-tool",
       description: "An NLP-powered resume evaluation tool using OpenAI and custom scoring logic. Automated the end-to-end process with n8n for smart, scalable resume parsing.",
       techStack: ["OpenAI", "n8n", "Node.js", "React"],
-      githubUrl: "https://github.com/CVSCharan",
+      githubUrls: ["https://github.com/CVSCharan"],
       demoUrl: "https://portfolio-v5.vercel.app",
       imageUrl: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=800",
       order: 1
@@ -136,7 +136,7 @@ async function main() {
       slug: "ai-rag-chatbot",
       description: "Architected MCP-like systems and RAG-based chatbots to streamline evaluation and support workflows, delivering real-time intelligent responses.",
       techStack: ["LangChain", "Pinecone", "Python", "Next.js"],
-      githubUrl: "https://github.com/CVSCharan",
+      githubUrls: ["https://github.com/CVSCharan"],
       demoUrl: "https://portfolio-v5.vercel.app",
       imageUrl: "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=800",
       order: 2
@@ -146,7 +146,7 @@ async function main() {
       slug: "qr-digital-menu",
       description: "Designed and delivered a web and mobile app for restaurant operations with features like a QR-based digital menu, Google Reviews integration, and real-time control.",
       techStack: ["React Native", "Express.js", "MongoDB", "AWS"],
-      githubUrl: "https://github.com/CVSCharan",
+      githubUrls: ["https://github.com/CVSCharan"],
       demoUrl: "https://portfolio-v5.vercel.app",
       imageUrl: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&q=80&w=800",
       order: 3

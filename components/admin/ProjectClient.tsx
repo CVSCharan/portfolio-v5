@@ -100,11 +100,11 @@ function ProjectEditCard({
           />
         </div>
         <div className="space-y-2">
-          <label className="text-label text-muted-foreground mb-1.5 block">GitHub URL</label>
+          <label className="text-label text-muted-foreground mb-1.5 block">GitHub URLs (Comma Separated)</label>
           <input
             type="text"
-            value={formData.githubUrl || ""}
-            onChange={(e) => setFormData({ ...formData, githubUrl: e.target.value })}
+            value={Array.isArray(formData.githubUrls) ? formData.githubUrls.join(", ") : formData.githubUrls || ""}
+            onChange={(e) => setFormData({ ...formData, githubUrls: e.target.value.split(",").map(s => s.trim()).filter(Boolean) })}
             className="w-full px-4 py-2.5 bg-background border border-border rounded-lg focus:border-foreground focus:ring-1 focus:ring-foreground/20 outline-none transition-colors text-foreground"
           />
         </div>
@@ -135,7 +135,7 @@ export default function ProjectClient({ projects }: { projects: any[] }) {
     description: "",
     techStack: "",
     highlights: "",
-    githubUrl: "",
+    githubUrls: [] as string[],
     demoUrl: "",
   });
 
@@ -153,7 +153,7 @@ export default function ProjectClient({ projects }: { projects: any[] }) {
       description: "",
       techStack: "",
       highlights: "",
-      githubUrl: "",
+      githubUrls: [] as string[],
       demoUrl: "",
     });
     setIsAddExpanded(false);
@@ -242,11 +242,11 @@ export default function ProjectClient({ projects }: { projects: any[] }) {
             />
           </div>
           <div className="space-y-2">
-            <label className="text-label text-muted-foreground mb-1.5 block">GitHub URL</label>
+            <label className="text-label text-muted-foreground mb-1.5 block">GitHub URLs (Comma Separated)</label>
             <input
               type="text"
-              value={newProject.githubUrl}
-              onChange={(e) => setNewProject({ ...newProject, githubUrl: e.target.value })}
+              value={Array.isArray(newProject.githubUrls) ? newProject.githubUrls.join(", ") : newProject.githubUrls || ""}
+              onChange={(e) => setNewProject({ ...newProject, githubUrls: e.target.value.split(",").map(s => s.trim()).filter(Boolean) })}
               className="w-full px-4 py-2.5 bg-background border border-border rounded-lg focus:border-foreground focus:ring-1 focus:ring-foreground/20 outline-none transition-colors text-foreground"
             />
           </div>

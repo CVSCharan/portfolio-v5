@@ -55,6 +55,7 @@
 ## Planned
 
 ### Blog
+- [x] Implemented "Load More" pagination pattern with Prisma 8 ORM for efficient scaling
 - [ ] Build blog content (admin → publish posts)
 - [ ] Once posts exist: add "Latest Post" bento tile on home page
 - [ ] Blog page styling aligned to design system (currently unstyled PageHeader pattern)
@@ -94,3 +95,6 @@
 | 2026-09-03 | Removed `/admin` from public footer | Not advertising admin route to portfolio visitors |
 | 2026-09-03 | Blog stays in nav | Being built — remove only if permanently abandoned |
 | 2026-09-03 | AI chatbot bento tile deferred | Mock must be replaced with real RAG before surfacing |
+| 2026-09-04 | "Load More" preferred over infinite scroll | Protects footer accessibility in portfolio design |
+| 2026-09-04 | Numbered pagination for Admin views | Allows explicit navigation to older records |
+| 2026-09-04 | Prisma 8 SQL Builder for array overlaps | ORM lacks `.has()`; SQL builder `fns.raw` maintains typings securely |

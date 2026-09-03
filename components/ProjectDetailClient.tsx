@@ -23,7 +23,7 @@ interface ProjectRecord {
   techStack: readonly string[];
   highlights: readonly string[];
   metrics: unknown | null;
-  githubUrl: string | null;
+  githubUrls: readonly string[];
   demoUrl: string | null;
   imageUrl: string | null;
   order: number;
@@ -232,7 +232,7 @@ export default function ProjectDetailClient({
                 {project.role}
               </span>
             )}
-            {project.role && (project.timeline || project.githubUrl || project.demoUrl) && (
+            {project.role && (project.timeline || project.githubUrls.length > 0 || project.demoUrl) && (
               <span className="text-border select-none">·</span>
             )}
 
@@ -243,21 +243,26 @@ export default function ProjectDetailClient({
                 {project.timeline}
               </span>
             )}
-            {project.timeline && (project.githubUrl || project.demoUrl) && (
+            {project.timeline && (project.githubUrls.length > 0 || project.demoUrl) && (
               <span className="text-border select-none">·</span>
             )}
 
             {/* GitHub */}
-            {project.githubUrl && (
-              <a
-                href={project.githubUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-outline btn-sm gap-2"
-              >
-                <GitFork className="w-3.5 h-3.5" />
-                GitHub
-              </a>
+            {project.githubUrls.length > 0 && (
+              <div className="flex gap-2 flex-wrap">
+                {project.githubUrls.map((url, i) => (
+                  <a
+                    key={url}
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn btn-outline btn-sm gap-2"
+                  >
+                    <GitFork className="w-3.5 h-3.5" />
+                    GitHub {project.githubUrls.length > 1 ? i + 1 : ""}
+                  </a>
+                ))}
+              </div>
             )}
 
             {/* Live Demo */}

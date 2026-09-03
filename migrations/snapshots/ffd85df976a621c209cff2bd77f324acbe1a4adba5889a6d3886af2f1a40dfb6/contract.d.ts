@@ -33,7 +33,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'cea290e76d9d161255687e7ad4f3d1b2e11e3aad85389a64ea466f81b0add665'>;
+  StorageHashBase<'ffd85df976a621c209cff2bd77f324acbe1a4adba5889a6d3886af2f1a40dfb6'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
@@ -311,7 +311,7 @@ export type FieldOutputTypes = {
       readonly techStack: ReadonlyArray<CodecTypes['pg/text@1']['output']>;
       readonly highlights: ReadonlyArray<CodecTypes['pg/text@1']['output']>;
       readonly metrics: CodecTypes['pg/json@1']['output'] | null;
-      readonly githubUrls: ReadonlyArray<CodecTypes['pg/text@1']['output']>;
+      readonly githubUrl: CodecTypes['pg/text@1']['output'] | null;
       readonly demoUrl: CodecTypes['pg/text@1']['output'] | null;
       readonly imageUrl: CodecTypes['pg/text@1']['output'] | null;
       readonly order: CodecTypes['pg/int4@1']['output'];
@@ -432,7 +432,7 @@ export type FieldInputTypes = {
       readonly techStack: ReadonlyArray<CodecTypes['pg/text@1']['input']>;
       readonly highlights: ReadonlyArray<CodecTypes['pg/text@1']['input']>;
       readonly metrics: CodecTypes['pg/json@1']['input'] | null;
-      readonly githubUrls: ReadonlyArray<CodecTypes['pg/text@1']['input']>;
+      readonly githubUrl: CodecTypes['pg/text@1']['input'] | null;
       readonly demoUrl: CodecTypes['pg/text@1']['input'] | null;
       readonly imageUrl: CodecTypes['pg/text@1']['input'] | null;
       readonly order: CodecTypes['pg/int4@1']['input'];
@@ -547,7 +547,7 @@ export type StorageColumnTypes = {
       readonly demoUrl: CodecTypes['pg/text@1']['output'] | null;
       readonly description: CodecTypes['pg/text@1']['output'] | null;
       readonly fullDescription: CodecTypes['pg/text@1']['output'] | null;
-      readonly githubUrls: ReadonlyArray<CodecTypes['pg/text@1']['output']>;
+      readonly githubUrl: CodecTypes['pg/text@1']['output'] | null;
       readonly highlights: ReadonlyArray<CodecTypes['pg/text@1']['output']>;
       readonly id: CodecTypes['pg/int4@1']['output'];
       readonly imageUrl: CodecTypes['pg/text@1']['output'] | null;
@@ -668,7 +668,7 @@ export type StorageColumnInputTypes = {
       readonly demoUrl: CodecTypes['pg/text@1']['input'] | null;
       readonly description: CodecTypes['pg/text@1']['input'] | null;
       readonly fullDescription: CodecTypes['pg/text@1']['input'] | null;
-      readonly githubUrls: ReadonlyArray<CodecTypes['pg/text@1']['input']>;
+      readonly githubUrl: CodecTypes['pg/text@1']['input'] | null;
       readonly highlights: ReadonlyArray<CodecTypes['pg/text@1']['input']>;
       readonly id: CodecTypes['pg/int4@1']['input'];
       readonly imageUrl: CodecTypes['pg/text@1']['input'] | null;
@@ -1177,14 +1177,10 @@ type ContractBase = Omit<
                   readonly codecId: 'pg/json@1';
                   readonly nullable: true;
                 };
-                readonly githubUrls: {
+                readonly githubUrl: {
                   readonly nativeType: 'text';
                   readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                  readonly default: {
-                    readonly kind: 'literal';
-                    readonly value: DefaultLiteralValue<'pg/text@1', readonly []>;
-                  };
+                  readonly nullable: true;
                 };
                 readonly demoUrl: {
                   readonly nativeType: 'text';
@@ -1898,10 +1894,9 @@ type ContractBase = Omit<
                 readonly nullable: true;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/json@1' };
               };
-              readonly githubUrls: {
-                readonly nullable: false;
+              readonly githubUrl: {
+                readonly nullable: true;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-                readonly many: true;
               };
               readonly demoUrl: {
                 readonly nullable: true;
@@ -1947,7 +1942,7 @@ type ContractBase = Omit<
                 readonly techStack: { readonly column: 'techStack' };
                 readonly highlights: { readonly column: 'highlights' };
                 readonly metrics: { readonly column: 'metrics' };
-                readonly githubUrls: { readonly column: 'githubUrls' };
+                readonly githubUrl: { readonly column: 'githubUrl' };
                 readonly demoUrl: { readonly column: 'demoUrl' };
                 readonly imageUrl: { readonly column: 'imageUrl' };
                 readonly order: { readonly column: 'order' };

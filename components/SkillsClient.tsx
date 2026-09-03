@@ -12,6 +12,7 @@ interface SkillRecord {
   name: string;
   level: number;
   categories: readonly string[];
+  projectCount?: number;
 }
 
 const SKILL_SLUGS: Record<string, string> = {
@@ -217,13 +218,27 @@ export default function SkillsClient({ skills }: { skills: SkillRecord[] }) {
                   </span>
                   <div className="flex flex-wrap gap-2.5">
                     {items.map((s) => (
-                      <span
-                        key={s.id}
-                        className="group flex items-center gap-2 px-3 py-1.5 bg-background border border-border rounded-lg text-sm font-medium text-foreground hover:border-foreground/30 hover:shadow-sm transition-all duration-200 cursor-default"
-                      >
-                        {getIcon(s.name)}
-                        {s.name}
-                      </span>
+                      s.projectCount && s.projectCount > 0 ? (
+                        <Link
+                          key={s.id}
+                          href={`/projects?tech=${encodeURIComponent(s.name)}`}
+                          className="group flex items-center gap-2 px-3 py-1.5 bg-background border border-border rounded-lg text-sm font-medium text-foreground hover:border-foreground/30 hover:shadow-sm transition-all duration-200"
+                        >
+                          {getIcon(s.name)}
+                          <span>{s.name}</span>
+                          <span className="flex items-center text-xs text-muted-foreground group-hover:text-foreground transition-colors ml-1">
+                            {s.projectCount} <ArrowRight className="w-3 h-3 ml-0.5 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
+                          </span>
+                        </Link>
+                      ) : (
+                        <span
+                          key={s.id}
+                          className="group flex items-center gap-2 px-3 py-1.5 bg-background border border-border rounded-lg text-sm font-medium text-foreground hover:border-foreground/30 hover:shadow-sm transition-all duration-200 cursor-default"
+                        >
+                          {getIcon(s.name)}
+                          {s.name}
+                        </span>
+                      )
                     ))}
                   </div>
                 </motion.div>

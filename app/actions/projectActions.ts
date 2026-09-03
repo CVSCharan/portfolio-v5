@@ -34,7 +34,7 @@ export async function addProject(data?: any) {
     description: data?.description || null,
     techStack: techStackArray,
     highlights: highlightsArray,
-    githubUrl: data?.githubUrl || null,
+    githubUrls: data?.githubUrls || null,
     demoUrl: data?.demoUrl || null,
     imageUrl: data?.imageUrl || null,
     order: data?.order ?? 999
@@ -63,7 +63,7 @@ export async function updateProject(id: number, data: any) {
     description: data.description || null,
     techStack: techStackArray,
     highlights: highlightsArray,
-    githubUrl: data.githubUrl || null,
+    githubUrls: data.githubUrls || null,
     demoUrl: data.demoUrl || null,
     imageUrl: data.imageUrl || null
   });
@@ -86,4 +86,41 @@ export async function reorderProjects(updates: { id: number; order: number }[]) 
     await db.orm.public.Project.where({ id: update.id }).update({ order: update.order });
   }
   revalidatePath("/admin/projects");
+}
+
+export async function getPaginatedTemplates(skip: number, take: number, tech?: string | null) {
+  const plan = db.sql.public.project
+    .select(
+      "id",
+      "title",
+      "slug",
+      "description",
+      "fullDescription",
+      "techStack",
+      "highlights",
+      "githubUrls",
+      "demoUrl",
+      "imageUrl",
+      "category",
+      "isActive",
+      "isFeatured",
+      "order",
+      "createdAt"
+    )
+    .where((f, fns) => {
+      if (tech) {
+        return fns.and(
+          fns.eq(f.isFeatured, false),
+          fns.raw`${tech} = ANY(${f.techStack})`.returns("pg/bool@1")
+        );
+      }
+      return fns.eq(f.isFeatured, false);
+    })
+    .orderBy((f) => f.order, { direction: "asc" })
+    .limit(take)
+    .offset(skip)
+    .build();
+
+  const results = await (db.runtime() as any).query(plan);
+  return results as any;
 }

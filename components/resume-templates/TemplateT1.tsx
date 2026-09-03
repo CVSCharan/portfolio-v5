@@ -52,7 +52,7 @@ export interface ResumeProject {
   description?: string | null;
   techStack: ReadonlyArray<string>;
   highlights: ReadonlyArray<string>;
-  githubUrl?: string | null;
+  githubUrls?: ReadonlyArray<string>;
   demoUrl?: string | null;
   order: number;
 }
@@ -249,10 +249,14 @@ export function TemplateT1({
                         {p.title}
                       </span>
                       <div className="flex gap-2 text-[10px] text-muted-foreground">
-                        {p.githubUrl && (
-                          <a href={p.githubUrl} className="flex items-center gap-1 text-muted-foreground hover:text-foreground">
-                            <Globe className="w-2.5 h-2.5" /> GitHub
-                          </a>
+                        {p.githubUrls && p.githubUrls.length > 0 && (
+                          <div className="flex gap-2">
+                            {p.githubUrls.map((url, i) => (
+                              <a key={url} href={url} className="flex items-center gap-1 text-muted-foreground hover:text-foreground">
+                                <Globe className="w-2.5 h-2.5" /> GitHub {p.githubUrls!.length > 1 ? i + 1 : ""}
+                              </a>
+                            ))}
+                          </div>
                         )}
                         {p.demoUrl && (
                           <span className="flex items-center gap-0.5">
