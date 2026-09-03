@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ExternalLink, GitFork, X } from "lucide-react";
+import { ExternalLink, GitFork, X, ArrowUpRight } from "lucide-react";
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useMemo, Suspense, useRef, useState, useEffect, useTransition } from "react";
 import { getPaginatedTemplates } from "@/app/actions/projectActions";
+import { CollaborateCTA } from "./CollaborateCTA";
 
 /* ── Types ─────────────────────────────────────────────────── */
 interface ProjectRecord {
@@ -511,6 +512,12 @@ function ProjectsContent({
 
         </div>
       </section>
+
+      {/* ════════════════════════════════════════════════════
+          CTA
+      ════════════════════════════════════════════════════ */}
+      <CollaborateCTA />
+
     </div>
   );
 }
