@@ -6,7 +6,7 @@ import { ExternalLink, GitFork, X, ArrowUpRight } from "lucide-react";
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
-import { useMemo, Suspense, useRef, useState, useEffect, useTransition } from "react";
+import { useMemo, Suspense, useRef, useState, useEffect, useTransition, useCallback } from "react";
 import { getPaginatedTemplates } from "@/app/actions/projectActions";
 import { CollaborateCTA } from "./CollaborateCTA";
 
@@ -217,7 +217,7 @@ function ProjectsContent({
 
   const prefersReducedMotion = useReducedMotion();
 
-  const handleLoadMore = async () => {
+  const handleLoadMore = useCallback(() => {
     startTransition(async () => {
       try {
         const nextBatch = await getPaginatedTemplates(templates.length, 9, selectedTech);
@@ -232,7 +232,28 @@ function ProjectsContent({
         console.error("Failed to load more templates:", err);
       }
     });
-  };
+  }, [templates.length, selectedTech]);
+
+  const observerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMore && !isPending) {
+          handleLoadMore();
+        }
+      },
+      { rootMargin: "400px" } // trigger well before the element comes into view
+    );
+
+    const target = observerRef.current;
+    if (target) observer.observe(target);
+
+    return () => {
+      if (target) observer.unobserve(target);
+    };
+  }, [hasMore, isPending, handleLoadMore]);
+
 
   return (
     <div className="-mx-5 md:-mx-10 bg-background overflow-x-hidden">
@@ -385,10 +406,10 @@ function ProjectsContent({
                     key={proj.id}
                     initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: 10 }}
                     whileInView={prefersReducedMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-60px" }}
+                    viewport={{ once: true, margin: "150px" }}
                     transition={{
                       ...springTransition,
-                      delay: prefersReducedMotion ? 0 : (index % 6) * 0.08,
+                      delay: prefersReducedMotion ? 0 : (index % 3) * 0.05,
                     }}
                     className="card card-hover flex flex-col overflow-hidden group h-full"
                   >
@@ -495,16 +516,13 @@ function ProjectsContent({
                   </motion.article>
                 ))}
               </div>
+              <div ref={observerRef} className="h-4 w-full" />
               
-              {hasMore && (
-                <div className="flex justify-center mt-12">
-                  <button
-                    onClick={handleLoadMore}
-                    disabled={isPending}
-                    className="btn btn-outline px-8 py-3 rounded-full text-sm font-medium transition-colors hover:bg-foreground hover:text-background disabled:opacity-50"
-                  >
-                    {isPending ? "Loading..." : "Load More"}
-                  </button>
+              {isPending && (
+                <div className="flex justify-center mt-12 mb-12">
+                  <div className="text-sm font-medium text-muted-foreground animate-pulse">
+                    Loading more projects...
+                  </div>
                 </div>
               )}
             </>
