@@ -1,7 +1,6 @@
 import { db } from "@/src/prisma/db";
-import { PageHeader } from "@/components/PageHeader";
 import { TemplateT1 } from "@/components/resume-templates/TemplateT1";
-import { PrintButton } from "@/components/resume-templates/PrintButton";
+import { ResumeScreenView } from "@/components/ResumeScreenView";
 
 export const metadata = {
   title: "Resume",
@@ -58,27 +57,32 @@ export default async function ResumePage() {
 
   return (
     <div>
-      {/* ── Page chrome (hidden on print) ── */}
-      <div className="no-print">
-        <PageHeader
-          label="CV"
-          title="Resume"
-          description="Live resume synced from the CMS. Use Cmd+P / Ctrl+P to save as PDF."
-          actions={<PrintButton />}
+      {/* ── SCREEN VIEW (Hidden on Print) ── */}
+      <div className="print:hidden">
+        <ResumeScreenView
+          user={resolvedUser}
+          experiences={experiences as Parameters<typeof TemplateT1>[0]["experiences"]}
+          education={education as Parameters<typeof TemplateT1>[0]["education"]}
+          skills={skills as Parameters<typeof TemplateT1>[0]["skills"]}
+          certifications={certifications as Parameters<typeof TemplateT1>[0]["certifications"]}
+          languages={languages as Parameters<typeof TemplateT1>[0]["languages"]}
+          projects={projects as Parameters<typeof TemplateT1>[0]["projects"]}
         />
       </div>
 
-      {/* ── Template ── */}
-      <TemplateT1
-        user={resolvedUser}
-        experiences={experiences as Parameters<typeof TemplateT1>[0]["experiences"]}
-        education={education as Parameters<typeof TemplateT1>[0]["education"]}
-        skills={skills as Parameters<typeof TemplateT1>[0]["skills"]}
-        certifications={certifications as Parameters<typeof TemplateT1>[0]["certifications"]}
-        languages={languages as Parameters<typeof TemplateT1>[0]["languages"]}
-        projects={projects as Parameters<typeof TemplateT1>[0]["projects"]}
-        accentColor={accentColor}
-      />
+      {/* ── PRINT VIEW (Hidden on Screen) ── */}
+      <div className="hidden print:block">
+        <TemplateT1
+          user={resolvedUser}
+          experiences={experiences as Parameters<typeof TemplateT1>[0]["experiences"]}
+          education={education as Parameters<typeof TemplateT1>[0]["education"]}
+          skills={skills as Parameters<typeof TemplateT1>[0]["skills"]}
+          certifications={certifications as Parameters<typeof TemplateT1>[0]["certifications"]}
+          languages={languages as Parameters<typeof TemplateT1>[0]["languages"]}
+          projects={projects as Parameters<typeof TemplateT1>[0]["projects"]}
+          accentColor={accentColor}
+        />
+      </div>
     </div>
   );
 }

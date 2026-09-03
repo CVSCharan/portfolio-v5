@@ -41,6 +41,24 @@ async function main() {
     viewCount: 42,
   });
   console.log({ blog1 });
+
+  const certificationsData = [
+    { title: "Introduction to Agile Development and Scrum", issuer: "IBM", date: "Dec 2023", url: "https://www.coursera.org/account/accomplishments/verify/5Q6GVCNM2CTU", order: 1 },
+    { title: "Prompt Engineering for ChatGPT", issuer: "Vanderbilt University", date: "Dec 2023", url: "https://www.coursera.org/account/accomplishments/verify/C3FDTN6CX2E2", order: 2 },
+    { title: "Build Dynamic User Interfaces (UI) for Websites", issuer: "Google", date: "Dec 2023", url: "https://www.coursera.org/account/accomplishments/verify/GSS32RDGQ2FN", order: 3 },
+    { title: "Build Your Own Responsive Website", issuer: "NxtWave", date: "May 2022", url: "https://certificates.ccbp.in/intensive/responsive-website?id=SPHXUJUIHC", order: 4 },
+    { title: "Build Your Own Static Website", issuer: "NxtWave", date: "May 2022", url: "https://certificates.ccbp.in/intensive/static-website?id=VLRHVLFFZK", order: 5 },
+    { title: "Node.js", issuer: "NxtWave", date: "June 2022", url: "https://certificates.ccbp.in/intensive/node-js?id=QDFZRPPWTP", order: 6 },
+    { title: "Developer Foundations", issuer: "NxtWave", date: "May 2022", url: "https://certificates.ccbp.in/intensive/developer-foundations?id=YHYRHFDZIX", order: 7 },
+    { title: "Introduction to Databases", issuer: "NxtWave", date: "May 2022", url: "https://certificates.ccbp.in/intensive/introduction-to-databases?id=DKMZHJQPPV", order: 8 },
+    { title: "JavaScript Essentials", issuer: "NxtWave", date: "May 2022", url: "https://certificates.ccbp.in/intensive/javascript-essentials?id=QUEJYXOPHQ", order: 9 },
+    { title: "Responsive Web Design using Flexbox", issuer: "NxtWave", date: "May 2022", url: "https://certificates.ccbp.in/intensive/flexbox?id=JZQULPRPNN", order: 10 },
+  ];
+
+  for (const cert of certificationsData) {
+    const c = await db.orm.public.Certification.create(cert);
+    console.log({ certification: c });
+  }
 }
 
 main().catch(console.error);

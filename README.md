@@ -60,6 +60,15 @@ Floating chat widget (RAG-style) available across all pages — allows recruiter
 ### 6. Custom Analytics
 `<PageTracker />` silently logs path, referrer, and user agent into `PageView` table on every route change. Zero external dependencies.
 
+### 7. Dual-Layout Resume Page (`/resume`)
+- Implements a seamless split between a screen-optimized view (`ResumeScreenView`) matching the site's dark monochrome aesthetic, and a print-optimized document (`TemplateT1`).
+- Uses Tailwind's `@media print` utilities (`print:hidden` vs `hidden print:block`) to render a perfectly formatted white, 2-column A4 CV when the user clicks "Download PDF" or presses `Cmd+P`.
+
+### 8. Credentials ("Trophy Room")
+- Dedicated `/credentials` page displaying all database-seeded certifications.
+- Strict adherence to the monochrome design system (text-based issuer treatment, no external full-color badges).
+- The `/about` page features a curated teaser of the top certifications linking to the full list.
+
 ## 🗄️ Database Migrations
 
 New columns are added via safe, additive migration scripts — never destructive:

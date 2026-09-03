@@ -20,6 +20,13 @@ interface UserRecord {
   story: string | null;
   createdAt: string;
 }
+interface Certification {
+  id: number;
+  title: string;
+  issuer: string | null;
+  date: string | null;
+  url: string | null;
+}
 
 /* ── Animation helpers ──────────────────────────────────────── */
 function fadeUp(delay = 0) {
@@ -41,9 +48,11 @@ function reveal(delay = 0) {
 export function AboutClient({
   skills,
   user,
+  certifications,
 }: {
   skills: Skill[];
   user: UserRecord | null;
+  certifications: Certification[];
 }) {
   const name = user?.name ?? "CVS Charan";
   const bio =
@@ -279,6 +288,78 @@ export function AboutClient({
                         {s.name}
                       </span>
                     ))}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ════════════════════════════════════════════════════
+          CERTIFICATIONS — curated list
+      ════════════════════════════════════════════════════ */}
+      {certifications?.length > 0 && (
+        <section className="w-full border-t border-border px-5 sm:px-10 xl:px-16 py-16 md:py-24">
+          <div className="max-w-6xl mx-auto">
+            {/* Section header */}
+            <motion.div
+              initial={{ opacity: 0, y: 14 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.5 }}
+              className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12"
+            >
+              <div>
+                <p className="text-label text-muted-foreground mb-2">
+                  Credentials
+                </p>
+                <h2
+                  className="text-headline text-foreground"
+                  style={{ fontFamily: "var(--font-bricolage)" }}
+                >
+                  Continuous Learner.
+                </h2>
+              </div>
+              <Link
+                href="/credentials"
+                className="btn btn-outline btn-md group shrink-0"
+              >
+                View all 10{" "}
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+              </Link>
+            </motion.div>
+
+            {/* Grid of Certs */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {certifications.map((cert, i) => (
+                <motion.div
+                  key={cert.id}
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-60px" }}
+                  transition={{ duration: 0.4, delay: i * 0.06, ease: "easeOut" }}
+                  className="group relative flex flex-col justify-between p-6 rounded-2xl border border-border bg-card/50 hover:bg-card/80 transition-colors"
+                >
+                  <div>
+                    <p className="text-label text-muted-foreground mb-3">{cert.issuer}</p>
+                    <h3 className="text-lg font-medium text-foreground tracking-tight leading-snug pr-8">
+                      {cert.title}
+                    </h3>
+                  </div>
+                  <div className="mt-8 flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">{cert.date}</span>
+                    {cert.url && (
+                      <a 
+                        href={cert.url} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="btn btn-outline btn-sm gap-2"
+                      >
+                        Verify
+                        <Link2 className="w-3.5 h-3.5" />
+                      </a>
+                    )}
                   </div>
                 </motion.div>
               ))}
