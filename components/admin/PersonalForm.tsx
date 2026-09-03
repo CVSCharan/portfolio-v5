@@ -43,7 +43,7 @@ export function PersonalForm({ initialData }: { initialData: UserProfile }) {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="space-y-2">
-          <label className="text-sm font-medium text-gray-700">Full Name</label>
+          <label className="text-label text-muted-foreground mb-1.5 block">Full Name</label>
           <input
             type="text"
             name="name"
@@ -55,7 +55,7 @@ export function PersonalForm({ initialData }: { initialData: UserProfile }) {
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-medium text-gray-700">Email Address</label>
+          <label className="text-label text-muted-foreground mb-1.5 block">Email Address</label>
           <input
             type="email"
             name="email"
@@ -67,7 +67,7 @@ export function PersonalForm({ initialData }: { initialData: UserProfile }) {
         </div>
 
         <div className="space-y-2 md:col-span-2">
-          <label className="text-sm font-medium text-gray-700">Professional Bio (Short)</label>
+          <label className="text-label text-muted-foreground mb-1.5 block">Professional Bio (Short)</label>
           <input
             type="text"
             name="bio"
@@ -79,7 +79,7 @@ export function PersonalForm({ initialData }: { initialData: UserProfile }) {
         </div>
 
         <div className="space-y-2 md:col-span-2">
-          <label className="text-sm font-medium text-gray-700">My Story (Long Description)</label>
+          <label className="text-label text-muted-foreground mb-1.5 block">My Story (Long Description)</label>
           <textarea
             name="story"
             value={formData.story || ""}
@@ -91,7 +91,7 @@ export function PersonalForm({ initialData }: { initialData: UserProfile }) {
         </div>
 
         <div className="space-y-2 md:col-span-2">
-          <label className="text-sm font-medium text-gray-700">Avatar Image URL</label>
+          <label className="text-label text-muted-foreground mb-1.5 block">Avatar Image URL</label>
           <input
             type="text"
             name="avatar"

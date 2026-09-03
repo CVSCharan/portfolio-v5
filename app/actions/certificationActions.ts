@@ -14,16 +14,16 @@ export async function getCertifications() {
   return await db.orm.public.Certification.orderBy((c) => c.order.asc()).all();
 }
 
-export async function addCertification() {
+export async function addCertification(data?: any) {
   const session = await getServerSession(authOptions);
   if (!session) throw new Error("Unauthorized");
 
   const result = await db.orm.public.Certification.create({
-    title: "New Certification",
-    issuer: "Issuing Organization",
-    date: "2024",
-    url: null,
-    order: 999,
+    title: data?.title || "New Certification",
+    issuer: data?.issuer || "Issuing Organization",
+    date: data?.date || "2024",
+    url: data?.url || null,
+    order: data?.order ?? 999,
   });
   revalidatePath("/admin/certifications");
   return result;

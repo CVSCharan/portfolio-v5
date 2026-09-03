@@ -14,20 +14,30 @@ export async function getProjects() {
   return await db.orm.public.Project.orderBy((p) => p.order.asc()).all();
 }
 
-export async function addProject() {
+export async function addProject(data?: any) {
   const session = await getServerSession(authOptions);
   if (!session) throw new Error("Unauthorized");
 
+  let techStackArray = data?.techStack || [];
+  if (typeof data?.techStack === 'string') {
+    techStackArray = data.techStack.split(',').map((s: string) => s.trim()).filter(Boolean);
+  }
+
+  let highlightsArray = data?.highlights || [];
+  if (typeof data?.highlights === 'string') {
+    highlightsArray = data.highlights.split(',').map((s: string) => s.trim()).filter(Boolean);
+  }
+
   const result = await db.orm.public.Project.create({
-    title: 'New Project',
-    slug: 'new-project-' + Date.now(),
-    description: null,
-    techStack: [],
-    highlights: [],
-    githubUrl: null,
-    demoUrl: null,
-    imageUrl: null,
-    order: 999
+    title: data?.title || 'New Project',
+    slug: data?.slug || 'new-project-' + Date.now(),
+    description: data?.description || null,
+    techStack: techStackArray,
+    highlights: highlightsArray,
+    githubUrl: data?.githubUrl || null,
+    demoUrl: data?.demoUrl || null,
+    imageUrl: data?.imageUrl || null,
+    order: data?.order ?? 999
   });
   revalidatePath("/admin/projects");
   return result;

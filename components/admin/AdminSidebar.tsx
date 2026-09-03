@@ -44,12 +44,12 @@ export function AdminSidebar() {
   return (
     <aside className="w-64 bg-card border-r border-border flex flex-col h-screen sticky top-0">
       <div className="p-6 border-b border-border flex items-center gap-3">
-        <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold">
-          R
+        <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold font-mono">
+          C
         </div>
         <div>
-          <h2 className="font-bold text-foreground leading-tight">Resume Builder</h2>
-          <p className="text-label text-muted-foreground mt-1">CMS Panel</p>
+          <h2 className="font-bold text-foreground leading-tight">CVS Charan</h2>
+          <p className="text-label text-muted-foreground mt-1">Admin</p>
         </div>
       </div>
       
@@ -60,19 +60,22 @@ export function AdminSidebar() {
           }
           
           const Icon = item.icon!;
-          const isActive = pathname === item.href; // Exact match better for /admin vs /admin/analytics
+          const isActive = pathname === item.href; 
           
           return (
             <Link
               key={item.href}
               href={item.href!}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors text-sm font-medium ${
+              className={`relative flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors text-sm font-medium overflow-hidden ${
                 isActive 
-                  ? "bg-primary text-primary-foreground" 
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                  ? "bg-muted text-foreground" 
+                  : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
               }`}
             >
-              <Icon size={18} className={isActive ? "text-primary-foreground" : "text-muted-foreground opacity-70"} />
+              {isActive && (
+                <div className="absolute left-0 top-0 bottom-0 w-1 bg-secondary" />
+              )}
+              <Icon size={18} className={isActive ? "text-secondary" : "text-muted-foreground opacity-70"} />
               {item.name}
             </Link>
           );

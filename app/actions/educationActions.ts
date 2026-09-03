@@ -14,17 +14,25 @@ export async function getEducation() {
   return await db.orm.public.Education.orderBy((e) => e.order.asc()).all();
 }
 
-export async function addEducation() {
+export async function addEducation(data?: any) {
   const session = await getServerSession(authOptions);
   if (!session) throw new Error("Unauthorized");
 
+  let coursesArray = data?.courses || [];
+  if (typeof data?.courses === "string") {
+    coursesArray = data.courses
+      .split(",")
+      .map((s: string) => s.trim())
+      .filter(Boolean);
+  }
+
   const result = await db.orm.public.Education.create({
-    degree: "New Degree",
-    institution: "Institution Name",
-    period: "2023 - 2024",
-    description: null,
-    courses: [],
-    order: 999,
+    degree: data?.degree || "New Degree",
+    institution: data?.institution || "Institution Name",
+    period: data?.period || "2023 - 2024",
+    description: data?.description || null,
+    courses: coursesArray,
+    order: data?.order ?? 999,
   });
   revalidatePath("/admin/education");
   return result;

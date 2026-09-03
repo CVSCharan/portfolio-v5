@@ -182,7 +182,13 @@ export function ExperienceClient({
                         · {exp.company}
                       </span>
                     </div>
-                    <span className="text-xs font-mono text-muted-foreground/50 shrink-0">
+                    <span className="flex items-center gap-2 text-xs font-mono text-muted-foreground/50 shrink-0">
+                      {exp.period.toLowerCase().includes("present") && (
+                        <span className="relative flex h-2 w-2">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                          <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                        </span>
+                      )}
                       {exp.period}
                     </span>
                   </div>
@@ -208,43 +214,7 @@ export function ExperienceClient({
         </div>
       </section>
 
-      {/* ════════════════════════════════════════════════════
-          CTA — identical to home + about
-      ════════════════════════════════════════════════════ */}
-      <section className="w-full border-t border-border bg-muted/20 px-5 sm:px-10 xl:px-16 py-16 md:py-24">
-        <motion.div
-          initial={{ opacity: 0, y: 14 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.5 }}
-          className="max-w-6xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-8"
-        >
-          <div className="max-w-xl">
-            <p className="text-label text-muted-foreground mb-2">
-              Let&apos;s Collaborate
-            </p>
-            <h2
-              className="text-headline text-foreground"
-              style={{ fontFamily: "var(--font-bricolage)" }}
-            >
-              Have a project in mind?
-            </h2>
-            <p className="text-base text-muted-foreground leading-relaxed mt-3">
-              Open to ambitious projects, creative ideas, and new opportunities
-              to build something meaningful.
-            </p>
-          </div>
-          <div className="flex flex-col sm:flex-row gap-3 shrink-0">
-            <Link href="/contact" className="btn btn-primary btn-lg group">
-              Get in Touch{" "}
-              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-            </Link>
-            <Link href="/projects" className="btn btn-outline btn-lg">
-              View Work
-            </Link>
-          </div>
-        </motion.div>
-      </section>
+
 
     </div>
   );

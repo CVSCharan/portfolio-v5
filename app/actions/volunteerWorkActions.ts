@@ -14,18 +14,26 @@ export async function getVolunteerWork() {
   return await db.orm.public.VolunteerWork.orderBy((v) => v.order.asc()).all();
 }
 
-export async function addVolunteerWork() {
+export async function addVolunteerWork(data?: any) {
   const session = await getServerSession(authOptions);
   if (!session) throw new Error("Unauthorized");
 
+  let highlightsArray = data?.highlights || [];
+  if (typeof data?.highlights === "string") {
+    highlightsArray = data.highlights
+      .split(",")
+      .map((s: string) => s.trim())
+      .filter(Boolean);
+  }
+
   const result = await db.orm.public.VolunteerWork.create({
-    organization: "New Organization",
-    role: "Volunteer",
-    date: "2024 - Present",
-    additionalInfo: null,
-    extraDetails: null,
-    highlights: [],
-    order: 999,
+    organization: data?.organization || "New Organization",
+    role: data?.role || "Volunteer",
+    date: data?.date || "2024 - Present",
+    additionalInfo: data?.additionalInfo || null,
+    extraDetails: data?.extraDetails || null,
+    highlights: highlightsArray,
+    order: data?.order ?? 999,
   });
   revalidatePath("/admin/volunteer");
   return result;

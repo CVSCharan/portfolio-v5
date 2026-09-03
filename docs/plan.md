@@ -31,6 +31,14 @@
 - [x] **Footer** — Removed `/admin` link from public RESOURCES section
 - [x] **Design system documented** — `docs/design.md` reflects current ground truth
 
+### Admin & Polish (Post-Audit)
+- [x] **Admin Redesign** — Migrated all CMS pages to `AdminEditCard` components with local state buffering, dirty-checking, and explicit save buttons. Functional UI overhaul with strict token usage.
+- [x] **Admin Status Validation** — `AdminEditCard` buttons flash functional green "Saved!" or red "Error" upon submission.
+- [x] **Reordering** — Replaced `framer-motion` drag-and-drop with Up/Down buttons in admin lists for cleaner accessibility and state management.
+- [x] **CTA Consolidation** — Enforced the "Strict Diet" design principle by removing repetitive massive CTA blocks from public pages. The CTA remains on the `HomeClient` as the primary funnel.
+- [x] **Current Role Marker** — Added green "availability" status dot pattern to `ExperienceClient` for "Present" roles.
+- [x] **Mobile Nav Accessibility** — Added `react-focus-lock` to `DynamicIslandNav` and `useReducedMotion` support.
+
 ---
 
 ## In Progress

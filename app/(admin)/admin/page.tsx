@@ -16,7 +16,7 @@ export default async function AdminDashboard() {
   const blogs = await db.orm.public.BlogPost.all();
 
   return (
-    <div className="space-y-8">
+    <div className="max-w-6xl mx-auto space-y-8 animate-fade-up">
       <div>
         <h2 className="text-headline mb-4">Welcome, {session.user?.name}</h2>
         <p className="text-body-muted">This is your admin dashboard where you can manage your portfolio content.</p>

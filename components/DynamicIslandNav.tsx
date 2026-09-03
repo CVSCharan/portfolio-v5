@@ -9,8 +9,10 @@ import {
   AnimatePresence,
   useScroll,
   useMotionValueEvent,
+  useReducedMotion,
 } from "framer-motion";
 import { Sun, Moon, Menu, X } from "lucide-react";
+import FocusLock from "react-focus-lock";
 
 const NAV_LINKS = [
   { href: "/about", label: "About" },
@@ -103,35 +105,40 @@ function MobileDrawer({
             onClick={onClose}
           />
           {/* Drawer panel */}
-          <motion.div
-            className="fixed inset-x-4 top-20 z-50 rounded-2xl border border-border bg-card shadow-2xl overflow-hidden"
-            initial={{ opacity: 0, y: -12, scale: 0.97 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -12, scale: 0.97 }}
-            transition={{ type: "spring", stiffness: 360, damping: 30 }}
-          >
-            <nav className="flex flex-col p-2">
-              {NAV_LINKS.map(({ href, label }) => {
-                const isActive =
-                  pathname === href ||
-                  (href !== "/" && pathname.startsWith(href));
-                return (
-                  <Link
-                    key={href}
-                    href={href}
-                    onClick={onClose}
-                    className={`px-4 py-3.5 text-base font-medium rounded-xl transition-colors flex items-center justify-between ${
-                      isActive
-                        ? "bg-primary/10 text-primary"
-                        : "text-foreground hover:bg-muted"
-                    }`}
-                  >
-                    {label}
-                  </Link>
-                );
-              })}
-            </nav>
-          </motion.div>
+          <FocusLock returnFocus>
+            <motion.div
+              className="fixed inset-x-4 top-20 z-50 rounded-2xl border border-border bg-card shadow-2xl overflow-hidden"
+              role="dialog"
+              aria-modal="true"
+              aria-label="Mobile Navigation"
+              initial={{ opacity: 0, y: -12, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -12, scale: 0.97 }}
+              transition={{ type: "spring", stiffness: 360, damping: 30 }}
+            >
+              <nav className="flex flex-col p-2">
+                {NAV_LINKS.map(({ href, label }) => {
+                  const isActive =
+                    pathname === href ||
+                    (href !== "/" && pathname.startsWith(href));
+                  return (
+                    <Link
+                      key={href}
+                      href={href}
+                      onClick={onClose}
+                      className={`px-4 py-3.5 text-base font-medium rounded-xl transition-colors flex items-center justify-between ${
+                        isActive
+                          ? "bg-primary/10 text-primary"
+                          : "text-foreground hover:bg-muted"
+                      }`}
+                    >
+                      {label}
+                    </Link>
+                  );
+                })}
+              </nav>
+            </motion.div>
+          </FocusLock>
         </>
       )}
     </AnimatePresence>
@@ -144,6 +151,7 @@ export function DynamicIslandNav() {
   const [hovered, setHovered] = React.useState(false);
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const { scrollY } = useScroll();
+  const prefersReducedMotion = useReducedMotion();
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     setScrolled(latest > 60);
@@ -161,11 +169,11 @@ export function DynamicIslandNav() {
           animate={{
             width: isExpanded ? "min(720px, calc(100vw - 32px))" : "220px",
           }}
-          transition={{
-            type: "spring",
-            stiffness: 300,
-            damping: 30,
-          }}
+          transition={
+            prefersReducedMotion
+              ? { duration: 0.01 }
+              : { type: "spring", stiffness: 300, damping: 30 }
+          }
           className="pointer-events-auto relative flex items-center justify-between h-12 px-4 rounded-full border border-border bg-background shadow-sm overflow-hidden"
         >
           {/* Wordmark — always visible */}

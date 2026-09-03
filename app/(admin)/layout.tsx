@@ -16,7 +16,7 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
     <div className="min-h-screen bg-background text-foreground flex">
       <AdminSidebar />
       <main className="flex-1 overflow-y-auto h-screen relative">
-        <div className="max-w-4xl mx-auto p-8 pb-24">
+        <div className="w-full mx-auto p-8 pb-24">
           {children}
         </div>
       </main>

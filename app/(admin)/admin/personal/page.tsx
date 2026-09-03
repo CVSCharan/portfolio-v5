@@ -7,10 +7,10 @@ export default async function PersonalPage() {
   const userProfile = await getUserProfile();
 
   return (
-    <div>
+    <div className="max-w-4xl mx-auto animate-fade-up">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Personal Information</h1>
-        <p className="text-gray-500">
+        <h1 className="text-headline text-foreground mb-2">Personal Information</h1>
+        <p className="text-body-muted">
           Manage your core identity details, bio, and your professional story.
         </p>
       </div>

@@ -14,17 +14,25 @@ export async function getLanguages() {
   return await db.orm.public.Language.orderBy((l) => l.order.asc()).all();
 }
 
-export async function addLanguage() {
+export async function addLanguage(data?: any) {
   const session = await getServerSession(authOptions);
   if (!session) throw new Error("Unauthorized");
 
+  let highlightsArray = data?.highlights || [];
+  if (typeof data?.highlights === "string") {
+    highlightsArray = data.highlights
+      .split(",")
+      .map((s: string) => s.trim())
+      .filter(Boolean);
+  }
+
   const result = await db.orm.public.Language.create({
-    title: "New Language",
-    proficiency: "Native",
-    additionalInfo: null,
-    extraDetails: null,
-    highlights: [],
-    order: 999,
+    title: data?.title || "New Language",
+    proficiency: data?.proficiency || "Native",
+    additionalInfo: data?.additionalInfo || null,
+    extraDetails: data?.extraDetails || null,
+    highlights: highlightsArray,
+    order: data?.order ?? 999,
   });
   revalidatePath("/admin/languages");
   return result;
