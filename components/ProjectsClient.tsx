@@ -497,7 +497,7 @@ function ProjectsContent({
               </div>
               
               {hasMore && (
-                <div className="flex justify-center mt-12 mb-24">
+                <div className="flex justify-center mt-12">
                   <button
                     onClick={handleLoadMore}
                     disabled={isPending}
