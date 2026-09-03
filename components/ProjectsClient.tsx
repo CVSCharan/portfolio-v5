@@ -9,6 +9,7 @@ import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useMemo, Suspense, useRef, useState, useEffect, useTransition, useCallback } from "react";
 import { getPaginatedTemplates } from "@/app/actions/projectActions";
 import { CollaborateCTA } from "./CollaborateCTA";
+import { ProjectCardSkeleton } from "./ProjectCardSkeleton";
 
 /* ── Types ─────────────────────────────────────────────────── */
 interface ProjectRecord {
@@ -515,16 +516,13 @@ function ProjectsContent({
                     </div>
                   </motion.article>
                 ))}
+                
+                {isPending && [1, 2, 3].map((i) => (
+                  <ProjectCardSkeleton key={i} />
+                ))}
               </div>
               <div ref={observerRef} className="h-4 w-full" />
-              
-              {isPending && (
-                <div className="flex justify-center mt-12 mb-12">
-                  <div className="text-sm font-medium text-muted-foreground animate-pulse">
-                    Loading more projects...
-                  </div>
-                </div>
-              )}
+
             </>
           )}
 
