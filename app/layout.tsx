@@ -28,6 +28,7 @@ const geistMono = Geist_Mono({
 
 /* ── Metadata ───────────────────────────────────────── */
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
   title: {
     default: "CVS Charan — Full-Stack Engineer",
     template: "%s · CVS Charan",

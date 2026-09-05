@@ -222,7 +222,7 @@ export function HomeClient({ user, featuredProjects, experiences }: {
             className="col-span-2"
           >
             <Link
-              href={`/projects#${projects[0].slug}`}
+              href={`/projects/${projects[0].slug}`}
               className="group card card-hover h-full min-h-[190px] p-6 md:p-7 flex flex-col justify-between relative overflow-hidden"
             >
               <div
@@ -361,9 +361,6 @@ export function HomeClient({ user, featuredProjects, experiences }: {
               <p className="text-label text-muted-foreground mb-2">Work History</p>
               <h2 className="text-headline text-foreground" style={{ fontFamily: "var(--font-bricolage)" }}>The Journey.</h2>
             </div>
-            <Link href="/experience" className="btn btn-outline btn-md group shrink-0">
-              Full Timeline <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-            </Link>
           </motion.div>
 
           <ol>
@@ -409,9 +406,6 @@ export function HomeClient({ user, featuredProjects, experiences }: {
               <p className="text-label text-muted-foreground mb-2">Selected Work</p>
               <h2 className="text-headline text-foreground" style={{ fontFamily: "var(--font-bricolage)" }}>What I Build.</h2>
             </div>
-            <Link href="/projects" className="btn btn-outline btn-md group shrink-0">
-              All Projects <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-            </Link>
           </motion.div>
 
           <div className="grid gap-5 sm:grid-cols-2">
@@ -423,7 +417,7 @@ export function HomeClient({ user, featuredProjects, experiences }: {
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{ duration: 0.4, delay: i * 0.08 }}
               >
-                <Link href={`/projects#${p.slug}`} className="card card-hover flex flex-col overflow-hidden group block">
+                <Link href={`/projects/${p.slug}`} className="card card-hover flex flex-col overflow-hidden group block">
                   {p.imageUrl ? (
                     <div className="relative h-44 w-full overflow-hidden">
                       <Image src={p.imageUrl} alt={p.title} fill className="object-cover transition-transform duration-500 group-hover:scale-105" sizes="(max-width: 640px) 100vw, 50vw" />

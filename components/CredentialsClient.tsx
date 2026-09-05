@@ -1,7 +1,8 @@
 "use client";
 
-import { ArrowUpRight, Link2 } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { motion } from "framer-motion";
+import { ChapterHero } from "./ChapterHero";
 
 interface Certification {
   id: number;
@@ -30,59 +31,13 @@ function reveal(delay = 0) {
 export function CredentialsClient({ certifications }: { certifications: Certification[] }) {
   return (
     <div className="-mx-5 md:-mx-10 bg-background overflow-x-hidden">
-      {/* ════════════════════════════════════════════════════
-          HERO
-      ════════════════════════════════════════════════════ */}
-      <section
-        className="relative flex flex-col px-5 sm:px-10 xl:px-16 overflow-hidden"
-        style={{
-          background: "radial-gradient(ellipse at 88% 12%, rgba(37,99,235,0.045) 0%, transparent 50%)",
-        }}
-      >
-        <div
-          aria-hidden="true"
-          className="pointer-events-none select-none absolute top-0 right-4 sm:right-10 xl:right-16 font-bold text-foreground leading-none"
-          style={{
-            fontFamily: "var(--font-bricolage)",
-            fontSize: "clamp(8rem, 22vw, 22rem)",
-            opacity: 0.04,
-            letterSpacing: "-0.05em",
-          }}
-        >
-          03
-        </div>
-
-        <motion.div
-          {...fadeUp(0)}
-          className="flex items-center justify-between pt-4 pb-6 border-b border-border"
-        >
-          <span className="text-label text-muted-foreground">Credentials</span>
-          <span className="text-label text-muted-foreground">Chapter 03</span>
-        </motion.div>
-
-        <div className="flex flex-col justify-center py-12 md:py-16 max-w-4xl">
-          <div className="text-page-title overflow-hidden">
-            <motion.div {...reveal(0.1)} className="block leading-[0.95]">
-              <span className="text-foreground">Trophy Room</span>
-              <span className="text-secondary">.</span>
-            </motion.div>
-          </div>
-
-          <motion.p
-            {...fadeUp(0.38)}
-            className="mt-5 md:mt-6 text-base md:text-lg font-medium text-muted-foreground tracking-tight max-w-2xl"
-          >
-            A comprehensive list of professional certifications and verified credentials documenting my continuous learning journey.
-          </motion.p>
-          
-          <motion.div
-            initial={{ scaleX: 0, originX: 0 }}
-            animate={{ scaleX: 1 }}
-            transition={{ duration: 0.7, delay: 0.52, ease: "easeOut" }}
-            className="mt-12 h-px bg-border"
-          />
-        </div>
-      </section>
+      <ChapterHero
+        chapter="03"
+        metaLabel="Credentials"
+        titlePrefix="Trophy Room"
+        titleAccent="."
+        description="A comprehensive list of professional certifications and verified credentials documenting my continuous learning journey."
+      />
 
       {/* ════════════════════════════════════════════════════
           LIST
