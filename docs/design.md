@@ -24,7 +24,7 @@ Exactly **3 design colors + 1 status exception**. No others may be introduced wi
 | `--muted-foreground` | `#71717a` | `#a1a1aa` | Body copy, labels, dates, secondary text |
 | `--secondary` | `#2563eb` | `#39ff14` | **ONE accent word per section** — headline highlight, hover states, active links. Never backgrounds. |
 | `--border` | `#e4e4e7` | `#27272a` | All dividers, card borders, `h-px` rules |
-| `bg-muted/20–25` | `~f4f4f5 @22%` | — | Alternating section backgrounds only |
+| `bg-muted/20–25` | `~f4f4f5 @22%` | — | Deprecated (caused "muddy white" issue). Use fully transparent + borders instead. |
 | **Status green** | `#22c55e` | `#4ade80` | **Exception: pulsing availability dot only.** Never text, never backgrounds, never decorative use. |
 
 ### The "one blue word" principle
@@ -83,13 +83,8 @@ Home also adds `-mt-28` to remove the top offset (hero fills viewport edge-to-ed
 Inner pages do NOT use `-mt-28` — content sits naturally below the nav.
 
 ### Section alternation pattern
-```
-Section 1: white bg      (hero)
-Section 2: muted/20 bg   (first content section)  
-Section 3: white bg      (second content section)
-Section 4: white bg      (CTA — same across all pages)
-Each separated by: border-t border-border
-```
+Sections no longer use `bg-muted` fractions for alternating backgrounds due to a "muddy white" appearance on light mode. All full-width sections use the default transparent/white background.
+Separation is handled entirely by: `border-t border-border`.
 
 ---
 
@@ -110,7 +105,7 @@ Every public page follows this skeleton:
     → Animated h-px rule
     → CTAs / connect buttons
 
-  [SECTION 2 — bg-muted/20, border-t border-border, px-5 sm:px-10 xl:px-16, py-16 md:py-24]
+  [SECTION 2 — border-t border-border, px-5 sm:px-10 xl:px-16, py-16 md:py-24]
     → Section header: text-label grey + text-headline black
     → Content (whileInView animated)
 

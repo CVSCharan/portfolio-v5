@@ -1,5 +1,8 @@
 import * as React from "react";
 
+// Note: This component is for simple internal/generic headers (e.g. /admin/settings, /blog placeholder).
+// For the public full-bleed page heroes with ghost numbers (Home, About, Projects, Experience, Skills, Contact), 
+// see ChapterHero.tsx to avoid naming confusion.
 interface PageHeaderProps {
   label?: string;
   title: string;

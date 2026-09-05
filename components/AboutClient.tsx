@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ArrowRight, Download, GitFork, Link2, Mail, MapPin } from "lucide-react";
 import { motion } from "framer-motion";
+import { ChapterHero } from "./ChapterHero";
 
 /* ── Types ─────────────────────────────────────────────────── */
 interface Skill {
@@ -37,14 +38,6 @@ function fadeUp(delay = 0) {
   };
 }
 
-function reveal(delay = 0) {
-  return {
-    initial: { y: "105%", opacity: 0 },
-    animate: { y: "0%", opacity: 1 },
-    transition: { duration: 0.75, delay, ease: "easeOut" as const },
-  };
-}
-
 export function AboutClient({
   skills,
   user,
@@ -74,129 +67,93 @@ export function AboutClient({
     <div className="-mx-5 md:-mx-10 bg-background overflow-x-hidden">
 
       {/* ════════════════════════════════════════════════════
-          HERO — same structure as home page hero
+          HERO
       ════════════════════════════════════════════════════ */}
-      <section
-        className="relative flex flex-col px-5 sm:px-10 xl:px-16 overflow-hidden"
-        style={{
-          background:
-            "radial-gradient(ellipse at 88% 12%, rgba(37,99,235,0.045) 0%, transparent 50%)",
-        }}
+      <ChapterHero
+        chapter="02"
+        metaLabel="About"
+        titlePrefix=""
+        titleAccent={name + "."}
       >
-        {/* Ghost "02" */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none select-none absolute top-0 right-4 sm:right-10 xl:right-16 font-bold text-foreground leading-none"
-          style={{
-            fontFamily: "var(--font-bricolage)",
-            fontSize: "clamp(8rem, 22vw, 22rem)",
-            opacity: 0.04,
-            letterSpacing: "-0.05em",
-          }}
+        {/* Role line */}
+        <motion.p
+          {...fadeUp(0.38)}
+          className="mt-5 md:mt-6 text-base md:text-lg font-medium text-muted-foreground tracking-tight"
         >
-          02
-        </div>
+          Full-Stack Engineer{" "}
+          <span className="opacity-40">×</span> AI / LLM{" "}
+          <span className="opacity-40">×</span> Data Analytics
+        </motion.p>
 
-        {/* ── Meta bar (mirrors home page top bar) ── */}
+        {/* Location */}
         <motion.div
-          {...fadeUp(0)}
-          className="flex items-center justify-between pt-4 pb-6 border-b border-border"
+          {...fadeUp(0.45)}
+          className="mt-3 flex items-center gap-1.5 text-sm text-muted-foreground/55"
         >
-          <span className="text-label text-muted-foreground">About</span>
-          <span className="text-label text-muted-foreground">Chapter 02</span>
+          <MapPin className="w-3.5 h-3.5 shrink-0" />
+          <span>India — Available for remote worldwide</span>
         </motion.div>
 
-        {/* ── Hero content ── */}
-        <div className="flex flex-col justify-center py-12 md:py-16 max-w-4xl">
+        {/* Animated rule */}
+        <motion.div
+          initial={{ scaleX: 0, originX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ duration: 0.7, delay: 0.52, ease: "easeOut" }}
+          className="mt-8 h-px bg-border"
+        />
 
-          {/* Name — clip reveal, period in blue */}
-          <div className="text-page-title overflow-hidden">
-            <motion.div {...reveal(0.1)} className="block leading-[0.95]">
-              <span className="text-foreground">{name}</span>
-              <span className="text-secondary">.</span>
-            </motion.div>
-          </div>
+        {/* Bio */}
+        <motion.p
+          {...fadeUp(0.58)}
+          className="mt-8 text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl"
+        >
+          {bio}
+        </motion.p>
 
-          {/* Role line */}
-          <motion.p
-            {...fadeUp(0.38)}
-            className="mt-5 md:mt-6 text-base md:text-lg font-medium text-muted-foreground tracking-tight"
+        {/* Animated rule */}
+        <motion.div
+          initial={{ scaleX: 0, originX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ duration: 0.7, delay: 0.68, ease: "easeOut" }}
+          className="mt-8 h-px bg-border"
+        />
+
+        {/* Connect buttons */}
+        <motion.div
+          {...fadeUp(0.74)}
+          className="mt-8 pb-14 md:pb-20 flex flex-wrap gap-3"
+        >
+          <a
+            href="mailto:charan.cvs@gmail.com"
+            className="btn btn-outline btn-md gap-2"
           >
-            Full-Stack Engineer{" "}
-            <span className="opacity-40">×</span> AI / LLM{" "}
-            <span className="opacity-40">×</span> Data Analytics
-          </motion.p>
-
-          {/* Location */}
-          <motion.div
-            {...fadeUp(0.45)}
-            className="mt-3 flex items-center gap-1.5 text-sm text-muted-foreground/55"
+            <Mail className="w-4 h-4" />
+            Email
+          </a>
+          <a
+            href="https://github.com/CVSCharan"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-outline btn-md gap-2"
           >
-            <MapPin className="w-3.5 h-3.5 shrink-0" />
-            <span>India — Available for remote worldwide</span>
-          </motion.div>
-
-          {/* Animated rule */}
-          <motion.div
-            initial={{ scaleX: 0, originX: 0 }}
-            animate={{ scaleX: 1 }}
-            transition={{ duration: 0.7, delay: 0.52, ease: "easeOut" }}
-            className="mt-8 h-px bg-border"
-          />
-
-          {/* Bio */}
-          <motion.p
-            {...fadeUp(0.58)}
-            className="mt-8 text-base md:text-lg text-muted-foreground leading-relaxed max-w-2xl"
+            <GitFork className="w-4 h-4" />
+            GitHub
+          </a>
+          <a
+            href="https://linkedin.com/in/cvscharan"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-outline btn-md gap-2"
           >
-            {bio}
-          </motion.p>
-
-          {/* Animated rule */}
-          <motion.div
-            initial={{ scaleX: 0, originX: 0 }}
-            animate={{ scaleX: 1 }}
-            transition={{ duration: 0.7, delay: 0.68, ease: "easeOut" }}
-            className="mt-8 h-px bg-border"
-          />
-
-          {/* Connect buttons */}
-          <motion.div
-            {...fadeUp(0.74)}
-            className="mt-8 pb-14 md:pb-20 flex flex-wrap gap-3"
-          >
-            <a
-              href="mailto:charan.cvs@gmail.com"
-              className="btn btn-outline btn-md gap-2"
-            >
-              <Mail className="w-4 h-4" />
-              Email
-            </a>
-            <a
-              href="https://github.com/CVSCharan"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn-outline btn-md gap-2"
-            >
-              <GitFork className="w-4 h-4" />
-              GitHub
-            </a>
-            <a
-              href="https://linkedin.com/in/cvscharan"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn-outline btn-md gap-2"
-            >
-              <Link2 className="w-4 h-4" />
-              LinkedIn
-            </a>
-            <Link href="/resume" className="btn btn-primary btn-md gap-2">
-              <Download className="w-4 h-4" />
-              Resume
-            </Link>
-          </motion.div>
-        </div>
-      </section>
+            <Link2 className="w-4 h-4" />
+            LinkedIn
+          </a>
+          <Link href="/resume" className="btn btn-primary btn-md gap-2">
+            <Download className="w-4 h-4" />
+            Resume
+          </Link>
+        </motion.div>
+      </ChapterHero>
 
       {/* ════════════════════════════════════════════════════
           STORY — conditional on user.story field

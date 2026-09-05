@@ -1,5 +1,5 @@
 import { getVolunteerWork } from "@/app/actions/volunteerWorkActions";
-import VolunteerWorkClient from "@/components/admin/VolunteerWorkClient";
+import { VolunteerWorkClient } from "@/components/admin/VolunteerWorkClient";
 
 export default async function VolunteerWorkPage() {
   const volunteerWork = await getVolunteerWork();
@@ -11,7 +11,7 @@ export default async function VolunteerWorkPage() {
         <p className="text-zinc-500 mt-1">Manage your volunteer experience and community contributions</p>
       </div>
       
-      <VolunteerWorkClient volunteerWork={volunteerWork} />
+      <VolunteerWorkClient initialData={volunteerWork} />
     </div>
   );
 }

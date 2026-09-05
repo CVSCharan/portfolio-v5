@@ -5,6 +5,7 @@ import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import * as SimpleIcons from "simple-icons";
 import React from "react";
+import { ChapterHero } from "./ChapterHero";
 
 /* ── Types ─────────────────────────────────────────────────── */
 interface SkillRecord {
@@ -65,22 +66,6 @@ const SKILL_SLUGS: Record<string, string> = {
   Postman: "postman",
 };
 
-/* ── Animation helpers ──────────────────────────────────────── */
-function fadeUp(delay = 0) {
-  return {
-    initial: { opacity: 0, y: 24 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.6, delay, ease: "easeOut" as const },
-  };
-}
-
-function reveal(delay = 0) {
-  return {
-    initial: { y: "105%", opacity: 0 },
-    animate: { y: "0%", opacity: 1 },
-    transition: { duration: 0.75, delay, ease: "easeOut" as const },
-  };
-}
 
 export default function SkillsClient({ skills }: { skills: SkillRecord[] }) {
   /* Group skills by category */
@@ -120,56 +105,13 @@ export default function SkillsClient({ skills }: { skills: SkillRecord[] }) {
       {/* ════════════════════════════════════════════════════
           HERO
       ════════════════════════════════════════════════════ */}
-      <section
-        className="relative flex flex-col px-5 sm:px-10 xl:px-16 overflow-hidden"
-        style={{
-          background:
-            "radial-gradient(ellipse at 85% 15%, rgba(37,99,235,0.04) 0%, transparent 52%)",
-        }}
-      >
-        {/* Ghost "05" */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none select-none absolute top-0 right-4 sm:right-10 xl:right-16 font-bold text-foreground leading-none"
-          style={{
-            fontFamily: "var(--font-bricolage)",
-            fontSize: "clamp(8rem, 22vw, 22rem)",
-            opacity: 0.04,
-            letterSpacing: "-0.05em",
-          }}
-        >
-          05
-        </div>
-
-        {/* ── Meta bar ── */}
-        <motion.div
-          {...fadeUp(0)}
-          className="flex items-center justify-between pt-4 pb-6 border-b border-border"
-        >
-          <span className="text-label text-muted-foreground">Capabilities</span>
-          <span className="text-label text-muted-foreground">Chapter 05</span>
-        </motion.div>
-
-        {/* ── Headline ── */}
-        <div className="flex flex-col justify-center py-12 md:py-16 max-w-4xl">
-          <div className="text-page-title overflow-hidden">
-            <motion.div {...reveal(0.1)} className="block leading-[0.95]">
-              <span className="text-foreground">The </span>
-              <span className="text-secondary">Arsenal.</span>
-            </motion.div>
-          </div>
-
-          {/* Role line */}
-          <motion.p
-            {...fadeUp(0.38)}
-            className="mt-5 md:mt-6 text-base md:text-lg font-medium text-muted-foreground tracking-tight"
-          >
-            A comprehensive list of technical skills, languages, tools, and
-            frameworks I use.
-          </motion.p>
-
-        </div>
-      </section>
+      <ChapterHero
+        chapter="05"
+        metaLabel="Capabilities"
+        titlePrefix="The "
+        titleAccent="Arsenal."
+        description="A comprehensive list of technical skills, languages, tools, and frameworks I use."
+      />
 
       {/* ════════════════════════════════════════════════════
           SKILLS — editorial category rows

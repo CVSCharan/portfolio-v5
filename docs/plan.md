@@ -35,7 +35,7 @@
 - [x] **Admin Redesign** — Migrated all CMS pages to `AdminEditCard` components with local state buffering, dirty-checking, and explicit save buttons. Functional UI overhaul with strict token usage.
 - [x] **Admin Status Validation** — `AdminEditCard` buttons flash functional green "Saved!" or red "Error" upon submission.
 - [x] **Reordering** — Replaced `framer-motion` drag-and-drop with Up/Down buttons in admin lists for cleaner accessibility and state management.
-- [x] **CTA Consolidation** — Enforced the "Strict Diet" design principle by removing repetitive massive CTA blocks from public pages. The CTA remains on the `HomeClient` as the primary funnel.
+- [x] **CTA Consolidation** — Enforced the "Strict Diet" design principle by removing repetitive massive CTA blocks from public pages. The CTA remains on the `HomeClient` and `ProjectsClient` (to capture the "finished exploring work" moment), but nowhere else.
 - [x] **Current Role Marker** — Added green "availability" status dot pattern to `ExperienceClient` for "Present" roles.
 - [x] **Mobile Nav Accessibility** — Added `react-focus-lock` to `DynamicIslandNav` and `useReducedMotion` support.
 
@@ -44,11 +44,11 @@
 ## In Progress
 
 ### Design System — Remaining Pages (Phases 4–7)
-- [ ] **Phase 4** — `experience/page.tsx` — meta bar `CAREER · 04`, ghost `04`, "The Journey." headline, stats strip, numbered list (already partially matching home style)
-- [ ] **Phase 5** — `SkillsClient.tsx` — meta bar `CAPABILITIES · 05`, ghost `05`, "The Arsenal." headline, simplified layout (remove complex dashboard — editorial category rows instead)
-- [ ] **Phase 6** — `ProjectsGrid.tsx` + `projects/page.tsx` — meta bar `SELECTED WORK · 03`, ghost `03`, "What I Build." headline, featured card + grid
-- [ ] **Phase 7** — `contact/page.tsx` — meta bar `CONTACT · 06`, ghost `06`, "Let's build something." headline, form
-- [ ] **Phase 8** — `PageHeader.tsx` — evaluate whether it's still needed or should be replaced by the new per-page hero pattern
+- [x] **Phase 4** — `experience/page.tsx` — meta bar `CAREER · 04`, ghost `04`, "The Journey." headline, stats strip, numbered list (already partially matching home style)
+- [x] **Phase 5** — `SkillsClient.tsx` — meta bar `CAPABILITIES · 05`, ghost `05`, "The Arsenal." headline, simplified layout (remove complex dashboard — editorial category rows instead)
+- [x] **Phase 6** — `ProjectsGrid.tsx` + `projects/page.tsx` — meta bar `SELECTED WORK · 03`, ghost `03`, "What I Build." headline, featured card + grid
+- [x] **Phase 7** — `contact/page.tsx` — meta bar `CONTACT · 06`, ghost `06`, "Let's build something." headline, form
+- [ ] **Phase 8** — `PageHeader.tsx` refactor — unify the duplicated hero/meta-bar/ghost-number pattern across all pages (About, Projects, Experience, Skills, Contact) into a single reusable component to eliminate duplication debt. (Blog integration deferred until Blog phase).
 
 ---
 

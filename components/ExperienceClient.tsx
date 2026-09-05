@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
+import { ChapterHero } from "./ChapterHero";
 
 /* ── Types ─────────────────────────────────────────────────── */
 interface ExperienceRecord {
@@ -23,14 +24,6 @@ function fadeUp(delay = 0) {
   };
 }
 
-function reveal(delay = 0) {
-  return {
-    initial: { y: "105%", opacity: 0 },
-    animate: { y: "0%", opacity: 1 },
-    transition: { duration: 0.75, delay, ease: "easeOut" as const },
-  };
-}
-
 export function ExperienceClient({
   experiences,
 }: {
@@ -45,87 +38,45 @@ export function ExperienceClient({
       {/* ════════════════════════════════════════════════════
           HERO
       ════════════════════════════════════════════════════ */}
-      <section
-        className="relative flex flex-col px-5 sm:px-10 xl:px-16 overflow-hidden"
-        style={{
-          background:
-            "radial-gradient(ellipse at 85% 15%, rgba(37,99,235,0.04) 0%, transparent 52%)",
-        }}
+      <ChapterHero
+        chapter="04"
+        metaLabel="Career"
+        titlePrefix="The "
+        titleAccent="Journey."
+        description="Professional history — roles, companies, and what was built."
       >
-        {/* Ghost "04" */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none select-none absolute top-0 right-4 sm:right-10 xl:right-16 font-bold text-foreground leading-none"
-          style={{
-            fontFamily: "var(--font-bricolage)",
-            fontSize: "clamp(8rem, 22vw, 22rem)",
-            opacity: 0.04,
-            letterSpacing: "-0.05em",
-          }}
-        >
-          04
-        </div>
-
-        {/* ── Meta bar ── */}
+        {/* Animated rule */}
         <motion.div
-          {...fadeUp(0)}
-          className="flex items-center justify-between pt-4 pb-6 border-b border-border"
+          initial={{ scaleX: 0, originX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ duration: 0.7, delay: 0.48, ease: "easeOut" }}
+          className="mt-8 h-px bg-border"
+        />
+
+        {/* Stats strip */}
+        <motion.div
+          {...fadeUp(0.55)}
+          className="mt-8 flex flex-wrap gap-x-10 gap-y-3"
         >
-          <span className="text-label text-muted-foreground">Career</span>
-          <span className="text-label text-muted-foreground">Chapter 04</span>
+          {[
+            { value: "4+", label: "Years" },
+            { value: `${experiences.length}`, label: "Roles" },
+            { value: `${companies.length}`, label: "Companies" },
+          ].map(({ value, label }) => (
+            <div key={label} className="flex items-baseline gap-2">
+              <span
+                className="text-4xl font-bold text-secondary tracking-tighter"
+                style={{ fontFamily: "var(--font-bricolage)" }}
+              >
+                {value}
+              </span>
+              <span className="text-sm text-muted-foreground font-medium">
+                {label}
+              </span>
+            </div>
+          ))}
         </motion.div>
-
-        {/* ── Headline ── */}
-        <div className="flex flex-col justify-center py-12 md:py-16 max-w-4xl">
-          <div className="text-page-title overflow-hidden">
-            <motion.div {...reveal(0.1)} className="block leading-[0.95]">
-              <span className="text-foreground">The </span>
-              <span className="text-secondary">Journey.</span>
-            </motion.div>
-          </div>
-
-          {/* Role line */}
-          <motion.p
-            {...fadeUp(0.38)}
-            className="mt-5 md:mt-6 text-base md:text-lg font-medium text-muted-foreground tracking-tight"
-          >
-            Professional history — roles, companies, and what was built.
-          </motion.p>
-
-          {/* Animated rule */}
-          <motion.div
-            initial={{ scaleX: 0, originX: 0 }}
-            animate={{ scaleX: 1 }}
-            transition={{ duration: 0.7, delay: 0.48, ease: "easeOut" }}
-            className="mt-8 h-px bg-border"
-          />
-
-          {/* Stats strip */}
-          <motion.div
-            {...fadeUp(0.55)}
-            className="mt-8 flex flex-wrap gap-x-10 gap-y-3"
-          >
-            {[
-              { value: "4+", label: "Years" },
-              { value: `${experiences.length}`, label: "Roles" },
-              { value: `${companies.length}`, label: "Companies" },
-            ].map(({ value, label }) => (
-              <div key={label} className="flex items-baseline gap-2">
-                <span
-                  className="text-4xl font-bold text-secondary tracking-tighter"
-                  style={{ fontFamily: "var(--font-bricolage)" }}
-                >
-                  {value}
-                </span>
-                <span className="text-sm text-muted-foreground font-medium">
-                  {label}
-                </span>
-              </div>
-            ))}
-          </motion.div>
-
-        </div>
-      </section>
+      </ChapterHero>
 
       {/* ════════════════════════════════════════════════════
           TIMELINE — editorial numbered list

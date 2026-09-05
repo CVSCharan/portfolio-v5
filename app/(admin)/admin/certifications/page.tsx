@@ -1,5 +1,5 @@
 import { getCertifications } from "@/app/actions/certificationActions";
-import CertificationClient from "@/components/admin/CertificationClient";
+import { CertificationClient } from "@/components/admin/CertificationClient";
 
 export default async function CertificationsPage() {
   const certifications = await getCertifications();
@@ -13,7 +13,7 @@ export default async function CertificationsPage() {
         </p>
       </div>
 
-      <CertificationClient certifications={certifications} />
+      <CertificationClient initialData={certifications} />
     </div>
   );
 }

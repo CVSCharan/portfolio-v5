@@ -10,6 +10,7 @@ import { useMemo, Suspense, useRef, useState, useEffect, useTransition, useCallb
 import { getPaginatedTemplates } from "@/app/actions/projectActions";
 import { CollaborateCTA } from "./CollaborateCTA";
 import { ProjectCardSkeleton } from "./ProjectCardSkeleton";
+import { ChapterHero } from "./ChapterHero";
 
 /* ── Types ─────────────────────────────────────────────────── */
 interface ProjectRecord {
@@ -261,63 +262,14 @@ function ProjectsContent({
       {/* ════════════════════════════════════════════════════
           HERO
       ════════════════════════════════════════════════════ */}
-      <section
-        className="relative flex flex-col px-5 sm:px-10 xl:px-16 overflow-hidden"
-        style={{
-          background:
-            "radial-gradient(ellipse at 85% 15%, rgba(37,99,235,0.04) 0%, transparent 52%)",
-        }}
-      >
-        {/* Ghost "03" */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none select-none absolute top-0 right-4 sm:right-10 xl:right-16 font-bold text-foreground leading-none"
-          style={{
-            fontFamily: "var(--font-bricolage)",
-            fontSize: "clamp(8rem, 22vw, 22rem)",
-            opacity: 0.04,
-            letterSpacing: "-0.05em",
-          }}
-        >
-          03
-        </div>
-
-        {/* ── Meta bar ── */}
-        <motion.div
-          initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ ...springTransition }}
-          className="flex items-center justify-between pt-4 pb-6 border-b border-border"
-        >
-          <span className="text-label text-muted-foreground">Selected Work</span>
-          <span className="text-label text-muted-foreground">Chapter 03</span>
-        </motion.div>
-
-        {/* ── Headline ── */}
-        <div className="flex flex-col justify-center py-12 md:py-16 max-w-4xl">
-          <div className="text-page-title overflow-hidden">
-            <motion.div 
-              initial={prefersReducedMotion ? { opacity: 1 } : { y: "105%", opacity: 0 }}
-              animate={{ y: "0%", opacity: 1 }}
-              transition={{ ...springTransition, delay: prefersReducedMotion ? 0 : 0.1 }}
-              className="block leading-[0.95]"
-            >
-              <span className="text-foreground">What I </span>
-              <span className="text-secondary">Build.</span>
-            </motion.div>
-          </div>
-
-          {/* Role line */}
-          <motion.p
-            initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ ...springTransition, delay: prefersReducedMotion ? 0 : 0.2 }}
-            className="mt-5 md:mt-6 text-base md:text-lg font-medium text-muted-foreground tracking-tight"
-          >
-            A selection of full-stack applications, AI integrations, and tools.
-          </motion.p>
-        </div>
-      </section>
+      <ChapterHero
+        chapter="03"
+        metaLabel="Selected Work"
+        titlePrefix="What I "
+        titleAccent="Build."
+        description="A selection of full-stack applications, AI integrations, and tools."
+        prefersReducedMotion={prefersReducedMotion}
+      />
 
       {/* ════════════════════════════════════════════════════
           PROJECTS GRID & FILTER

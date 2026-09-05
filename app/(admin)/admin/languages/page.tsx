@@ -1,5 +1,5 @@
 import { getLanguages } from "@/app/actions/languageActions";
-import LanguageClient from "@/components/admin/LanguageClient";
+import { LanguageClient } from "@/components/admin/LanguageClient";
 
 export default async function LanguagesPage() {
   const languages = await getLanguages();
@@ -13,7 +13,7 @@ export default async function LanguagesPage() {
         </p>
       </div>
 
-      <LanguageClient languages={languages} />
+      <LanguageClient initialData={languages} />
     </div>
   );
 }
