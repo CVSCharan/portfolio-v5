@@ -38,6 +38,14 @@
 - [x] **CTA Consolidation** — Enforced the "Strict Diet" design principle by removing repetitive massive CTA blocks from public pages. The CTA remains on the `HomeClient` and `ProjectsClient` (to capture the "finished exploring work" moment), but nowhere else.
 - [x] **Current Role Marker** — Added green "availability" status dot pattern to `ExperienceClient` for "Present" roles.
 - [x] **Mobile Nav Accessibility** — Added `react-focus-lock` to `DynamicIslandNav` and `useReducedMotion` support.
+- [x] **Home UX Fixes** — Fixed dead-end anchor links on capability cards, streamlined CTA density.
+- [x] **Phase 8** — `PageHeader.tsx` refactor — unify the duplicated hero/meta-bar/ghost-number pattern across all pages (About, Projects, Experience, Skills, Contact, Blog) into a single reusable `ChapterHero` component to eliminate duplication debt. `PageHeader.tsx` is now strictly an admin-only component.
+
+### Performance & SEO (Phase 9)
+- [x] Core Web Vitals audit (LCP, INP, CLS)
+- [x] `next/image` audit — ensure all images have explicit `sizes`
+- [x] `sitemap.xml` and `robots.txt` implemented dynamically
+- [x] OG image generation for social sharing (`@vercel/og`)
 
 ---
 
@@ -48,7 +56,6 @@
 - [x] **Phase 5** — `SkillsClient.tsx` — meta bar `CAPABILITIES · 05`, ghost `05`, "The Arsenal." headline, simplified layout (remove complex dashboard — editorial category rows instead)
 - [x] **Phase 6** — `ProjectsGrid.tsx` + `projects/page.tsx` — meta bar `SELECTED WORK · 03`, ghost `03`, "What I Build." headline, featured card + grid
 - [x] **Phase 7** — `contact/page.tsx` — meta bar `CONTACT · 06`, ghost `06`, "Let's build something." headline, form
-- [ ] **Phase 8** — `PageHeader.tsx` refactor — unify the duplicated hero/meta-bar/ghost-number pattern across all pages (About, Projects, Experience, Skills, Contact) into a single reusable component to eliminate duplication debt. (Blog integration deferred until Blog phase).
 
 ---
 
@@ -58,7 +65,7 @@
 - [x] Implemented "Load More" pagination pattern with Prisma 8 ORM for efficient scaling
 - [ ] Build blog content (admin → publish posts)
 - [ ] Once posts exist: add "Latest Post" bento tile on home page
-- [ ] Blog page styling aligned to design system (currently unstyled PageHeader pattern)
+- [x] Blog page styling aligned to design system (Chapter 07, Typography config, grayscale code blocks)
 
 ### AI Chatbot — RAG (LangChain + Gemini + Pinecone)
 - [ ] Phase A — Install deps, Pinecone index, env vars
@@ -68,12 +75,6 @@
 - [ ] Phase E — Admin "Rebuild RAG Index" button in `/admin/settings`
 - [ ] Phase F — Home bento tile: "Ask about my work →" (ships LAST, after D is tested)
 - **Pre-requisites:** `GOOGLE_AI_API_KEY`, `PINECONE_API_KEY`, `PINECONE_INDEX` in `.env.local`
-
-### Performance & SEO
-- [ ] Core Web Vitals audit (LCP, INP, CLS)
-- [ ] `next/image` audit — ensure all images have explicit `sizes`
-- [ ] `sitemap.xml` and `robots.txt`
-- [ ] OG image generation for social sharing
 
 ### Deployment
 - [ ] Vercel production deploy
