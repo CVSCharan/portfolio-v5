@@ -37,6 +37,7 @@ export async function addProject(data?: any) {
     githubUrls: data?.githubUrls || null,
     demoUrl: data?.demoUrl || null,
     imageUrl: data?.imageUrl || null,
+    isExperiment: data?.isExperiment || false,
     order: data?.order ?? 999
   });
   revalidatePath("/admin/projects");
@@ -65,7 +66,8 @@ export async function updateProject(id: number, data: any) {
     highlights: highlightsArray,
     githubUrls: data.githubUrls || null,
     demoUrl: data.demoUrl || null,
-    imageUrl: data.imageUrl || null
+    imageUrl: data.imageUrl || null,
+    isExperiment: data.isExperiment || false
   });
   revalidatePath("/admin/projects");
 }
@@ -104,6 +106,7 @@ export async function getPaginatedTemplates(skip: number, take: number, tech?: s
       "category",
       "isActive",
       "isFeatured",
+      "isExperiment",
       "order",
       "createdAt"
     )
@@ -111,10 +114,14 @@ export async function getPaginatedTemplates(skip: number, take: number, tech?: s
       if (tech) {
         return fns.and(
           fns.eq(f.isFeatured, false),
+          fns.eq(f.isExperiment, false),
           fns.raw`${tech} = ANY(${f.techStack})`.returns("pg/bool@1")
         );
       }
-      return fns.eq(f.isFeatured, false);
+      return fns.and(
+        fns.eq(f.isFeatured, false),
+        fns.eq(f.isExperiment, false)
+      );
     })
     .orderBy((f) => f.order, { direction: "asc" })
     .limit(take)

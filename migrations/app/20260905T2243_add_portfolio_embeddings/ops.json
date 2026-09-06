@@ -1,0 +1,134 @@
+[
+  {
+    "id": "dropColumn.project.githubUrl",
+    "label": "Drop column \"githubUrl\" from \"project\"",
+    "operationClass": "destructive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "githubUrl",
+        "table": "project"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"githubUrl\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "project",
+          "githubUrl"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "drop column \"githubUrl\"",
+        "sql": "ALTER TABLE \"public\".\"project\" DROP COLUMN \"githubUrl\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"githubUrl\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "project",
+          "githubUrl"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "column.public.project.githubUrls",
+    "label": "Add column \"githubUrls\" to \"project\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "githubUrls",
+        "table": "project"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"githubUrls\" is missing",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "project",
+          "githubUrls"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add column \"githubUrls\"",
+        "sql": "ALTER TABLE \"public\".\"project\" ADD COLUMN \"githubUrls\" text[] DEFAULT '{}' NOT NULL"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"githubUrls\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "project",
+          "githubUrls"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "checkConstraint.project.project_githubUrls_elem_not_null_b11d837b",
+    "label": "Add check constraint \"project_githubUrls_elem_not_null_b11d837b\" on \"project\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "checkConstraint",
+        "name": "project_githubUrls_elem_not_null_b11d837b",
+        "table": "project"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"project_githubUrls_elem_not_null_b11d837b\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "project_githubUrls_elem_not_null_b11d837b",
+          "public",
+          "\"public\".\"project\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add check constraint \"project_githubUrls_elem_not_null_b11d837b\"",
+        "sql": "ALTER TABLE \"public\".\"project\" ADD CONSTRAINT \"project_githubUrls_elem_not_null_b11d837b\" CHECK (array_position(\"githubUrls\", NULL) IS NULL)"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"project_githubUrls_elem_not_null_b11d837b\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "project_githubUrls_elem_not_null_b11d837b",
+          "public",
+          "\"public\".\"project\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "create_portfolio_embeddings",
+    "label": "Create portfolio_embeddings table with vector(768)",
+    "operationClass": "additive",
+    "execute": "\n          CREATE EXTENSION IF NOT EXISTS vector;\n          CREATE TABLE \"portfolio_embeddings\" (\n            \"id\" TEXT PRIMARY KEY,\n            \"content\" TEXT NOT NULL,\n            \"sourceType\" TEXT NOT NULL,\n            \"sourceId\" TEXT NOT NULL,\n            \"embedding\" vector(768)\n          );\n          CREATE INDEX ON \"portfolio_embeddings\" USING hnsw (embedding vector_cosine_ops);\n        "
+  }
+]

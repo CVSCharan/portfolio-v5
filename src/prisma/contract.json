@@ -720,6 +720,13 @@
                   "kind": "scalar"
                 }
               },
+              "isExperiment": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/bool@1",
+                  "kind": "scalar"
+                }
+              },
               "isFeatured": {
                 "nullable": false,
                 "type": {
@@ -810,6 +817,9 @@
                 },
                 "isActive": {
                   "column": "isActive"
+                },
+                "isExperiment": {
+                  "column": "isExperiment"
                 },
                 "isFeatured": {
                   "column": "isFeatured"
@@ -1724,6 +1734,15 @@
                   "nativeType": "bool",
                   "nullable": false
                 },
+                "isExperiment": {
+                  "codecId": "pg/bool@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": false
+                  },
+                  "nativeType": "bool",
+                  "nullable": false
+                },
                 "isFeatured": {
                   "codecId": "pg/bool@1",
                   "default": {
@@ -2098,7 +2117,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "cea290e76d9d161255687e7ad4f3d1b2e11e3aad85389a64ea466f81b0add665"
+    "storageHash": "861e6ebeba4dab618c25498328dd845cb76d9e63f5764259c6f02dca548298ae"
   },
   "capabilities": {
     "postgres": {

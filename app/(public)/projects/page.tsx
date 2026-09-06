@@ -30,10 +30,14 @@ export default async function ProjectsPage({
       if (techFilter) {
         return fns.and(
           fns.eq(f.isFeatured, false),
+          fns.eq(f.isExperiment, false),
           fns.raw`${techFilter} = ANY(${f.techStack})`.returns("pg/bool@1")
         );
       }
-      return fns.eq(f.isFeatured, false);
+      return fns.and(
+        fns.eq(f.isFeatured, false),
+        fns.eq(f.isExperiment, false)
+      );
     })
     .orderBy((f) => f.order, { direction: "asc" })
     .limit(9);

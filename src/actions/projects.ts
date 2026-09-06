@@ -52,6 +52,7 @@ const projectWriteSchema = z.object({
   demoUrl:         z.string().url().nullable().optional(),
   imageUrl:        z.string().nullable().optional(),
   isFeatured:      z.boolean().default(false),
+  isExperiment:    z.boolean().default(false),
   isActive:        z.boolean().default(true),
   order:           z.number().int().min(0).default(0),
 });
@@ -72,6 +73,7 @@ type ProjectInput = {
   demoUrl: string | null;
   imageUrl: string | null;
   isFeatured: boolean;
+  isExperiment: boolean;
   isActive: boolean;
   order: number;
 };

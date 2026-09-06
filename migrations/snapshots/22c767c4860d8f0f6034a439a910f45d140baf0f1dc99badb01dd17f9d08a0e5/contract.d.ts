@@ -33,7 +33,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'861e6ebeba4dab618c25498328dd845cb76d9e63f5764259c6f02dca548298ae'>;
+  StorageHashBase<'22c767c4860d8f0f6034a439a910f45d140baf0f1dc99badb01dd17f9d08a0e5'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
@@ -299,6 +299,13 @@ export type FieldOutputTypes = {
       readonly userAgent: CodecTypes['pg/text@1']['output'] | null;
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
     };
+    readonly PortfolioEmbedding: {
+      readonly id: CodecTypes['pg/text@1']['output'];
+      readonly content: CodecTypes['pg/text@1']['output'];
+      readonly sourceType: CodecTypes['pg/text@1']['output'];
+      readonly sourceId: CodecTypes['pg/text@1']['output'];
+      readonly embedding: ReadonlyArray<CodecTypes['pg/float8@1']['output']>;
+    };
     readonly Project: {
       readonly id: CodecTypes['pg/int4@1']['output'];
       readonly title: CodecTypes['pg/text@1']['output'];
@@ -317,7 +324,6 @@ export type FieldOutputTypes = {
       readonly order: CodecTypes['pg/int4@1']['output'];
       readonly isActive: CodecTypes['pg/bool@1']['output'];
       readonly isFeatured: CodecTypes['pg/bool@1']['output'];
-      readonly isExperiment: CodecTypes['pg/bool@1']['output'];
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
     };
     readonly ResumeSection: {
@@ -421,6 +427,13 @@ export type FieldInputTypes = {
       readonly userAgent: CodecTypes['pg/text@1']['input'] | null;
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
     };
+    readonly PortfolioEmbedding: {
+      readonly id: CodecTypes['pg/text@1']['input'];
+      readonly content: CodecTypes['pg/text@1']['input'];
+      readonly sourceType: CodecTypes['pg/text@1']['input'];
+      readonly sourceId: CodecTypes['pg/text@1']['input'];
+      readonly embedding: ReadonlyArray<CodecTypes['pg/float8@1']['input']>;
+    };
     readonly Project: {
       readonly id: CodecTypes['pg/int4@1']['input'];
       readonly title: CodecTypes['pg/text@1']['input'];
@@ -439,7 +452,6 @@ export type FieldInputTypes = {
       readonly order: CodecTypes['pg/int4@1']['input'];
       readonly isActive: CodecTypes['pg/bool@1']['input'];
       readonly isFeatured: CodecTypes['pg/bool@1']['input'];
-      readonly isExperiment: CodecTypes['pg/bool@1']['input'];
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
     };
     readonly ResumeSection: {
@@ -543,6 +555,13 @@ export type StorageColumnTypes = {
       readonly referrer: CodecTypes['pg/text@1']['output'] | null;
       readonly userAgent: CodecTypes['pg/text@1']['output'] | null;
     };
+    readonly portfolioEmbedding: {
+      readonly content: CodecTypes['pg/text@1']['output'];
+      readonly embedding: ReadonlyArray<CodecTypes['pg/float8@1']['output']>;
+      readonly id: CodecTypes['pg/text@1']['output'];
+      readonly sourceId: CodecTypes['pg/text@1']['output'];
+      readonly sourceType: CodecTypes['pg/text@1']['output'];
+    };
     readonly project: {
       readonly category: CodecTypes['pg/text@1']['output'] | null;
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
@@ -554,7 +573,6 @@ export type StorageColumnTypes = {
       readonly id: CodecTypes['pg/int4@1']['output'];
       readonly imageUrl: CodecTypes['pg/text@1']['output'] | null;
       readonly isActive: CodecTypes['pg/bool@1']['output'];
-      readonly isExperiment: CodecTypes['pg/bool@1']['output'];
       readonly isFeatured: CodecTypes['pg/bool@1']['output'];
       readonly metrics: CodecTypes['pg/json@1']['output'] | null;
       readonly order: CodecTypes['pg/int4@1']['output'];
@@ -665,6 +683,13 @@ export type StorageColumnInputTypes = {
       readonly referrer: CodecTypes['pg/text@1']['input'] | null;
       readonly userAgent: CodecTypes['pg/text@1']['input'] | null;
     };
+    readonly portfolioEmbedding: {
+      readonly content: CodecTypes['pg/text@1']['input'];
+      readonly embedding: ReadonlyArray<CodecTypes['pg/float8@1']['input']>;
+      readonly id: CodecTypes['pg/text@1']['input'];
+      readonly sourceId: CodecTypes['pg/text@1']['input'];
+      readonly sourceType: CodecTypes['pg/text@1']['input'];
+    };
     readonly project: {
       readonly category: CodecTypes['pg/text@1']['input'] | null;
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
@@ -676,7 +701,6 @@ export type StorageColumnInputTypes = {
       readonly id: CodecTypes['pg/int4@1']['input'];
       readonly imageUrl: CodecTypes['pg/text@1']['input'] | null;
       readonly isActive: CodecTypes['pg/bool@1']['input'];
-      readonly isExperiment: CodecTypes['pg/bool@1']['input'];
       readonly isFeatured: CodecTypes['pg/bool@1']['input'];
       readonly metrics: CodecTypes['pg/json@1']['input'] | null;
       readonly order: CodecTypes['pg/int4@1']['input'];
@@ -1112,6 +1136,39 @@ type ContractBase = Omit<
               indexes: readonly [];
               foreignKeys: readonly [];
             };
+            readonly portfolioEmbedding: {
+              columns: {
+                readonly id: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly content: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly sourceType: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly sourceId: {
+                  readonly nativeType: 'text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                };
+                readonly embedding: {
+                  readonly nativeType: 'float8';
+                  readonly codecId: 'pg/float8@1';
+                  readonly nullable: false;
+                };
+              };
+              primaryKey: { readonly columns: readonly ['id'] };
+              uniques: readonly [];
+              indexes: readonly [];
+              foreignKeys: readonly [];
+            };
             readonly project: {
               columns: {
                 readonly id: {
@@ -1219,15 +1276,6 @@ type ContractBase = Omit<
                   };
                 };
                 readonly isFeatured: {
-                  readonly nativeType: 'bool';
-                  readonly codecId: 'pg/bool@1';
-                  readonly nullable: false;
-                  readonly default: {
-                    readonly kind: 'literal';
-                    readonly value: DefaultLiteralValue<'pg/bool@1', false>;
-                  };
-                };
-                readonly isExperiment: {
                   readonly nativeType: 'bool';
                   readonly codecId: 'pg/bool@1';
                   readonly nullable: false;
@@ -1534,6 +1582,10 @@ type ContractBase = Omit<
     readonly resumeSettings: {
       readonly namespace: 'public' & NamespaceId;
       readonly model: 'ResumeSettings';
+    };
+    readonly portfolioEmbedding: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'PortfolioEmbedding';
     };
   };
   readonly domain: {
@@ -1863,6 +1915,43 @@ type ContractBase = Omit<
               };
             };
           };
+          readonly PortfolioEmbedding: {
+            readonly fields: {
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly content: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly sourceType: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly sourceId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly embedding: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/float8@1' };
+                readonly many: true;
+              };
+            };
+            readonly relations: Record<string, never>;
+            readonly storage: {
+              readonly table: 'portfolioEmbedding';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly id: { readonly column: 'id' };
+                readonly content: { readonly column: 'content' };
+                readonly sourceType: { readonly column: 'sourceType' };
+                readonly sourceId: { readonly column: 'sourceId' };
+                readonly embedding: { readonly column: 'embedding' };
+              };
+            };
+          };
           readonly Project: {
             readonly fields: {
               readonly id: {
@@ -1936,10 +2025,6 @@ type ContractBase = Omit<
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/bool@1' };
               };
-              readonly isExperiment: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/bool@1' };
-              };
               readonly createdAt: {
                 readonly nullable: false;
                 readonly type: {
@@ -1970,7 +2055,6 @@ type ContractBase = Omit<
                 readonly order: { readonly column: 'order' };
                 readonly isActive: { readonly column: 'isActive' };
                 readonly isFeatured: { readonly column: 'isFeatured' };
-                readonly isExperiment: { readonly column: 'isExperiment' };
                 readonly createdAt: { readonly column: 'createdAt' };
               };
             };

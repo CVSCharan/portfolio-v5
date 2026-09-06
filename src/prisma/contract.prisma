@@ -45,6 +45,7 @@ model Project {
   order           Int       @default(0)
   isActive        Boolean   @default(true)
   isFeatured      Boolean   @default(false)
+  isExperiment    Boolean   @default(false)
   createdAt       TimestamptzString @default(now())
 }
 

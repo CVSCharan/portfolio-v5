@@ -42,8 +42,9 @@ export default async function AdminProjectForm({
         : [],
       demoUrl: (formData.get("demoUrl") as string) || null,
       imageUrl: (formData.get("imageUrl") as string) || null,
-      isFeatured: formData.get("isFeatured") === "on",
       isActive: formData.get("isActive") === "on",
+      isFeatured: formData.get("isFeatured") === "on",
+      isExperiment: formData.get("isExperiment") === "on",
       order: Number(formData.get("order") || 0),
     };
 
@@ -105,9 +106,13 @@ export default async function AdminProjectForm({
             <input name="order" type="number" defaultValue={project?.order ?? 0} className="w-full border rounded p-2 text-sm" />
           </div>
           <div className="flex items-center gap-6 pt-1">
-            <label className="flex items-center gap-2 text-sm font-medium cursor-pointer">
+            <label className="flex items-center space-x-2">
               <input type="checkbox" name="isFeatured" defaultChecked={project?.isFeatured ?? false} className="w-4 h-4" />
-              Featured
+              <span className="text-sm font-medium">Featured (Case Study)</span>
+            </label>
+            <label className="flex items-center space-x-2">
+              <input type="checkbox" name="isExperiment" defaultChecked={project?.isExperiment ?? false} className="w-4 h-4" />
+              <span className="text-sm font-medium">Lab Experiment</span>
             </label>
             <label className="flex items-center gap-2 text-sm font-medium cursor-pointer">
               <input type="checkbox" name="isActive" defaultChecked={project?.isActive ?? true} className="w-4 h-4" />

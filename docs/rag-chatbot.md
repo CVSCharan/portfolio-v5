@@ -1,7 +1,7 @@
 # RAG Chatbot — Technical Specification
 
 > **Status:** Planned — current `AIChatbot.tsx` is a mock (keyword if/else, no real AI)  
-> **Stack:** LangChain.js · Google Gemini (embeddings + generation) · Prisma DB (source of truth) · Next.js API Route · Pinecone vector store  
+> **Stack:** LangChain.js · Google Gemini (embeddings + generation) · Prisma DB (source of truth) · Next.js API Route · Postgres (pgvector via Raw SQL)
 > **Rule:** The home page bento tile for the chatbot ships ONLY after this implementation is complete and tested.
 
 ---
@@ -23,10 +23,10 @@ Mounted globally in [`app/(public)/layout.tsx`](../app/(public)/layout.tsx):
 ```
 Visitor asks: "What databases has Charan worked with?"
                         ↓
-1. Embed the question  →  Gemini text-embedding-004  →  dense vector
-2. Pinecone.query(vector, topK: 4)  →  top-4 matching portfolio chunks
+1. Embed the question  →  Gemini gemini-embedding-001  →  dense vector
+2. db.raw.sql`SELECT ... <=> vector`  →  top-4 matching portfolio chunks
 3. Build context string from retrieved chunks
-4. LangChain: ChatGoogleGenerativeAI (gemini-1.5-flash)
+4. LangChain: ChatGoogleGenerativeAI (gemini-flash-latest)
    System: persona + retrieved context
    Human: question
 5. Stream tokens back → AIChatbot.tsx renders progressively
@@ -50,7 +50,7 @@ Every table below is a retrieval source. Ingested at build time or on-demand via
 | `Certification` | `name`, `issuer`, `date` | 1 chunk per record |
 | `BlogPost` | `title`, `content` (published only) | Sliding window ~500 token chunks |
 
-**Estimated total:** ~30–80 chunks for a full portfolio. Pinecone free tier handles this trivially.
+These chunks are ingested directly into a manually managed `portfolio_embeddings` table using the `pgvector` extension and queried via Prisma's `db.raw.sql` escape hatch.
 
 ---
 
@@ -61,8 +61,8 @@ Every table below is a retrieval source. Ingested at build time or on-demand via
 ```
 lib/
   rag/
-    ingest.ts      — chunk formatters, embedding calls, Pinecone upsert
-    retrieve.ts    — embed query → Pinecone similarity search → return context string
+    ingest.ts      — chunk formatters, embedding calls, Prisma raw SQL upsert
+    retrieve.ts    — embed query → Prisma raw SQL similarity search → return context string
 
 app/
   api/
@@ -77,18 +77,36 @@ app/
 ```
 components/AIChatbot.tsx           — replace mock with fetch('/api/chat') + stream reader
 app/(admin)/admin/settings/page.tsx — add "Rebuild RAG Index" button
+package.json                       — add deps (langchain, @langchain/google-genai)
 ```
 
 ---
 
 ## Implementation Detail
 
+### Database Migration (Raw SQL)
+
+Because Prisma 8's PSL v1 currently rejects the `Unsupported()` type constructor, we will create the vector table natively outside of `contract.prisma` using a raw SQL migration.
+
+```sql
+CREATE EXTENSION IF NOT EXISTS vector;
+
+CREATE TABLE portfolio_embeddings (
+  id TEXT PRIMARY KEY,
+  content TEXT NOT NULL,
+  "sourceType" TEXT NOT NULL,
+  "sourceId" TEXT NOT NULL,
+  embedding vector(768)
+);
+
+CREATE INDEX ON portfolio_embeddings USING hnsw (embedding vector_cosine_ops);
+```
+
 ### `lib/rag/ingest.ts` (pseudocode)
 
 ```ts
 import { db } from "@/src/prisma/db";
 import { GoogleGenerativeAIEmbeddings } from "@langchain/google-genai";
-import { Pinecone } from "@pinecone-database/pinecone";
 
 export async function ingestPortfolioContent() {
   // 1. Parallel fetch all content
@@ -97,32 +115,63 @@ export async function ingestPortfolioContent() {
 
   // 2. Format into text chunks with metadata
   const chunks = [
-    ...formatUserChunks(user),           // { text: "...", source: "bio" }
+    ...formatUserChunks(user),           // { id: "user-bio-1", text: "...", source: "bio" }
     ...formatExperienceChunks(experiences),
-    ...formatProjectChunks(projects),
-    ...formatSkillChunks(skills),
     // ...etc
   ];
 
-  // 3. Embed all chunks (Gemini text-embedding-004)
+  // 3. Embed all chunks (Gemini gemini-embedding-001)
   const embeddings = new GoogleGenerativeAIEmbeddings({
     apiKey: process.env.GOOGLE_AI_API_KEY,
-    modelName: "text-embedding-004",
+    modelName: "gemini-embedding-001",
+    // NOTE: Must pass outputDimensionality: 768 or it defaults to 3072!
   });
 
   const vectors = await embeddings.embedDocuments(chunks.map(c => c.text));
 
-  // 4. Upsert to Pinecone
-  const pinecone = new Pinecone({ apiKey: process.env.PINECONE_API_KEY! });
-  const index = pinecone.index(process.env.PINECONE_INDEX!);
+  // 4. Upsert to Postgres using deterministic IDs and db.raw.sql
+  for (let i = 0; i < chunks.length; i++) {
+    const vectorString = `[${vectors[i].join(",")}]`;
+    const plan = db.raw.sql`
+      INSERT INTO portfolio_embeddings (id, content, "sourceType", "sourceId", embedding)
+      VALUES (${chunks[i].id}, ${chunks[i].text}, ${chunks[i].sourceType}, ${chunks[i].sourceId}, ${vectorString}::vector)
+      ON CONFLICT (id) DO UPDATE SET 
+        content = EXCLUDED.content,
+        embedding = EXCLUDED.embedding
+    `.affectedCount();
+    await db.runtime().execute(plan);
+  }
+}
+```
 
-  await index.upsert(
-    vectors.map((values, i) => ({
-      id: `chunk-${i}`,
-      values,
-      metadata: { text: chunks[i].text, source: chunks[i].source },
-    }))
-  );
+### `lib/rag/retrieve.ts` (pseudocode)
+
+```ts
+import { db } from "@/src/prisma/db";
+import { GoogleGenerativeAIEmbeddings } from "@langchain/google-genai";
+
+export async function retrieve(question: string, limit: number = 4) {
+  const embeddings = new GoogleGenerativeAIEmbeddings({
+    apiKey: process.env.GOOGLE_AI_API_KEY,
+    modelName: "gemini-embedding-001",
+  });
+
+  const [queryVector] = await embeddings.embedDocuments([question]);
+  const vectorString = `[${queryVector.join(",")}]`;
+
+  // Use raw SQL escape hatch to calculate cosine distance (<=>)
+  const plan = db.raw.sql`
+    SELECT content, "sourceType"
+    FROM portfolio_embeddings
+    ORDER BY embedding <=> ${vectorString}::vector
+    LIMIT ${limit}
+  `.returnsRow({
+    content: (val: unknown) => String(val),
+    sourceType: (val: unknown) => String(val)
+  }).build();
+
+  const results = await db.runtime().execute(plan);
+  return results.map(r => `[${r.sourceType.toUpperCase()}] ${r.content}`).join("\n\n");
 }
 ```
 
@@ -133,10 +182,12 @@ import { NextRequest } from "next/server";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { retrieve } from "@/lib/rag/retrieve";
 
+// TODO: Implement simple in-memory or Vercel KV rate limiting here to protect endpoint
+
 export async function POST(req: NextRequest) {
   const { question } = await req.json();
 
-  // 1. Retrieve relevant chunks
+  // 1. Retrieve relevant chunks 
   const context = await retrieve(question, 4);
 
   // 2. Build prompt
@@ -150,7 +201,7 @@ ${context}`;
   // 3. Stream from Gemini
   const model = new ChatGoogleGenerativeAI({
     apiKey: process.env.GOOGLE_AI_API_KEY,
-    model: "gemini-1.5-flash",
+    model: "gemini-flash-latest", 
     streaming: true,
   });
 
@@ -175,39 +226,25 @@ ${context}`;
 }
 ```
 
-### System prompt (final version)
-
-```
-You are an AI assistant representing CVS Charan's portfolio.
-You have been given relevant excerpts from his actual resume, projects, and experience.
-Answer questions about his background, skills, projects, and availability using ONLY the provided context.
-If the context doesn't contain enough information, say so — do not invent details.
-Be concise, professional, and first-person on his behalf.
-Keep answers under 3 sentences unless the question requires more.
-
-CONTEXT:
-{retrieved_chunks}
-```
-
 ---
 
 ## Environment Variables
 
-Add to `.env.local` (never commit):
+Add to `.env` (never commit):
 
 ```bash
-GOOGLE_AI_API_KEY=          # Google AI Studio key — used for both embeddings + generation
-PINECONE_API_KEY=           # Pinecone API key
-PINECONE_INDEX=portfolio-rag
-PINECONE_ENVIRONMENT=       # e.g. us-east-1-aws (from Pinecone dashboard)
+GOOGLE_AI_API_KEY=your_gemini_api_key
 ```
+
+**How to get this key:**
+1. **Google Gemini:** Go to [Google AI Studio](https://aistudio.google.com/), sign in, and click "Get API key".
 
 ---
 
 ## Dependencies
 
 ```bash
-bun add @langchain/google-genai @langchain/pinecone @pinecone-database/pinecone langchain
+npm install @langchain/google-genai langchain
 ```
 
 ---
@@ -216,40 +253,21 @@ bun add @langchain/google-genai @langchain/pinecone @pinecone-database/pinecone 
 
 | Phase | Task | Effort |
 |---|---|---|
-| **A** | Install deps, create Pinecone index (`portfolio-rag`), add env vars | 30 min |
-| **B** | `lib/rag/ingest.ts` — chunk formatters + batch embedding + Pinecone upsert | 2–3 hrs |
-| **C** | `lib/rag/retrieve.ts` + `app/api/chat/route.ts` — RAG query + Gemini streaming | 2 hrs |
-| **D** | Upgrade `AIChatbot.tsx` — real fetch, stream reader, typing indicator, error state | 1–2 hrs |
-| **E** | Admin "Rebuild RAG Index" button in `/admin/settings` | 30 min |
-| **F** | Home page bento tile: "Ask about my work →" (2-col wide card) | 30 min |
+| **A** | Install deps, add `GOOGLE_AI_API_KEY` to `.env` | 15 min |
+| **B** | Create `portfolio_embeddings` table via raw SQL migration | 30 min |
+| **C** | `lib/rag/ingest.ts` — chunk formatters + batch embedding + Postgres upsert with **deterministic IDs** via `db.raw.sql` | 2–3 hrs |
+| **D** | `lib/rag/retrieve.ts` + `app/api/chat/route.ts` — Postgres RAG query + Gemini streaming + **Rate Limiting** | 2 hrs |
+| **E** | Upgrade `AIChatbot.tsx` — real fetch, stream reader, typing indicator, error state | 1–2 hrs |
+| **F** | Admin "Rebuild RAG Index" button in `/admin/settings` | 30 min |
+| **G** | Home page bento tile: "Ask about my work →" (2-col wide card) | 30 min |
 
 **Total estimated: ~1 working day** for a production-ready RAG chatbot.
 
 ---
 
-## Home Page Bento Tile (Phase F — last)
-
-A 2-column-wide bento card, positioned below "Currently Building":
-
-```
-┌────────────────────────────────────────────┐
-│ LABEL: AI Assistant                         │
-│                                             │
-│ "Ask about my work →"                       │
-│ Powered by Gemini · RAG on live portfolio   │
-│                                             │
-│ [Start chatting]                            │
-└────────────────────────────────────────────┘
-```
-
-Uses the existing `card card-hover` classes. Blue gradient blob (same as "Currently Building" card). Opens the `AIChatbot` panel on click.
-
----
-
 ## Pre-requisites Before Starting
 
-1. Google AI Studio API key → `GOOGLE_AI_API_KEY` in `.env.local`
-2. Pinecone account → create index named `portfolio-rag`, dimension `768` (text-embedding-004 output)
-3. Add `PINECONE_API_KEY` and `PINECONE_ENVIRONMENT` to `.env.local`
+1. **Google Gemini API Key:** Go to [Google AI Studio](https://aistudio.google.com/) and create an API key → `GOOGLE_AI_API_KEY` in `.env`.
+2. **Neon pgvector Check:** Confirm that your Neon instance supports `pgvector` natively (most do by default).
 
-Once keys are confirmed, run Phase A → F in sequence.
+Once confirmed, run Phase A → G in sequence.

@@ -22,6 +22,7 @@ const NAV_LINKS = [
   { href: "/contact", label: "Contact" },
   { href: "/resume", label: "Resume" },
   { href: "/blog", label: "Blog" },
+  { href: "/lab", label: "Lab" },
 ];
 
 /* ─── Theme Toggle ─── */

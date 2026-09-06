@@ -2,7 +2,8 @@
 
 import { useTransition, useState } from "react";
 import { updateResumeSettings } from "@/app/actions/resumeSettingsActions";
-import { Check } from "lucide-react";
+import { rebuildRagIndex } from "@/app/actions/ragActions";
+import { Check, Database, Loader2 } from "lucide-react";
 
 const TEMPLATES = [
   { id: "T1", label: "T1 — Simple & Elegant", desc: "Two-column, clean typography, accent bar." },
@@ -44,12 +45,32 @@ export function SettingsClient({
   const [saved, setSaved] = useState(false);
   const [isPending, startTransition] = useTransition();
 
+  const [ragStatus, setRagStatus] = useState<"idle" | "building" | "success" | "error">("idle");
+  const [ragMessage, setRagMessage] = useState("");
+
   function handleSave() {
     startTransition(async () => {
       await updateResumeSettings({ activeTemplate: template, activeTheme: theme, activeLayout: layout });
       setSaved(true);
       setTimeout(() => setSaved(false), 2500);
     });
+  }
+
+  async function handleRebuildRag() {
+    setRagStatus("building");
+    setRagMessage("Fetching content and embedding vectors...");
+    const res = await rebuildRagIndex();
+    if (res.success) {
+      setRagStatus("success");
+      setRagMessage(`Successfully indexed ${res.count} chunks.`);
+    } else {
+      setRagStatus("error");
+      setRagMessage(`Error: ${res.error}`);
+    }
+    setTimeout(() => {
+      setRagStatus("idle");
+      setRagMessage("");
+    }, 4000);
   }
 
   return (
@@ -140,6 +161,44 @@ export function SettingsClient({
       >
         {isPending ? "Saving…" : saved ? "✓ Saved!" : "Save Settings"}
       </button>
+
+      <hr className="border-border my-10" />
+
+      {/* RAG Settings */}
+      <section>
+        <h2 className="text-sm font-black uppercase tracking-widest text-muted-foreground mb-4">
+          AI Chatbot RAG
+        </h2>
+        <div className="p-5 border border-border rounded-xl bg-card max-w-md">
+          <p className="text-sm text-muted-foreground mb-4">
+            Rebuild the Pinecone-style Postgres vector embeddings from your latest portfolio data.
+          </p>
+          <div className="flex items-center gap-4">
+            <button
+              onClick={handleRebuildRag}
+              disabled={ragStatus === "building"}
+              className="btn bg-primary text-primary-foreground hover:bg-primary/90 btn-sm gap-2"
+            >
+              {ragStatus === "building" ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Building...
+                </>
+              ) : (
+                <>
+                  <Database className="w-4 h-4" />
+                  Rebuild Index
+                </>
+              )}
+            </button>
+            {ragMessage && (
+              <span className={`text-sm ${ragStatus === "error" ? "text-red-500" : "text-green-500"}`}>
+                {ragMessage}
+              </span>
+            )}
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

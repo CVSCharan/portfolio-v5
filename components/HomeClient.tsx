@@ -312,7 +312,7 @@ export function HomeClient({ user, featuredProjects, experiences }: {
                   </p>
                 </div>
                 <button
-                  onClick={() => alert("Chat feature coming soon")}
+                  onClick={() => window.dispatchEvent(new Event("open-ai-chat"))}
                   className="btn btn-outline btn-sm shrink-0 w-fit group-hover:border-foreground/30 group-hover:text-foreground transition-all"
                 >
                   Start Chat

@@ -48,6 +48,7 @@ model Project {
   category  String?
   isActive  Boolean   @default(true)
   isFeatured Boolean  @default(false)
+  isExperiment Boolean @default(false)
   order     Int       @default(0)
   createdAt DateTime @default(now)
 }
