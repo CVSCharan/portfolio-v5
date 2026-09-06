@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
+import rehypeSlug from "rehype-slug";
 import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 import mermaid from "mermaid";
 import { ArrowUpRight } from "lucide-react";
@@ -28,6 +29,7 @@ export function MarkdownRenderer({ content }: { content: string }) {
         remarkPlugins={[remarkGfm]}
       rehypePlugins={[
         rehypeRaw,
+        rehypeSlug,
         [
           rehypeSanitize,
           {

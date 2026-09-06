@@ -3,6 +3,9 @@ import { notFound } from "next/navigation";
 import { MarkdownRenderer } from "@/components/MarkdownRenderer";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
+import { TableOfContents } from "@/components/TableOfContents";
+import { ShareButtons } from "@/components/ShareButtons";
+import { AuthorBio } from "@/components/AuthorBio";
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
   const post = await db.orm.public.BlogPost.where({ slug: params.slug, published: true }).first();
@@ -30,52 +33,82 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
 
   // Format date
   const dateStr = post.createdAt ? new Date(post.createdAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }) : "";
+  const postUrl = `https://cvscharan.com/blog/${post.slug}`; // Fallback base URL if needed
 
   return (
     <main className="min-h-screen bg-background">
-      <article className="max-w-3xl mx-auto px-5 sm:px-10 py-24 md:py-32">
-        <header className="mb-16 space-y-8">
-          <Link 
-            href="/blog" 
-            className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors group"
-          >
-            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-            Back to Writings
-          </Link>
-          
-          <div className="space-y-4">
-            <h1 className="text-display">
-              {post.title}
-            </h1>
-            <div className="flex items-center gap-4 text-muted-foreground text-sm font-medium tracking-wide" style={{ fontFamily: "var(--font-geist-mono)" }}>
-              {dateStr && <span>{dateStr}</span>}
-              {post.readingTime > 0 && (
-                <>
-                  <span>•</span>
-                  <span>{post.readingTime} min read</span>
-                </>
-              )}
-            </div>
-          </div>
-        </header>
-        
-        <div className="pt-8 border-t border-border/50">
-          <MarkdownRenderer content={post.content || ""} />
-        </div>
-      </article>
-
-      {/* CTA Section */}
-      <section className="border-t border-border bg-background py-16">
-        <div className="max-w-3xl mx-auto px-5 sm:px-10 text-center space-y-6">
-          <h2 className="text-2xl font-bold" style={{ fontFamily: "var(--font-bricolage)" }}>Need help with a similar project?</h2>
-          <p className="text-muted-foreground">I'm available for freelance work and consulting.</p>
-          <div className="pt-4">
-            <Link href="/contact" className="btn btn-primary px-8 py-3 rounded-full text-sm font-medium transition-transform hover:scale-105 inline-flex items-center gap-2">
-              Let's Talk <ArrowRight className="w-4 h-4" />
+      <div className="max-w-6xl mx-auto px-5 sm:px-10 py-24 md:py-32 grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-12 lg:gap-16 items-start">
+        {/* Main Article Column */}
+        <article className="max-w-3xl w-full mx-auto lg:mx-0">
+          <header className="mb-12 lg:mb-16 space-y-8">
+            <Link 
+              href="/blog" 
+              className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors group"
+            >
+              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+              Back to Writings
             </Link>
+            
+            <div className="space-y-6">
+              <h1 className="text-display">
+                {post.title}
+              </h1>
+              
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 py-6 border-y border-border/50">
+                <div className="flex items-center gap-4 text-muted-foreground text-sm font-medium tracking-wide" style={{ fontFamily: "var(--font-geist-mono)" }}>
+                  {dateStr && <span>{dateStr}</span>}
+                  {post.readingTime > 0 && (
+                    <>
+                      <span className="hidden sm:inline">•</span>
+                      <span>{post.readingTime} min read</span>
+                    </>
+                  )}
+                </div>
+                
+                {/* Mobile/Inline Share Buttons */}
+                <div className="lg:hidden">
+                  <ShareButtons title={post.title} url={postUrl} />
+                </div>
+              </div>
+            </div>
+          </header>
+          
+          {/* Mobile Table of Contents */}
+          <div className="lg:hidden mb-10 pb-10 border-b border-border/50">
+            <TableOfContents />
           </div>
-        </div>
-      </section>
+
+          <div className="prose-container">
+            <MarkdownRenderer content={post.content || ""} />
+          </div>
+        </article>
+
+        {/* Sticky Right Sidebar (Desktop only) */}
+        <aside className="hidden lg:block sticky top-32 space-y-12">
+          {/* Author */}
+          <div>
+            <h3 className="font-semibold text-sm tracking-wide uppercase text-muted-foreground mb-6" style={{ fontFamily: "var(--font-bricolage)" }}>
+              Written by
+            </h3>
+            <AuthorBio />
+          </div>
+
+          <hr className="border-border/50" />
+
+          {/* Table of Contents */}
+          <TableOfContents />
+
+          <hr className="border-border/50" />
+
+          {/* Share Actions */}
+          <div>
+            <h3 className="font-semibold text-sm tracking-wide uppercase text-muted-foreground mb-6" style={{ fontFamily: "var(--font-bricolage)" }}>
+              Share Post
+            </h3>
+            <ShareButtons title={post.title} url={postUrl} />
+          </div>
+        </aside>
+      </div>
 
       {/* Related Content */}
       {relatedPosts.length > 0 && (
