@@ -70,7 +70,6 @@ ${context}`;
       apiKey: process.env.GOOGLE_AI_API_KEY,
       model: "gemini-flash-latest", 
       streaming: true,
-      maxOutputTokens: 250, // keep responses concise and control costs
     });
 
     const stream = await model.stream([
