@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
     }
 
     // 1. Retrieve relevant chunks
-    const context = await retrieve(question, 4);
+    const context = await retrieve(question, 15);
 
     // 2. Build system prompt
     const systemPrompt = `You are an AI assistant representing CVS Charan's portfolio.
