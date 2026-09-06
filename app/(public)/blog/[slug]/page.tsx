@@ -36,18 +36,27 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
   const postUrl = `https://cvscharan.com/blog/${post.slug}`; // Fallback base URL if needed
 
   return (
-    <main className="min-h-screen bg-background">
-      <div className="max-w-6xl mx-auto px-5 sm:px-10 py-24 md:py-32 grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-12 lg:gap-16 items-start">
+    <div className="-mx-5 md:-mx-10 bg-background overflow-x-hidden">
+      <div className="w-full px-5 sm:px-10 xl:px-16 py-16 md:py-24">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-12 lg:gap-16 items-start">
         {/* Main Article Column */}
         <article className="max-w-3xl w-full mx-auto lg:mx-0">
           <header className="mb-12 lg:mb-16 space-y-8">
-            <Link 
-              href="/blog" 
-              className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors group"
-            >
-              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-              Back to Writings
-            </Link>
+            <nav aria-label="Breadcrumb">
+              <ol className="flex items-center space-x-2 text-sm font-medium text-muted-foreground">
+                <li>
+                  <Link href="/blog" className="hover:text-foreground transition-colors">
+                    Blog
+                  </Link>
+                </li>
+                <li>
+                  <span className="opacity-50">/</span>
+                </li>
+                <li className="text-foreground truncate max-w-[200px] sm:max-w-[400px]" aria-current="page">
+                  {post.title}
+                </li>
+              </ol>
+            </nav>
             
             <div className="space-y-6">
               <h1 className="text-display">
@@ -108,6 +117,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
             <ShareButtons title={post.title} url={postUrl} />
           </div>
         </aside>
+        </div>
       </div>
 
       {/* Related Content */}
@@ -153,6 +163,6 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
           </div>
         </section>
       )}
-    </main>
+    </div>
   );
 }
