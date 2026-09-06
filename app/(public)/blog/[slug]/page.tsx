@@ -37,7 +37,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
 
   return (
     <div className="-mx-5 md:-mx-10 bg-background overflow-x-hidden">
-      <div className="w-full px-5 sm:px-10 xl:px-16 py-16 md:py-24">
+      <div className="w-full px-5 sm:px-10 xl:px-16 pb-16 md:pb-24 pt-4">
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-12 lg:gap-16 items-start">
         {/* Main Article Column */}
         <article className="max-w-3xl w-full mx-auto lg:mx-0">
