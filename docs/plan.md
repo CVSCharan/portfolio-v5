@@ -68,12 +68,12 @@
 - [x] Blog page styling aligned to design system (Chapter 07, Typography config, grayscale code blocks)
 
 ### AI Chatbot — RAG (LangChain + Gemini + Pinecone)
-- [ ] Phase A — Install deps, Pinecone index, env vars
-- [ ] Phase B — `lib/rag/ingest.ts` — chunk formatters + embedding + upsert
-- [ ] Phase C — `lib/rag/retrieve.ts` + `app/api/chat/route.ts` — RAG + streaming
-- [ ] Phase D — Upgrade `AIChatbot.tsx` — real fetch, stream reader, error state
-- [ ] Phase E — Admin "Rebuild RAG Index" button in `/admin/settings`
-- [ ] Phase F — Home bento tile: "Ask about my work →" (ships LAST, after D is tested)
+- [x] Phase A — Install deps, Pinecone index, env vars
+- [x] Phase B — `lib/rag/ingest.ts` — chunk formatters + embedding + upsert
+- [x] Phase C — `lib/rag/retrieve.ts` + `app/api/chat/route.ts` — RAG + streaming
+- [x] Phase D — Upgrade `AIChatbot.tsx` — real fetch, stream reader, error state
+- [x] Phase E — Admin "Rebuild RAG Index" button in `/admin/settings`
+- [x] Phase F — Home bento tile: "Ask about my work →" (ships LAST, after D is tested)
 - **Pre-requisites:** `GOOGLE_AI_API_KEY`, `PINECONE_API_KEY`, `PINECONE_INDEX` in `.env.local`
 
 ### Deployment

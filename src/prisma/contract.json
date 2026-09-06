@@ -195,6 +195,13 @@
                   "kind": "scalar"
                 }
               },
+              "readingTime": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
               "slug": {
                 "nullable": false,
                 "type": {
@@ -253,6 +260,9 @@
                 },
                 "published": {
                   "column": "published"
+                },
+                "readingTime": {
+                  "column": "readingTime"
                 },
                 "slug": {
                   "column": "slug"
@@ -1286,6 +1296,15 @@
                   "nativeType": "bool",
                   "nullable": false
                 },
+                "readingTime": {
+                  "codecId": "pg/int4@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": 0
+                  },
+                  "nativeType": "int4",
+                  "nullable": false
+                },
                 "slug": {
                   "codecId": "pg/text@1",
                   "nativeType": "text",
@@ -2117,7 +2136,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "861e6ebeba4dab618c25498328dd845cb76d9e63f5764259c6f02dca548298ae"
+    "storageHash": "9e427674e5e577876614c11353b4a87bcb2e898b922ead47e488d14c36bef478"
   },
   "capabilities": {
     "postgres": {

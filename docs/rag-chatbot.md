@@ -1,15 +1,14 @@
 # RAG Chatbot — Technical Specification
 
-> **Status:** Planned — current `AIChatbot.tsx` is a mock (keyword if/else, no real AI)  
+> **Status:** Completed — The AIChatbot is fully integrated with LangChain, Gemini, and Postgres pgvector.
 > **Stack:** LangChain.js · Google Gemini (embeddings + generation) · Prisma DB (source of truth) · Next.js API Route · Postgres (pgvector via Raw SQL)
-> **Rule:** The home page bento tile for the chatbot ships ONLY after this implementation is complete and tested.
+> **Rule:** The home page bento tile for the chatbot is now active.
 
 ---
 
 ## Current State
 
-[`components/AIChatbot.tsx`](../components/AIChatbot.tsx) — a floating bottom-right button that opens a chat window.  
-**Problem:** Uses `setTimeout` + `if/else` keyword matching. Not a real AI. Must be replaced before the chatbot is shown to any recruiter or visitor.
+[`components/AIChatbot.tsx`](../components/AIChatbot.tsx) — a floating bottom-right button that opens a chat window, communicating with `/api/chat` to retrieve RAG-augmented answers using Gemini 1.5 Flash.
 
 Mounted globally in [`app/(public)/layout.tsx`](../app/(public)/layout.tsx):
 ```tsx
@@ -253,13 +252,13 @@ npm install @langchain/google-genai langchain
 
 | Phase | Task | Effort |
 |---|---|---|
-| **A** | Install deps, add `GOOGLE_AI_API_KEY` to `.env` | 15 min |
-| **B** | Create `portfolio_embeddings` table via raw SQL migration | 30 min |
-| **C** | `lib/rag/ingest.ts` — chunk formatters + batch embedding + Postgres upsert with **deterministic IDs** via `db.raw.sql` | 2–3 hrs |
-| **D** | `lib/rag/retrieve.ts` + `app/api/chat/route.ts` — Postgres RAG query + Gemini streaming + **Rate Limiting** | 2 hrs |
-| **E** | Upgrade `AIChatbot.tsx` — real fetch, stream reader, typing indicator, error state | 1–2 hrs |
-| **F** | Admin "Rebuild RAG Index" button in `/admin/settings` | 30 min |
-| **G** | Home page bento tile: "Ask about my work →" (2-col wide card) | 30 min |
+| **A** | Install deps, add `GOOGLE_AI_API_KEY` to `.env` | Done |
+| **B** | Create `portfolio_embeddings` table via raw SQL migration | Done |
+| **C** | `lib/rag/ingest.ts` — chunk formatters + batch embedding + Postgres upsert with **deterministic IDs** via `db.raw.sql` | Done |
+| **D** | `lib/rag/retrieve.ts` + `app/api/chat/route.ts` — Postgres RAG query + Gemini streaming + **Rate Limiting** | Done |
+| **E** | Upgrade `AIChatbot.tsx` — real fetch, stream reader, typing indicator, error state | Done |
+| **F** | Admin "Rebuild RAG Index" button in `/admin/settings` | Done |
+| **G** | Home page bento tile: "Ask about my work →" (2-col wide card) | Done |
 
 **Total estimated: ~1 working day** for a production-ready RAG chatbot.
 

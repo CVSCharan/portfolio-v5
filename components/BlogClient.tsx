@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { useState, useTransition } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import { getPaginatedBlogs } from "@/app/actions/blogActions";
 import { ChapterHero } from "./ChapterHero";
 
@@ -11,7 +12,14 @@ interface BlogRecord {
   slug: string;
   title: string;
   excerpt: string | null;
+  readingTime: number;
 }
+
+const springTransition = {
+  type: "spring" as const,
+  stiffness: 200,
+  damping: 20,
+};
 
 export default function BlogClient({
   initialBlogs,
@@ -21,6 +29,7 @@ export default function BlogClient({
   const [blogs, setBlogs] = useState<BlogRecord[]>(initialBlogs);
   const [hasMore, setHasMore] = useState(initialBlogs.length === 9);
   const [isPending, startTransition] = useTransition();
+  const prefersReducedMotion = useReducedMotion();
 
   const handleLoadMore = async () => {
     startTransition(async () => {
@@ -60,31 +69,57 @@ export default function BlogClient({
         description="Essays, tutorials, and deep dives on building modern AI systems, full-stack engineering, and the spaces in between."
       />
 
-      <section className="w-full px-5 sm:px-10 xl:px-16 py-12 md:py-16 pb-24">
-        <div className="max-w-4xl mx-auto space-y-12">
-          <div className="space-y-4">
-            {blogs.map((post) => (
-              <article key={post.id}>
-                <Link
-                  href={`/blog/${post.slug}`}
-                  className="card card-hover flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-6 group"
-                >
-                  <div className="space-y-1 flex-1">
-                    <h2
-                      className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors"
-                      style={{ fontFamily: "var(--font-bricolage)" }}
-                    >
-                      {post.title}
-                    </h2>
+      <section className="w-full border-t border-border px-5 sm:px-10 xl:px-16 py-16 md:py-24">
+        <div className="max-w-6xl mx-auto space-y-12">
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            {blogs.map((post, index) => (
+              <motion.article 
+                key={post.id}
+                initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: 15 }}
+                whileInView={prefersReducedMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "50px" }}
+                transition={{
+                  ...springTransition,
+                  delay: prefersReducedMotion ? 0 : (index % 3) * 0.05,
+                }}
+                className="card card-hover flex flex-col overflow-hidden group h-full"
+              >
+                <Link href={`/blog/${post.slug}`} className="flex flex-col flex-1 p-6 md:p-8 gap-5 relative overflow-hidden">
+                  {/* Subtle gradient background effect on hover */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-foreground/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0" />
+                  
+                  <div className="space-y-4 flex-1 relative z-10">
+                    <div className="flex justify-between items-start gap-4">
+                        <h2
+                          className="text-xl md:text-2xl font-semibold text-foreground leading-snug group-hover:text-secondary transition-colors"
+                          style={{ fontFamily: "var(--font-bricolage)" }}
+                        >
+                          {post.title}
+                        </h2>
+                        <ArrowUpRight className="w-5 h-5 text-muted-foreground/50 group-hover:text-secondary transition-all shrink-0 opacity-0 group-hover:opacity-100 -translate-x-2 translate-y-2 group-hover:translate-x-0 group-hover:translate-y-0" />
+                    </div>
                     {post.excerpt && (
-                      <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">
+                      <p className="text-base text-muted-foreground leading-relaxed line-clamp-3">
                         {post.excerpt}
                       </p>
                     )}
                   </div>
-                  <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all shrink-0" />
+                  
+                  <div className="pt-6 mt-auto border-t border-border/50 flex items-center justify-between text-sm text-muted-foreground font-medium relative z-10">
+                    <span className="flex items-center gap-2">
+                      <span className="group-hover:text-foreground transition-colors">Read Article</span>
+                      {post.readingTime > 0 && (
+                        <>
+                          <span className="w-1 h-1 rounded-full bg-border" />
+                          <span>{post.readingTime} min</span>
+                        </>
+                      )}
+                    </span>
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 group-hover:text-foreground transition-all" />
+                  </div>
                 </Link>
-              </article>
+              </motion.article>
             ))}
           </div>
 

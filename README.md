@@ -54,13 +54,20 @@ Full content management for all models. Project editor supports all fields:
 - `highlights` as line-separated textarea
 - `metrics` as JSON textarea — validated server-side before any DB write; malformed JSON returns a readable error
 
-### 5. Global AI Chatbot
-Floating chat widget (RAG-style) available across all pages — allows recruiters to query resume content contextually.
+### 5. AI Chatbot (RAG Architecture)
+Floating chat widget powered by **Google Gemini 1.5 Flash**, **LangChain.js**, and **Postgres pgvector**. 
+- Retrieves context dynamically using native cosine similarity queries via Prisma's `db.raw.sql`.
+- In-memory rate limiting and Edge-compatible streaming via Next.js API Routes.
+- Full Admin integration: One-click "Rebuild RAG Index" button in Settings to synchronize the latest DB state into vectors.
+- Featured on the Home page via a dedicated Bento tile.
 
 ### 6. Custom Analytics
 `<PageTracker />` silently logs path, referrer, and user agent into `PageView` table on every route change. Zero external dependencies.
 
-### 7. Dual-Layout Resume Page (`/resume`)
+### 7. The Lab (`/lab`)
+A dedicated space for work-in-progress, raw implementations, and unpolished experiments. Projects marked with `isExperiment` in the admin dashboard are automatically routed here instead of the main projects grid.
+
+### 8. Dual-Layout Resume Page (`/resume`)
 - Implements a seamless split between a screen-optimized view (`ResumeScreenView`) matching the site's dark monochrome aesthetic, and a print-optimized document (`TemplateT1`).
 - Uses Tailwind's `@media print` utilities (`print:hidden` vs `hidden print:block`) to render a perfectly formatted white, 2-column A4 CV when the user clicks "Download PDF" or presses `Cmd+P`.
 

@@ -11,6 +11,7 @@ import { CollaborateCTA } from "./CollaborateCTA";
 interface UserRecord { name: string | null; bio: string | null }
 interface ProjectRecord { id: number; title: string; slug: string; description: string | null; imageUrl: string | null }
 interface ExperienceRecord { id: number; title: string; company: string; period: string }
+interface BlogPostRecord { id: number; title: string; slug: string; excerpt: string | null }
 
 /* ── Stagger helper ─────────────────────────────────────── */
 function fadeUp(delay = 0) {
@@ -36,10 +37,12 @@ const STACK = [
   "OpenAI","Tailwind CSS","Vercel","LLM Engineering",
 ];
 
-export function HomeClient({ user, featuredProjects, experiences }: {
+export function HomeClient({ user, featuredProjects, experiences, latestPost, latestExperiment }: {
   user: UserRecord | null;
   featuredProjects: ProjectRecord[];
   experiences: ExperienceRecord[];
+  latestPost?: BlogPostRecord | null;
+  latestExperiment?: ProjectRecord | null;
 }) {
   const name = user?.name ?? "CVS Charan";
   const bio = user?.bio ?? "I design and ship production-grade applications that fuse modern AI capabilities with thoughtful engineering — LLM integrations, data pipelines, and full-stack systems built to last.";
@@ -341,6 +344,66 @@ export function HomeClient({ user, featuredProjects, experiences }: {
                 <p className="text-xs text-muted-foreground mt-1.5 font-medium">projects</p>
               </div>
             </div>
+          </motion.div>
+
+          {/* Latest Post */}
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.5, delay: 0.24 }}
+            className="col-span-2"
+          >
+            {latestPost ? (
+              <Link href={`/blog/${latestPost.slug}`} className="group card card-hover h-full min-h-[130px] p-6 md:p-7 flex flex-col justify-between relative overflow-hidden">
+                <p className="text-label text-muted-foreground">Latest Post</p>
+                <div className="mt-4">
+                  <h3 className="text-lg md:text-xl font-bold text-foreground group-hover:text-secondary transition-colors leading-snug" style={{ fontFamily: "var(--font-bricolage)" }}>
+                    {latestPost.title}
+                  </h3>
+                  {latestPost.excerpt && (
+                    <p className="text-sm text-muted-foreground mt-2 line-clamp-2 leading-relaxed">{latestPost.excerpt}</p>
+                  )}
+                </div>
+              </Link>
+            ) : (
+              <div className="card h-full min-h-[130px] p-6 md:p-7 flex flex-col justify-between border-dashed bg-transparent">
+                <p className="text-label text-muted-foreground">Latest Post</p>
+                <p className="text-sm md:text-base font-semibold text-muted-foreground leading-snug mt-4">
+                  New writing coming soon.
+                </p>
+              </div>
+            )}
+          </motion.div>
+
+          {/* Latest from the Lab */}
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.5, delay: 0.28 }}
+            className="col-span-2"
+          >
+            {latestExperiment ? (
+              <Link href="/lab" className="group card card-hover h-full min-h-[130px] p-6 md:p-7 flex flex-col justify-between relative overflow-hidden">
+                <p className="text-label text-muted-foreground">Latest from the Lab</p>
+                <div className="mt-4">
+                  <h3 className="text-lg md:text-xl font-bold text-foreground group-hover:text-secondary transition-colors leading-snug" style={{ fontFamily: "var(--font-bricolage)" }}>
+                    {latestExperiment.title}
+                  </h3>
+                  {latestExperiment.description && (
+                    <p className="text-sm text-muted-foreground mt-2 line-clamp-2 leading-relaxed">{latestExperiment.description}</p>
+                  )}
+                </div>
+              </Link>
+            ) : (
+              <div className="card h-full min-h-[130px] p-6 md:p-7 flex flex-col justify-between border-dashed bg-transparent">
+                <p className="text-label text-muted-foreground">The Lab</p>
+                <p className="text-sm md:text-base font-semibold text-muted-foreground leading-snug mt-4">
+                  Experiments brewing in the lab.
+                </p>
+              </div>
+            )}
           </motion.div>
         </div>
       </section>

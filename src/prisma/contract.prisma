@@ -87,6 +87,7 @@ model BlogPost {
   createdAt TimestamptzString @default(now())
   published Boolean   @default(false)
   viewCount Int       @default(0)
+  readingTime Int     @default(0)
 
   author User? @relation(fields: [authorId], references: [id])
 }
