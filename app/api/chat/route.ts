@@ -2,6 +2,8 @@ import { NextRequest } from "next/server";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { retrieve } from "@/lib/rag/retrieve";
 
+export const maxDuration = 60; // Allow more time for AI responses to stream on Vercel
+
 // Very basic in-memory rate limiting to protect the LLM endpoint from spam
 const rateLimitMap = new Map<string, { count: number; expiresAt: number }>();
 const RATE_LIMIT_WINDOW_MS = 60000; // 1 minute
@@ -33,7 +35,7 @@ export async function POST(req: NextRequest) {
     if (!process.env.GOOGLE_AI_API_KEY) {
       const mockText = "Hi! This is a fallback response because the GOOGLE_AI_API_KEY is not set in the .env file. Once you add your Gemini API key and rebuild the index from the Admin Settings, I'll be fully connected to the PostgreSQL vector database and able to answer questions about Charan's experience, projects, and skills!";
       const encoder = new TextEncoder();
-      let i = 0;
+      const i = 0;
       
       // Simulate streaming word by word
       const words = mockText.split(" ");
@@ -68,7 +70,7 @@ ${context}`;
     // 3. Setup Gemini for streaming
     const model = new ChatGoogleGenerativeAI({
       apiKey: process.env.GOOGLE_AI_API_KEY,
-      model: "gemini-flash-latest", 
+      model: "gemini-1.5-flash", 
       streaming: true,
     });
 
