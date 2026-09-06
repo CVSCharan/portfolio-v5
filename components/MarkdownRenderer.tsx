@@ -10,16 +10,7 @@ import { ArrowUpRight } from "lucide-react";
 
 mermaid.initialize({
   startOnLoad: false,
-  theme: "base",
-  themeVariables: {
-    fontFamily: "var(--font-sans)",
-    primaryColor: "var(--color-bg)",
-    primaryTextColor: "var(--color-text)",
-    primaryBorderColor: "var(--color-border)",
-    lineColor: "var(--color-text)",
-    secondaryColor: "var(--color-accent-light)",
-    tertiaryColor: "var(--color-bg-subtle)",
-  },
+  theme: "default",
 });
 
 export function MarkdownRenderer({ content }: { content: string }) {
