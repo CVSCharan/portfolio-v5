@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { MarkdownEditor } from "@/components/MarkdownEditor";
 import { useState } from "react";
 
-export function AdminBlogForm({ isNew, id, blog }: { isNew: boolean, id: string, blog?: any }) {
+export function AdminBlogForm({ isNew, id, blog, allTags = [] }: { isNew: boolean, id: string, blog?: any, allTags?: string[] }) {
   const router = useRouter();
   
   const [content, setContent] = useState(blog?.content || "");
@@ -20,6 +20,7 @@ export function AdminBlogForm({ isNew, id, blog }: { isNew: boolean, id: string,
       content: content || null,
       published: formData.get("published") === "on",
       readingTime: formData.get("readingTime") ? parseInt(formData.get("readingTime") as string, 10) : undefined,
+      tags: formData.get("tags") ? (formData.get("tags") as string).split(",") : [],
     };
 
     if (isNew) {
@@ -60,6 +61,21 @@ export function AdminBlogForm({ isNew, id, blog }: { isNew: boolean, id: string,
               <label className="block text-sm font-medium mb-1">Reading Time (Override)</label>
               <input name="readingTime" type="number" min="0" placeholder="Auto-calculated" defaultValue={blog?.readingTime || ""} className="w-48 border dark:border-gray-700 bg-transparent rounded p-1 text-sm" />
             </div>
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1">Tags (comma separated)</label>
+            <input 
+              name="tags" 
+              list="tags-list"
+              defaultValue={blog?.tags?.join(", ") || ""} 
+              className="w-full border dark:border-gray-700 bg-transparent rounded p-2" 
+              placeholder="e.g. React, Next.js, AI"
+            />
+            <datalist id="tags-list">
+              {allTags.map((t, idx) => (
+                <option key={idx} value={t} />
+              ))}
+            </datalist>
           </div>
         </div>
 

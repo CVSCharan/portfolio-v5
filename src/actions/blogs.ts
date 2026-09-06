@@ -12,7 +12,13 @@ const blogPostSchema = z.object({
   content: z.string().nullable().optional(),
   published: z.boolean().default(false),
   readingTime: z.number().int().min(0).optional(),
+  tags: z.array(z.string()).default([]),
 });
+
+function normalizeTags(tags?: string[]) {
+  if (!tags) return [];
+  return Array.from(new Set(tags.map(t => t.trim().toLowerCase()).filter(Boolean)));
+}
 
 export async function createBlog(data: {
   title: string;
@@ -21,6 +27,7 @@ export async function createBlog(data: {
   content: string | null;
   published: boolean;
   readingTime?: number;
+  tags?: string[];
 }) {
   const validated = blogPostSchema.parse(data);
   let computedReadingTime = validated.readingTime;
@@ -30,6 +37,7 @@ export async function createBlog(data: {
 
   await db.orm.public.BlogPost.create({
     ...validated,
+    tags: normalizeTags(validated.tags),
     readingTime: computedReadingTime || 0,
   });
   revalidatePath("/admin");
@@ -44,6 +52,7 @@ export async function updateBlog(id: number, data: {
   content?: string | null;
   published?: boolean;
   readingTime?: number;
+  tags?: string[];
 }) {
   const validated = blogPostSchema.partial().parse(data);
   let computedReadingTime = validated.readingTime;
@@ -54,6 +63,9 @@ export async function updateBlog(id: number, data: {
   const updateData = { ...validated };
   if (computedReadingTime !== undefined) {
     updateData.readingTime = computedReadingTime;
+  }
+  if (validated.tags !== undefined) {
+    updateData.tags = normalizeTags(validated.tags);
   }
 
   await db.orm.public.BlogPost.where({ id }).update(updateData);

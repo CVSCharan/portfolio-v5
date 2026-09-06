@@ -5,7 +5,6 @@ import Link from "next/link";
 import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
 import { TableOfContents } from "@/components/TableOfContents";
 import { ShareButtons } from "@/components/ShareButtons";
-import { AuthorBio } from "@/components/AuthorBio";
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
   const post = await db.orm.public.BlogPost.where({ slug: params.slug, published: true }).first();
@@ -93,16 +92,28 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
         </article>
 
         {/* Sticky Right Sidebar (Desktop only) */}
-        <aside className="hidden lg:block sticky top-32 space-y-12">
-          {/* Author */}
-          <div>
-            <h3 className="font-semibold text-sm tracking-wide uppercase text-muted-foreground mb-6" style={{ fontFamily: "var(--font-bricolage)" }}>
-              Written by
-            </h3>
-            <AuthorBio />
-          </div>
+        <aside className="hidden lg:block sticky top-32 max-h-[calc(100vh-8rem)] overflow-y-auto custom-scrollbar space-y-12 pb-8">
+          {/* Tags */}
+          {post.tags && post.tags.length > 0 && (
+            <div>
+              <h3 className="font-semibold text-sm tracking-wide uppercase text-muted-foreground mb-6" style={{ fontFamily: "var(--font-bricolage)" }}>
+                Tags
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {post.tags.map((tag, idx) => (
+                  <Link
+                    key={idx}
+                    href={`/blog?tag=${encodeURIComponent(tag)}`}
+                    className="px-3 py-1 text-xs font-medium bg-background border border-border text-foreground rounded-full hover:bg-muted transition-colors"
+                  >
+                    {tag}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
 
-          <hr className="border-border/50" />
+          {post.tags && post.tags.length > 0 && <hr className="border-border/50" />}
 
           {/* Table of Contents */}
           <TableOfContents />

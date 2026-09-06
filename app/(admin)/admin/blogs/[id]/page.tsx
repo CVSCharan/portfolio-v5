@@ -1,6 +1,7 @@
 import { db } from "@/src/prisma/db";
 import { redirect } from "next/navigation";
 import { AdminBlogForm } from "@/components/AdminBlogForm";
+import { getUniqueTags } from "@/app/actions/blogActions";
 
 export default async function AdminBlogPage({ params }: { params: { id: string } }) {
   const isNew = params.id === "new";
@@ -11,5 +12,7 @@ export default async function AdminBlogPage({ params }: { params: { id: string }
     if (!blog) redirect("/admin/blogs");
   }
 
-  return <AdminBlogForm isNew={isNew} id={params.id} blog={blog} />;
+  const allTags = await getUniqueTags();
+
+  return <AdminBlogForm isNew={isNew} id={params.id} blog={blog} allTags={allTags} />;
 }

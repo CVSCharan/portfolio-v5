@@ -20,6 +20,7 @@ export default async function AdminBlogsPage() {
             <tr>
               <th className="p-4">Title</th>
               <th className="p-4">Slug</th>
+              <th className="p-4">Tags</th>
               <th className="p-4">Published</th>
               <th className="p-4">Actions</th>
             </tr>
@@ -29,6 +30,15 @@ export default async function AdminBlogsPage() {
               <tr key={b.id} className="border-b">
                 <td className="p-4">{b.title}</td>
                 <td className="p-4">{b.slug}</td>
+                <td className="p-4">
+                  <div className="flex flex-wrap gap-1">
+                    {b.tags?.map((tag) => (
+                      <span key={tag} className="bg-gray-100 text-gray-700 px-2 py-0.5 rounded text-xs">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </td>
                 <td className="p-4">{b.published ? "Yes" : "No"}</td>
                 <td className="p-4 flex gap-2">
                   <Link href={`/admin/blogs/${b.id}`} className="text-blue-600 hover:underline">

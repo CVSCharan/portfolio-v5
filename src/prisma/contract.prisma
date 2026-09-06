@@ -88,6 +88,7 @@ model BlogPost {
   published Boolean   @default(false)
   viewCount Int       @default(0)
   readingTime Int     @default(0)
+  tags      String[]  @default([])
 
   author User? @relation(fields: [authorId], references: [id])
 }

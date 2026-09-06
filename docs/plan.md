@@ -63,9 +63,8 @@
 
 ### Blog
 - [x] Implemented "Load More" pagination pattern with Prisma 8 ORM for efficient scaling
-- [ ] Build blog content (admin → publish posts)
-- [ ] Once posts exist: add "Latest Post" bento tile on home page
-- [x] Blog page styling aligned to design system (Chapter 07, Typography config, grayscale code blocks)
+- [x] Build blog content (admin → publish posts, support Markdown & Mermaid)
+- [x] Blog page styling aligned to design system (Chapter 07, Typography config, grayscale code blocks, sidebar TOC, tags filtering)
 
 ### AI Chatbot — RAG (LangChain + Gemini + Pinecone)
 - [x] Phase A — Install deps, Pinecone index, env vars

@@ -51,6 +51,8 @@ Content management for the blog.
 - `authorId` (Int? -> User)
 - `published` (Boolean)
 - `viewCount` (Int)
+- `readingTime` (Int)
+- `tags` (String[])
 - `createdAt` (DateTime)
 
 ### `PageView` (Custom Analytics)

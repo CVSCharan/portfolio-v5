@@ -209,6 +209,14 @@
                   "kind": "scalar"
                 }
               },
+              "tags": {
+                "many": true,
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
               "title": {
                 "nullable": false,
                 "type": {
@@ -266,6 +274,9 @@
                 },
                 "slug": {
                   "column": "slug"
+                },
+                "tags": {
+                  "column": "tags"
                 },
                 "title": {
                   "column": "title"
@@ -1253,6 +1264,13 @@
               ]
             },
             "blogPost": {
+              "checks": [
+                {
+                  "expression": "array_position(\"tags\", NULL) IS NULL",
+                  "name": "blogPost_tags_elem_not_null_aecbe9e2",
+                  "prefix": "blogPost_tags_elem_not_null"
+                }
+              ],
               "columns": {
                 "authorId": {
                   "codecId": "pg/int4@1",
@@ -1307,6 +1325,16 @@
                 },
                 "slug": {
                   "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "tags": {
+                  "codecId": "pg/text@1",
+                  "default": {
+                    "kind": "literal",
+                    "value": []
+                  },
+                  "many": true,
                   "nativeType": "text",
                   "nullable": false
                 },
@@ -2136,7 +2164,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "9e427674e5e577876614c11353b4a87bcb2e898b922ead47e488d14c36bef478"
+    "storageHash": "7d2e7697b66ebf295e72f4cceec0b698860a68a480d2b1c8cd2b149787f27cf9"
   },
   "capabilities": {
     "postgres": {
