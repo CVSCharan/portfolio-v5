@@ -42,7 +42,7 @@ export function CredentialsClient({ certifications }: { certifications: Certific
       {/* ════════════════════════════════════════════════════
           LIST
       ════════════════════════════════════════════════════ */}
-      <section className="w-full px-5 sm:px-10 xl:px-16 py-8 md:py-12 pb-24">
+      <section className="w-full px-5 sm:px-10 xl:px-16 py-16 md:py-24 pb-24">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {certifications.map((cert, i) => (
             <motion.div

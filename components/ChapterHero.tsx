@@ -74,7 +74,7 @@ export function ChapterHero({
       </motion.div>
 
       {/* ── Headline ── */}
-      <div className="flex flex-col justify-center py-12 md:py-16 max-w-4xl">
+      <div className="flex flex-col justify-center py-16 md:py-24 max-w-4xl">
         <div className="text-page-title overflow-hidden">
           <motion.div {...reveal(0.1)} className="block leading-[0.95]">
             <span className="text-foreground">{titlePrefix}</span>

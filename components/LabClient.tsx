@@ -90,8 +90,8 @@ export default function LabClient({
                       className="h-40 w-full bg-muted/40 border-b border-border/50 flex items-center justify-center block shrink-0"
                     >
                       <span
-                        className="text-3xl font-bold text-muted-foreground/30"
-                        style={{ fontFamily: "var(--font-bricolage)" }}
+                        className="text-headline text-muted-foreground/30"
+                        
                       >
                         {proj.title.slice(0, 2).toUpperCase()}
                       </span>
@@ -103,8 +103,8 @@ export default function LabClient({
                     <div className="space-y-2">
                       <Link href={`/projects/${proj.slug}`}>
                         <h3
-                          className="text-lg font-semibold text-foreground leading-snug group-hover:text-secondary transition-colors"
-                          style={{ fontFamily: "var(--font-bricolage)" }}
+                          className="text-subtitle text-foreground leading-snug group-hover:text-secondary transition-colors"
+                          
                         >
                           {proj.title}
                         </h3>

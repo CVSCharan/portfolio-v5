@@ -65,8 +65,8 @@ export function ExperienceClient({
           ].map(({ value, label }) => (
             <div key={label} className="flex items-baseline gap-2">
               <span
-                className="text-4xl font-bold text-secondary tracking-tighter"
-                style={{ fontFamily: "var(--font-bricolage)" }}
+                className="text-display text-secondary tracking-tighter"
+                
               >
                 {value}
               </span>
@@ -96,7 +96,7 @@ export function ExperienceClient({
               <p className="text-label text-muted-foreground mb-2">Timeline</p>
               <h2
                 className="text-headline text-foreground"
-                style={{ fontFamily: "var(--font-bricolage)" }}
+               
               >
                 Full History.
               </h2>
@@ -124,8 +124,8 @@ export function ExperienceClient({
                     </span>
                     <div>
                       <span
-                        className="text-base sm:text-lg font-semibold text-foreground group-hover:text-secondary transition-colors duration-150"
-                        style={{ fontFamily: "var(--font-bricolage)" }}
+                        className="text-subtitle text-foreground group-hover:text-secondary transition-colors duration-150"
+                        
                       >
                         {exp.title}
                       </span>

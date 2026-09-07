@@ -108,7 +108,7 @@ export function HomeClient({ user, featuredProjects, experiences, latestPost, la
         </motion.div>
 
         {/* ── Manifesto headline ── */}
-        <div className="flex-1 flex flex-col justify-center py-10 md:py-14">
+        <div className="flex-1 flex flex-col justify-center py-16 md:py-24">
 
           {/* Two-line clip-reveal headline */}
           <div className="text-hero">
@@ -213,7 +213,7 @@ export function HomeClient({ user, featuredProjects, experiences, latestPost, la
       {/* ════════════════════════════════════════════════════
           BENTO GRID
       ════════════════════════════════════════════════════ */}
-      <section className="w-full bg-muted/25 px-5 sm:px-10 xl:px-16 py-12 md:py-16">
+      <section className="w-full bg-muted/25 px-5 sm:px-10 xl:px-16 py-16 md:py-24">
         <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4">
 
           {/* Currently building — 2 cols */}
@@ -234,10 +234,7 @@ export function HomeClient({ user, featuredProjects, experiences, latestPost, la
               />
               <p className="text-label text-muted-foreground">Currently building</p>
               <div>
-                <h3
-                  className="text-xl md:text-2xl font-bold text-foreground group-hover:text-secondary transition-colors leading-snug mt-3"
-                  style={{ fontFamily: "var(--font-bricolage)" }}
-                >
+                <h3 className="text-title text-foreground group-hover:text-secondary transition-colors mt-3">
                   {projects[0].title}
                   <ArrowUpRight className="inline-block w-5 h-5 ml-1.5 transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </h3>
@@ -258,7 +255,7 @@ export function HomeClient({ user, featuredProjects, experiences, latestPost, la
             <div className="card h-full min-h-[150px] p-6 md:p-7 flex flex-col justify-between">
               <p className="text-label text-muted-foreground">Experience</p>
               <div>
-                <p className="text-5xl md:text-6xl font-bold text-secondary tracking-tighter leading-none" style={{ fontFamily: "var(--font-bricolage)" }}>4+</p>
+                <p className="text-display text-secondary tracking-tighter leading-none">4+</p>
                 <p className="text-xs text-muted-foreground mt-1.5 font-medium">years</p>
               </div>
             </div>
@@ -304,10 +301,7 @@ export function HomeClient({ user, featuredProjects, experiences, latestPost, la
               
               <div className="mt-4 md:mt-0 relative z-10 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
                 <div>
-                  <h3
-                    className="text-xl md:text-2xl font-bold text-foreground leading-snug group-hover:text-secondary transition-colors"
-                    style={{ fontFamily: "var(--font-bricolage)" }}
-                  >
+                  <h3 className="text-title text-foreground group-hover:text-secondary transition-colors">
                     Chat with Resume.
                   </h3>
                   <p className="text-sm text-muted-foreground mt-1 max-w-sm">
@@ -336,11 +330,12 @@ export function HomeClient({ user, featuredProjects, experiences, latestPost, la
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.5, delay: 0.2 }}
+            className="col-span-2 md:col-span-1"
           >
             <div className="card h-full min-h-[130px] p-6 md:p-7 flex flex-col justify-between">
               <p className="text-label text-muted-foreground">Shipped</p>
               <div>
-                <p className="text-5xl md:text-6xl font-bold text-secondary tracking-tighter leading-none" style={{ fontFamily: "var(--font-bricolage)" }}>20+</p>
+                <p className="text-display text-secondary tracking-tighter leading-none">20+</p>
                 <p className="text-xs text-muted-foreground mt-1.5 font-medium">projects</p>
               </div>
             </div>
@@ -358,7 +353,7 @@ export function HomeClient({ user, featuredProjects, experiences, latestPost, la
               <Link href={`/blog/${latestPost.slug}`} className="group card card-hover h-full min-h-[130px] p-6 md:p-7 flex flex-col justify-between relative overflow-hidden">
                 <p className="text-label text-muted-foreground">Latest Post</p>
                 <div className="mt-4">
-                  <h3 className="text-lg md:text-xl font-bold text-foreground group-hover:text-secondary transition-colors leading-snug" style={{ fontFamily: "var(--font-bricolage)" }}>
+                  <h3 className="text-title text-foreground group-hover:text-secondary transition-colors">
                     {latestPost.title}
                   </h3>
                   {latestPost.excerpt && (
@@ -388,7 +383,7 @@ export function HomeClient({ user, featuredProjects, experiences, latestPost, la
               <Link href="/lab" className="group card card-hover h-full min-h-[130px] p-6 md:p-7 flex flex-col justify-between relative overflow-hidden">
                 <p className="text-label text-muted-foreground">Latest from the Lab</p>
                 <div className="mt-4">
-                  <h3 className="text-lg md:text-xl font-bold text-foreground group-hover:text-secondary transition-colors leading-snug" style={{ fontFamily: "var(--font-bricolage)" }}>
+                  <h3 className="text-title text-foreground group-hover:text-secondary transition-colors">
                     {latestExperiment.title}
                   </h3>
                   {latestExperiment.description && (
@@ -422,7 +417,7 @@ export function HomeClient({ user, featuredProjects, experiences, latestPost, la
           >
             <div>
               <p className="text-label text-muted-foreground mb-2">Work History</p>
-              <h2 className="text-headline text-foreground" style={{ fontFamily: "var(--font-bricolage)" }}>The Journey.</h2>
+              <h2 className="text-headline text-foreground">The Journey.</h2>
             </div>
           </motion.div>
 
@@ -440,10 +435,7 @@ export function HomeClient({ user, featuredProjects, experiences, latestPost, la
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <div>
-                  <span
-                    className="text-base sm:text-lg font-semibold text-foreground group-hover:text-secondary transition-colors duration-150"
-                    style={{ fontFamily: "var(--font-bricolage)" }}
-                  >{exp.title}</span>
+                  <span className="text-subtitle text-foreground group-hover:text-secondary transition-colors duration-150">{exp.title}</span>
                   <span className="text-sm text-muted-foreground ml-2">· {exp.company}</span>
                 </div>
                 <span className="text-xs font-mono text-muted-foreground/50 shrink-0">{exp.period}</span>
@@ -467,7 +459,7 @@ export function HomeClient({ user, featuredProjects, experiences, latestPost, la
           >
             <div>
               <p className="text-label text-muted-foreground mb-2">Selected Work</p>
-              <h2 className="text-headline text-foreground" style={{ fontFamily: "var(--font-bricolage)" }}>What I Build.</h2>
+              <h2 className="text-headline text-foreground">What I Build.</h2>
             </div>
           </motion.div>
 
@@ -487,14 +479,14 @@ export function HomeClient({ user, featuredProjects, experiences, latestPost, la
                     </div>
                   ) : (
                     <div className="h-44 w-full bg-muted flex items-center justify-center">
-                      <span className="text-4xl font-bold text-muted-foreground/20" style={{ fontFamily: "var(--font-bricolage)" }}>
+                      <span className="text-headline text-muted-foreground/20">
                         {p.title.slice(0, 2).toUpperCase()}
                       </span>
                     </div>
                   )}
                   <div className="p-5 flex items-start justify-between gap-3">
                     <div className="space-y-1 min-w-0">
-                      <h3 className="font-semibold text-foreground leading-snug group-hover:text-secondary transition-colors" style={{ fontFamily: "var(--font-bricolage)" }}>{p.title}</h3>
+                      <h3 className="text-subtitle text-foreground group-hover:text-secondary transition-colors">{p.title}</h3>
                       {p.description && <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2">{p.description}</p>}
                     </div>
                     <ArrowUpRight className="w-4 h-4 text-muted-foreground shrink-0 mt-0.5 transition-all group-hover:text-secondary group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />

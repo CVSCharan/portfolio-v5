@@ -4,7 +4,7 @@ export default function Loading() {
       {/* ════════════════════════════════════════════════════
           HERO SECTION SKELETON
       ════════════════════════════════════════════════════ */}
-      <section className="relative flex flex-col px-5 sm:px-10 xl:px-16 pt-8 pb-16 md:py-24 border-b border-border">
+      <section className="relative flex flex-col px-5 sm:px-10 xl:px-16 pt-16 pb-16 md:py-24 border-b border-border">
         <div className="w-full max-w-6xl mx-auto mb-12">
           {/* Meta Bar */}
           <div className="flex items-center justify-between border-b border-border pb-4 mb-12">

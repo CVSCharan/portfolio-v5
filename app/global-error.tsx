@@ -26,7 +26,7 @@ export default function GlobalError({
             <p className="text-label text-muted-foreground">Critical System Error</p>
             <h1
               className="text-headline text-foreground"
-              style={{ fontFamily: "var(--font-bricolage)" }}
+             
             >
               Application Error
             </h1>

@@ -96,7 +96,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
           {/* Tags */}
           {post.tags && post.tags.length > 0 && (
             <div>
-              <h3 className="font-semibold text-sm tracking-wide uppercase text-muted-foreground mb-6" style={{ fontFamily: "var(--font-bricolage)" }}>
+              <h3 className="font-semibold text-sm tracking-wide uppercase text-muted-foreground mb-6" >
                 Tags
               </h3>
               <div className="flex flex-wrap gap-2">
@@ -122,7 +122,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
 
           {/* Share Actions */}
           <div>
-            <h3 className="font-semibold text-sm tracking-wide uppercase text-muted-foreground mb-6" style={{ fontFamily: "var(--font-bricolage)" }}>
+            <h3 className="font-semibold text-sm tracking-wide uppercase text-muted-foreground mb-6" >
               Share Post
             </h3>
             <ShareButtons title={post.title} url={postUrl} />
@@ -135,7 +135,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
       {relatedPosts.length > 0 && (
         <section className="border-t border-border bg-background py-16 md:py-24">
           <div className="max-w-6xl mx-auto px-5 sm:px-10 xl:px-16 space-y-12">
-            <h2 className="text-2xl font-bold" style={{ fontFamily: "var(--font-bricolage)" }}>More Writing</h2>
+            <h2 className="text-title" >More Writing</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
               {relatedPosts.map(rp => (
@@ -144,7 +144,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
                   
                   <div className="space-y-3 relative z-10 flex-1">
                     <div className="flex justify-between items-start gap-4">
-                      <h3 className="text-lg font-semibold leading-snug group-hover:text-secondary transition-colors" style={{ fontFamily: "var(--font-bricolage)" }}>
+                      <h3 className="text-subtitle leading-snug group-hover:text-secondary transition-colors" >
                         {rp.title}
                       </h3>
                       <ArrowUpRight className="w-4 h-4 text-muted-foreground/50 group-hover:text-secondary transition-all shrink-0 opacity-0 group-hover:opacity-100 -translate-x-2 translate-y-2 group-hover:translate-x-0 group-hover:translate-y-0" />

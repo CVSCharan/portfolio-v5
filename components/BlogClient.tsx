@@ -133,8 +133,8 @@ export default function BlogClient({
                   <div className="space-y-4 flex-1 relative z-10">
                     <div className="flex justify-between items-start gap-4">
                         <h2
-                          className="text-xl md:text-2xl font-semibold text-foreground leading-snug group-hover:text-secondary transition-colors"
-                          style={{ fontFamily: "var(--font-bricolage)" }}
+                          className="text-title text-xl text-foreground leading-snug group-hover:text-secondary transition-colors"
+                          
                         >
                           {post.title}
                         </h2>

@@ -130,7 +130,7 @@ export default function SkillsClient({ skills }: { skills: SkillRecord[] }) {
               <p className="text-label text-muted-foreground mb-2">Inventory</p>
               <h2
                 className="text-headline text-foreground"
-                style={{ fontFamily: "var(--font-bricolage)" }}
+               
               >
                 Full Stack.
               </h2>

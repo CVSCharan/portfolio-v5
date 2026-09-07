@@ -3,12 +3,12 @@ import { ProjectCardSkeleton } from "@/components/ProjectCardSkeleton";
 export default function Loading() {
   return (
     <div className="-mx-5 md:-mx-10 bg-background overflow-x-hidden min-h-screen">
-      <section className="relative flex flex-col px-5 sm:px-10 xl:px-16 pt-12 pb-16 md:py-24 border-b border-border">
+      <section className="relative flex flex-col px-5 sm:px-10 xl:px-16 pt-16 pb-16 md:py-24 border-b border-border">
         <div className="flex items-center justify-between pt-4 pb-6 border-b border-border mb-12">
           <div className="skeleton h-4 w-24" />
           <div className="skeleton h-4 w-24" />
         </div>
-        <div className="flex flex-col justify-center py-12 md:py-16 max-w-4xl space-y-6">
+        <div className="flex flex-col justify-center py-16 md:py-24 max-w-4xl space-y-6">
           <div className="skeleton h-16 md:h-24 w-3/4" />
           <div className="skeleton h-6 md:h-8 w-2/3 mt-6" />
         </div>

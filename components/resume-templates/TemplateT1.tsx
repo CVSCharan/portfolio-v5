@@ -84,7 +84,7 @@ function SectionHeading({
       />
       <h2
         className="text-xs font-black uppercase tracking-[0.18em] text-foreground"
-        style={{ fontFamily: "var(--font-bricolage)" }}
+        
       >
         {children}
       </h2>
@@ -153,8 +153,8 @@ export function TemplateT1({
         <div className="flex items-start justify-between gap-6">
           <div>
             <h1
-              className="text-3xl font-black tracking-tight text-foreground"
-              style={{ fontFamily: "var(--font-bricolage)" }}
+              className="text-headline font-black tracking-tight text-foreground"
+              
             >
               {user.name}
             </h1>

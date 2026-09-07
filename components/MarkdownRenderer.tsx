@@ -22,9 +22,7 @@ export function MarkdownRenderer({ content }: { content: string }) {
   }, [content]);
 
   return (
-    <div className="prose prose-neutral dark:prose-invert max-w-none 
-                 prose-img:rounded-xl prose-img:border prose-img:border-border/50
-                 prose-pre:bg-gray-900 prose-pre:border prose-pre:border-gray-800">
+    <div className="prose prose-neutral dark:prose-invert max-w-none prose-img:rounded-xl prose-img:border prose-img:border-border/50 prose-pre:bg-gray-900 prose-pre:border prose-pre:border-gray-800">
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
       rehypePlugins={[

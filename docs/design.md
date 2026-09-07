@@ -54,8 +54,10 @@ Each page gets exactly one accent moment in its hero headline:
 |---|---|---|---|---|
 | `.text-hero` | `clamp(3rem, 10vw, 9rem)` | `0.9` | `-0.035em` | Home page hero only |
 | `.text-page-title` | `clamp(2.5rem, 7vw, 5.5rem)` | `0.95` | `-0.03em` | Inner page heroes (`/about`, `/experience`, etc.) |
-| `.text-display` | `clamp(2.75rem, 6vw+0.5rem, 5.5rem)` | `1.05` | `-0.03em` | Legacy display size |
+| `.text-display` | `clamp(2.75rem, 6vw+0.5rem, 5.5rem)` | `1.05` | `-0.03em` | Massive stats, numbers (`4+`, `20+`) |
 | `.text-headline` | `clamp(1.875rem, 3.5vw, 2.75rem)` | `1.15` | `-0.025em` | Section headings ("The Journey.", "What I Know.") |
+| `.text-title` | `clamp(1.25rem, 2vw, 1.5rem)` | `1.2` | `-0.02em` | Card titles and prominent sub-headings |
+| `.text-subtitle` | `1.125rem` | `1.5` | `-0.01em` | List items and minor headers |
 | `.text-label` | `0.6875rem` | — | `0.1em` | ALL section labels — uppercase tracked, muted |
 | Body | `16px / 1rem` | `1.65` | — | Default — set on `body` |
 
@@ -231,7 +233,7 @@ Framer Motion v10+ additionally auto-respects `prefers-reduced-motion` on all `m
 ```tsx
 <div>
   <p className="text-label text-muted-foreground mb-2">Work History</p>
-  <h2 className="text-headline text-foreground" style={{ fontFamily: "var(--font-bricolage)" }}>
+  <h2 className="text-headline text-foreground">
     The Journey.
   </h2>
 </div>
@@ -242,8 +244,7 @@ Framer Motion v10+ additionally auto-respects `prefers-reduced-motion` on all `m
 <li className="group grid grid-cols-[2.5rem_1fr_auto] items-baseline gap-4 py-5 border-b border-border last:border-b-0">
   <span className="text-label text-muted-foreground/30 tabular-nums text-right select-none">01</span>
   <div>
-    <span className="text-base sm:text-lg font-semibold text-foreground group-hover:text-secondary transition-colors"
-      style={{ fontFamily: "var(--font-bricolage)" }}>
+    <span className="text-subtitle text-foreground group-hover:text-secondary transition-colors">
       Title
     </span>
     <span className="text-sm text-muted-foreground ml-2">· Company</span>

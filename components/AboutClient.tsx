@@ -149,7 +149,7 @@ export function AboutClient({
             <p className="text-label text-muted-foreground mb-2">Background</p>
             <h2
               className="text-headline text-foreground"
-              style={{ fontFamily: "var(--font-bricolage)" }}
+             
             >
               The Story.
             </h2>

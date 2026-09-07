@@ -22,7 +22,7 @@ export function PageHeader({
         {label && <p className="text-label text-muted-foreground">{label}</p>}
         <h1
           className="text-headline text-foreground"
-          style={{ fontFamily: "var(--font-bricolage)" }}
+         
         >
           {title}
         </h1>

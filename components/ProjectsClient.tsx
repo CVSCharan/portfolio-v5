@@ -74,8 +74,8 @@ function FeaturedProjectCard({ proj, index, onFilter }: { proj: ProjectRecord, i
         ) : (
           <Link href={`/projects/${proj.slug}`} className="flex w-full h-full items-center justify-center">
             <span
-              className="text-4xl font-bold text-muted-foreground/30"
-              style={{ fontFamily: "var(--font-bricolage)" }}
+              className="text-display text-muted-foreground/30"
+              
             >
               {proj.title.slice(0, 2).toUpperCase()}
             </span>
@@ -88,8 +88,8 @@ function FeaturedProjectCard({ proj, index, onFilter }: { proj: ProjectRecord, i
         <div className="space-y-4">
           <Link href={`/projects/${proj.slug}`}>
             <h3
-              className="text-2xl md:text-3xl font-semibold text-foreground leading-snug group-hover:text-secondary transition-colors"
-              style={{ fontFamily: "var(--font-bricolage)" }}
+              className="text-headline text-foreground leading-snug group-hover:text-secondary transition-colors"
+              
             >
               {proj.title}
             </h3>
@@ -348,7 +348,7 @@ function ProjectsContent({
                 transition={{ ...springTransition }}
                 className="flex items-center justify-between pt-4 pb-6 border-b border-border mb-12 md:mb-16"
               >
-                <h2 className="text-xl md:text-3xl font-semibold text-foreground tracking-tight" style={{ fontFamily: "var(--font-bricolage)" }}>
+                <h2 className="text-headline text-xl text-foreground tracking-tight" >
                   Templates &amp; Experiments.
                 </h2>
               </motion.div>
@@ -388,8 +388,8 @@ function ProjectsContent({
                         className="h-40 w-full bg-muted/40 border-b border-border/50 flex items-center justify-center block shrink-0"
                       >
                         <span
-                          className="text-3xl font-bold text-muted-foreground/30"
-                          style={{ fontFamily: "var(--font-bricolage)" }}
+                          className="text-headline text-muted-foreground/30"
+                          
                         >
                           {proj.title.slice(0, 2).toUpperCase()}
                         </span>
@@ -402,8 +402,8 @@ function ProjectsContent({
                         {/* We use demoUrl for templates if githubUrls doesn't exist, else github. Or just slug. */}
                         <Link href={`/projects/${proj.slug}`}>
                           <h3
-                            className="text-lg font-semibold text-foreground leading-snug group-hover:text-secondary transition-colors"
-                            style={{ fontFamily: "var(--font-bricolage)" }}
+                            className="text-subtitle text-foreground leading-snug group-hover:text-secondary transition-colors"
+                            
                           >
                             {proj.title}
                           </h3>

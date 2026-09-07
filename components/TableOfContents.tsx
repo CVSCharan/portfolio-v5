@@ -53,7 +53,7 @@ export function TableOfContents() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between lg:block">
-        <h3 className="font-semibold text-sm tracking-wide uppercase text-muted-foreground" style={{ fontFamily: "var(--font-bricolage)" }}>
+        <h3 className="font-semibold text-sm tracking-wide uppercase text-muted-foreground" >
           On this page
         </h3>
         <button 

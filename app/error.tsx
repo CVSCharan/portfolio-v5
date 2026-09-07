@@ -25,7 +25,7 @@ export default function Error({
         <p className="text-label text-muted-foreground">Something went wrong</p>
         <h1
           className="text-headline text-foreground"
-          style={{ fontFamily: "var(--font-bricolage)" }}
+         
         >
           Unexpected Error
         </h1>

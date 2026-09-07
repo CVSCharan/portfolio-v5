@@ -16,7 +16,7 @@ export function CollaborateCTA() {
       >
         <div className="max-w-xl">
           <p className="text-label text-muted-foreground mb-2">Let&apos;s Collaborate</p>
-          <h2 className="text-headline text-foreground" style={{ fontFamily: "var(--font-bricolage)" }}>Have a project in mind?</h2>
+          <h2 className="text-headline text-foreground">Have a project in mind?</h2>
           <p className="text-base text-muted-foreground leading-relaxed mt-3">
             Open to ambitious projects, creative ideas, and new opportunities to build something meaningful.
           </p>

@@ -285,7 +285,7 @@ export default function ProjectDetailClient({
           HERO IMAGE — full-bleed, no border, rounded-3xl
       ══════════════════════════════════════════════════════════════ */}
       {project.imageUrl && (
-        <section className="w-full px-5 sm:px-10 xl:px-16 py-8 md:py-12">
+        <section className="w-full px-5 sm:px-10 xl:px-16 py-16 md:py-24">
           <motion.div
             {...scrollFadeUp(0)}
             className="w-full relative aspect-[16/9] md:aspect-[21/9] rounded-3xl overflow-hidden shadow-2xl bg-card"
@@ -307,7 +307,7 @@ export default function ProjectDetailClient({
       {/* ══════════════════════════════════════════════════════════════
           AT-A-GLANCE STRIP (computed, no data entry needed)
       ══════════════════════════════════════════════════════════════ */}
-      <section className="w-full px-5 sm:px-10 xl:px-16 py-10 md:py-12 max-w-5xl mx-auto">
+      <section className="w-full px-5 sm:px-10 xl:px-16 py-16 md:py-24 max-w-5xl mx-auto">
         <motion.div
           {...scrollFadeUp(0)}
           className="grid grid-cols-2 md:grid-cols-4 gap-px bg-border rounded-2xl overflow-hidden"
@@ -323,8 +323,8 @@ export default function ProjectDetailClient({
                 {item.label}
               </span>
               <span
-                className="text-sm font-semibold text-foreground leading-snug"
-                style={{ fontFamily: "var(--font-bricolage)" }}
+                className="text-subtitle text-sm text-foreground leading-snug"
+                
               >
                 {item.value}
               </span>
@@ -384,7 +384,7 @@ export default function ProjectDetailClient({
           IMPACT METRICS — only when real data exists
       ══════════════════════════════════════════════════════════════ */}
       {metrics && (
-        <section className="w-full bg-muted/30 py-16 md:py-20">
+        <section className="w-full bg-muted/30 py-16 md:py-24">
           <div className="max-w-5xl mx-auto px-5 sm:px-10 xl:px-16">
             <motion.p
               {...scrollFadeUp(0)}
@@ -400,8 +400,8 @@ export default function ProjectDetailClient({
                   className="flex flex-col"
                 >
                   <span
-                    className="text-4xl md:text-5xl font-bold text-primary mb-2"
-                    style={{ fontFamily: "var(--font-bricolage)" }}
+                    className="text-display text-primary mb-2"
+                    
                   >
                     {m.value}
                   </span>
@@ -500,8 +500,8 @@ export default function ProjectDetailClient({
                 Next Project
               </p>
               <h2
-                className="text-xl md:text-2xl font-bold text-foreground group-hover:text-primary transition-colors truncate"
-                style={{ fontFamily: "var(--font-bricolage)" }}
+                className="text-title text-xl text-foreground group-hover:text-primary transition-colors truncate"
+                
               >
                 {nextProject.title}
               </h2>

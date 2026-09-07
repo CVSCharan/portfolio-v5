@@ -7,7 +7,7 @@ export default function NotFound() {
       <p className="text-label text-muted-foreground">404 — Not Found</p>
       <h1
         className="text-display text-foreground"
-        style={{ fontFamily: "var(--font-bricolage)" }}
+       
       >
         Lost in the void.
       </h1>

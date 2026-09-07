@@ -181,8 +181,8 @@ export function DynamicIslandNav() {
           <div className="flex items-center justify-start shrink-0 w-20">
             <Link
               href="/"
-              className="font-bold text-base text-foreground tracking-tight"
-              style={{ fontFamily: "var(--font-bricolage)" }}
+              className="text-subtitle text-foreground tracking-tight"
+              
             >
               CVS
             </Link>
