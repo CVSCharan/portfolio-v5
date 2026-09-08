@@ -49,17 +49,11 @@
 
 ---
 
-## In Progress
-
 ### Design System — Remaining Pages (Phases 4–7)
 - [x] **Phase 4** — `experience/page.tsx` — meta bar `CAREER · 04`, ghost `04`, "The Journey." headline, stats strip, numbered list (already partially matching home style)
 - [x] **Phase 5** — `SkillsClient.tsx` — meta bar `CAPABILITIES · 05`, ghost `05`, "The Arsenal." headline, simplified layout (remove complex dashboard — editorial category rows instead)
 - [x] **Phase 6** — `ProjectsGrid.tsx` + `projects/page.tsx` — meta bar `SELECTED WORK · 03`, ghost `03`, "What I Build." headline, featured card + grid
 - [x] **Phase 7** — `contact/page.tsx` — meta bar `CONTACT · 06`, ghost `06`, "Let's build something." headline, form
-
----
-
-## Planned
 
 ### Blog
 - [x] Implemented "Load More" pagination pattern with Prisma 8 ORM for efficient scaling
@@ -74,6 +68,10 @@
 - [x] Phase E — Admin "Rebuild RAG Index" button in `/admin/settings`
 - [x] Phase F — Home bento tile: "Ask about my work →" (ships LAST, after D is tested)
 - **Pre-requisites:** `GOOGLE_AI_API_KEY`, `PINECONE_API_KEY`, `PINECONE_INDEX` in `.env.local`
+
+---
+
+## Planned
 
 ### Deployment
 - [ ] Vercel production deploy
@@ -98,3 +96,6 @@
 | 2026-09-04 | "Load More" preferred over infinite scroll | Protects footer accessibility in portfolio design |
 | 2026-09-04 | Numbered pagination for Admin views | Allows explicit navigation to older records |
 | 2026-09-04 | Prisma 8 SQL Builder for array overlaps | ORM lacks `.has()`; SQL builder `fns.raw` maintains typings securely |
+| 2026-09-08 | Fix ghost number overlaps | Hardcoded explicit wrap padding `pr-12 md:pr-48` and opacity `0.08` across all hero titles |
+| 2026-09-08 | Fix mobile admin fields | `AdminBlogForm` switched to `grid-cols-1 md:grid-cols-2` for mobile text input stacking |
+| 2026-09-08 | Admin Sidebar responsive strategy | Retained `w-64` locked width as admin panel is considered desktop-first scope for now |

@@ -38,7 +38,7 @@ export function AdminBlogForm({ isNew, id, blog, allTags = [] }: { isNew: boolea
       
       <form action={action} className="space-y-6">
         <div className="bg-white dark:bg-gray-800 p-6 shadow rounded space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium mb-1">Title</label>
               <input name="title" defaultValue={blog?.title || ""} required className="w-full border dark:border-gray-700 bg-transparent rounded p-2" />
