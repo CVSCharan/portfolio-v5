@@ -142,7 +142,7 @@ export default function ProjectDetailClient({
           style={{
             fontFamily: "var(--font-bricolage)",
             fontSize: "clamp(8rem, 22vw, 22rem)",
-            opacity: 0.04,
+            opacity: 0.08,
             letterSpacing: "-0.05em",
           }}
         >
@@ -167,7 +167,7 @@ export default function ProjectDetailClient({
         </motion.div>
 
         {/* Hero content */}
-        <div className="flex flex-col justify-center py-12 md:py-16 max-w-4xl">
+        <div className="flex flex-col justify-center py-16 md:py-24 max-w-4xl pr-12 sm:pr-24 md:pr-48">
 
           {/* Category label */}
           {project.category && (

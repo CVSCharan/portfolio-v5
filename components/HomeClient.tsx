@@ -82,7 +82,7 @@ export function HomeClient({ user, featuredProjects, experiences, latestPost, la
           style={{
             fontFamily: "var(--font-bricolage)",
             fontSize: "clamp(8rem, 22vw, 22rem)",
-            opacity: 0.04,
+            opacity: 0.08,
             letterSpacing: "-0.05em",
           }}
         >
@@ -108,7 +108,7 @@ export function HomeClient({ user, featuredProjects, experiences, latestPost, la
         </motion.div>
 
         {/* ── Manifesto headline ── */}
-        <div className="flex-1 flex flex-col justify-center py-16 md:py-24">
+        <div className="flex-1 flex flex-col justify-center py-16 md:py-24 pr-12 sm:pr-24 md:pr-48">
 
           {/* Two-line clip-reveal headline */}
           <div className="text-hero">

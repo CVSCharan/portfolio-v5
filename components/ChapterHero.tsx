@@ -55,7 +55,7 @@ export function ChapterHero({
         style={{
           fontFamily: "var(--font-bricolage)",
           fontSize: "clamp(8rem, 22vw, 22rem)",
-          opacity: 0.04,
+          opacity: 0.08,
           letterSpacing: "-0.05em",
         }}
       >
@@ -74,7 +74,7 @@ export function ChapterHero({
       </motion.div>
 
       {/* ── Headline ── */}
-      <div className="flex flex-col justify-center py-16 md:py-24 max-w-4xl">
+      <div className="flex flex-col justify-center py-16 md:py-24 max-w-4xl pr-12 sm:pr-24 md:pr-48">
         <div className="text-page-title overflow-hidden">
           <motion.div {...reveal(0.1)} className="block leading-[0.95]">
             <span className="text-foreground">{titlePrefix}</span>
