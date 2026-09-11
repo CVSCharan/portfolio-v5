@@ -1,5 +1,11 @@
 import type { NextConfig } from "next";
 
+// Derive hostname from NEXT_PUBLIC_SITE_URL — same pattern as layout.tsx, sitemap.ts, robots.ts
+// Domain changes in .env automatically propagate here; no hardcoded string duplication.
+const siteUrl = new URL(
+  process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"
+);
+
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
@@ -10,6 +16,11 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "res.cloudinary.com",
+      },
+      // Allow next/image to serve OG-generated images from our own domain
+      {
+        protocol: siteUrl.protocol.replace(":", "") as "https" | "http",
+        hostname: siteUrl.hostname,
       },
     ],
   },

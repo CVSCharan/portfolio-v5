@@ -11,6 +11,7 @@ import { getPaginatedTemplates } from "@/app/actions/projectActions";
 import { CollaborateCTA } from "./CollaborateCTA";
 import { ProjectCardSkeleton } from "./ProjectCardSkeleton";
 import { ChapterHero } from "./ChapterHero";
+import { projectOgUrl } from "@/lib/og-url";
 
 /* ── Types ─────────────────────────────────────────────────── */
 interface ProjectRecord {
@@ -57,30 +58,17 @@ function FeaturedProjectCard({ proj, index, onFilter }: { proj: ProjectRecord, i
     >
       {/* Image Area - takes up ~60% on desktop */}
       <div className="w-full md:w-3/5 aspect-[4/3] md:aspect-[16/10] relative rounded-2xl overflow-hidden border border-border/50 bg-muted/20">
-        {proj.imageUrl ? (
-          <Link href={`/projects/${proj.slug}`} className="block w-full h-full relative overflow-hidden">
-            <motion.div style={{ y: transformY }} className="w-full h-[110%] -top-[5%] relative">
-              <Image
-                src={proj.imageUrl}
-                alt={proj.title}
-                fill
-                className="object-cover transition-transform duration-700 group-hover:scale-105"
-                placeholder="blur"
-                blurDataURL="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxIiBoZWlnaHQ9IjEiPjxyZWN0IHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9IiNmNGY0ZjUiLz48L3N2Zz4="
-                sizes="(max-width: 768px) 100vw, 60vw"
-              />
-            </motion.div>
-          </Link>
-        ) : (
-          <Link href={`/projects/${proj.slug}`} className="flex w-full h-full items-center justify-center">
-            <span
-              className="text-display text-muted-foreground/30"
-              
-            >
-              {proj.title.slice(0, 2).toUpperCase()}
-            </span>
-          </Link>
-        )}
+        <Link href={`/projects/${proj.slug}`} className="block w-full h-full relative overflow-hidden">
+          <motion.div style={{ y: transformY }} className="w-full h-[110%] -top-[5%] relative">
+            <Image
+              src={proj.imageUrl ?? projectOgUrl(proj)}
+              alt={`${proj.title} — cover image`}
+              fill
+              className="object-cover transition-transform duration-700 group-hover:scale-105"
+              sizes="(max-width: 768px) 100vw, 60vw"
+            />
+          </motion.div>
+        </Link>
       </div>
 
       {/* Content Area - takes up ~40% on desktop */}
@@ -367,34 +355,18 @@ function ProjectsContent({
                     className="card card-hover flex flex-col overflow-hidden group h-full"
                   >
                     {/* Image Area */}
-                    {proj.imageUrl ? (
-                      <Link
-                        href={`/projects/${proj.slug}`}
-                        className="h-40 w-full overflow-hidden border-b border-border/50 block relative shrink-0"
-                      >
-                        <Image
-                          src={proj.imageUrl}
-                          alt={proj.title}
-                          fill
-                          className="object-cover transition-transform duration-500 group-hover:scale-105"
-                          placeholder="blur"
-                          blurDataURL="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxIiBoZWlnaHQ9IjEiPjxyZWN0IHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9IiNmNGY0ZjUiLz48L3N2Zz4="
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        />
-                      </Link>
-                    ) : (
-                      <Link
-                        href={`/projects/${proj.slug}`}
-                        className="h-40 w-full bg-muted/40 border-b border-border/50 flex items-center justify-center block shrink-0"
-                      >
-                        <span
-                          className="text-headline text-muted-foreground/30"
-                          
-                        >
-                          {proj.title.slice(0, 2).toUpperCase()}
-                        </span>
-                      </Link>
-                    )}
+                    <Link
+                      href={`/projects/${proj.slug}`}
+                      className="h-40 w-full overflow-hidden border-b border-border/50 block relative shrink-0"
+                    >
+                      <Image
+                        src={proj.imageUrl ?? projectOgUrl(proj)}
+                        alt={`${proj.title} — cover image`}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      />
+                    </Link>
 
                     {/* Content Area */}
                     <div className="flex flex-col flex-1 p-5 md:p-6 gap-5">

@@ -87,31 +87,31 @@ async function main() {
   // 4. Create Skills
   const skills = [
     // Programming Languages
-    { name: "JavaScript", level: 90, category: "Languages" },
-    { name: "TypeScript", level: 85, category: "Languages" },
-    { name: "Python", level: 80, category: "Languages" },
+    { name: "JavaScript", level: 90, categories: ["Languages"] },
+    { name: "TypeScript", level: 85, categories: ["Languages"] },
+    { name: "Python", level: 80, categories: ["Languages"] },
     // Web Development
-    { name: "React JS", level: 95, category: "Frontend" },
-    { name: "Next JS", level: 90, category: "Frontend" },
-    { name: "Tailwind CSS", level: 95, category: "Frontend" },
-    { name: "Node JS", level: 85, category: "Backend" },
-    { name: "ElysiaJS", level: 80, category: "Backend" },
-    { name: "GraphQL", level: 75, category: "Backend" },
-    { name: "React Native", level: 80, category: "Mobile" },
+    { name: "React JS", level: 95, categories: ["Frontend"] },
+    { name: "Next JS", level: 90, categories: ["Frontend"] },
+    { name: "Tailwind CSS", level: 95, categories: ["Frontend"] },
+    { name: "Node JS", level: 85, categories: ["Backend"] },
+    { name: "ElysiaJS", level: 80, categories: ["Backend"] },
+    { name: "GraphQL", level: 75, categories: ["Backend"] },
+    { name: "React Native", level: 80, categories: ["Mobile"] },
     // Databases
-    { name: "PostgreSQL", level: 85, category: "Database" },
-    { name: "Snowflake", level: 75, category: "Database" },
-    { name: "MongoDB", level: 80, category: "Database" },
+    { name: "PostgreSQL", level: 85, categories: ["Database"] },
+    { name: "Snowflake", level: 75, categories: ["Database"] },
+    { name: "MongoDB", level: 80, categories: ["Database"] },
     // AI & ML
-    { name: "OpenAI API", level: 90, category: "AI/ML" },
-    { name: "LangChain", level: 75, category: "AI/ML" },
-    { name: "Pinecone", level: 80, category: "AI/ML" },
-    { name: "RAG Architecture", level: 85, category: "AI/ML" },
+    { name: "OpenAI API", level: 90, categories: ["AI/ML"] },
+    { name: "LangChain", level: 75, categories: ["AI/ML"] },
+    { name: "Pinecone", level: 80, categories: ["AI/ML"] },
+    { name: "RAG Architecture", level: 85, categories: ["AI/ML"] },
     // Tools & Cloud
-    { name: "Docker", level: 70, category: "DevOps" },
-    { name: "AWS", level: 75, category: "Cloud" },
-    { name: "Vercel", level: 90, category: "Cloud" },
-    { name: "n8n", level: 85, category: "Tools" },
+    { name: "Docker", level: 70, categories: ["DevOps"] },
+    { name: "AWS", level: 75, categories: ["Cloud"] },
+    { name: "Vercel", level: 90, categories: ["Cloud"] },
+    { name: "n8n", level: 85, categories: ["Tools"] },
   ]
 
   for (const skill of skills) {
@@ -150,6 +150,27 @@ async function main() {
       demoUrl: "https://portfolio-v5.vercel.app",
       imageUrl: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&q=80&w=800",
       order: 3
+    },
+    {
+      title: "URL Shortener Monolith",
+      slug: "url-shortener-monolith",
+      description: "A 100% Python monolithic web application using Server-Side Rendering (SSR) with Jinja2 and HTMX.",
+      fullDescription: "Modern web applications often default to complex SPAs, even for simple utility tools. This project explores the power of Server-Side Rendering (SSR) combined with HTMX for interactivity, resulting in a hyper-fast, easily maintainable URL shortener without writing any frontend JavaScript. It features robust backend validation, database modeling, and serverless deployment.",
+      techStack: ["FastAPI", "Python", "HTMX", "PostgreSQL", "Tailwind CSS"],
+      highlights: [
+        "Custom Aliases: Users can define their own URL endings (e.g., /my-promo)",
+        "Password Protection: Secure destination links with a hashed password",
+        "Expiration Dates: Links automatically expire after a set time",
+        "Inline QR Modals: Each link gets a dynamically generated QR code available via an HTMX modal",
+        "Rate Limiting: IP-based rate limiting to prevent abuse"
+      ],
+      githubUrls: ["https://github.com/CVSCharan/py-url-shortener-monolith"],
+      demoUrl: "https://url-shortener.charan-cvs.dev/",
+      imageUrl: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=800",
+      category: "Full Stack",
+      isActive: true,
+      isFeatured: true,
+      order: 4
     }
   ]
 

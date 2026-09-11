@@ -276,3 +276,47 @@ Current `AIChatbot.tsx` is a **mock** (keyword if/else, no real AI).
 Planned upgrade: LangChain + Gemini + Pinecone RAG grounded on portfolio DB content.  
 See `docs/rag-chatbot.md` for the full technical specification.  
 **Rule:** The chatbot bento tile on the home page ships ONLY after the real RAG is implemented.
+
+---
+
+## Project Cover Images (OG Generation)
+
+Project cover images are dynamically generated via a Next.js Edge Function at
+`/api/og/project/v1`. No static image files are required — images are created on demand
+from project data and cached globally at the CDN edge.
+
+### How it works
+
+The `projectOgUrl()` helper in `lib/og-url.ts` builds a deterministic URL:
+```
+/api/og/project/v1?title=URL+Shortener+Monolith&desc=A+Python+SSR+app&tags=FastAPI%2CPython
+```
+Components use `project.imageUrl ?? projectOgUrl(project)` — if a manual `imageUrl` is set
+on a project record (via the Admin UI), it takes priority. If null, the generated URL is used.
+
+### Two canvas sizes
+
+| Param | Canvas | Ratio | Consumer |
+|---|---|---|---|
+| _(default)_ | `1200 × 630` | 1.91:1 | Featured card (`aspect-[16/10]`), grid card (`h-40`) |
+| `?ratio=cinema` | `2100 × 900` | 2.33:1 | Project detail hero (`aspect-[21/9]`) |
+
+The cinema canvas is a native 21:9 match — `object-cover` crops nothing.
+
+### Design spec
+- **Background:** `#09090b` (zinc-950)
+- **Heading:** Bricolage Grotesque 700 — first word of title in `#2563eb`, rest in `#fafafa`
+- **Body/badges/meta:** Plus Jakarta Sans — `#a1a1aa`
+- **Badges:** `bg #18181b`, `border #27272a`, `text #a1a1aa` — **NEUTRAL, never accent**
+- Layout follows the same meta-bar / `h-px` rule / title / footer strip pattern as the live pages
+
+### Font loading
+Both fonts are fetched as `ArrayBuffer` from Google's gstatic CDN at Edge cold-start
+(`Promise.all`). URLs are pinned to specific version-locked gstatic paths — update them
+if Google ever rotates the URLs (observable as 404 in the rendered image).
+
+### Versioning / cache busting
+- Route path contains `/v1/` — bump `VERSION` in `lib/og-url.ts` to `v2` when the template changes
+- Response header: `Cache-Control: public, max-age=31536000, immutable`
+- Content edits auto-bust via URL param change; template fixes bust via version bump
+- No CDN purge ever needed

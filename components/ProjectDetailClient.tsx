@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, ExternalLink, GitFork, ArrowRight, Briefcase, Clock } from "lucide-react";
 import { motion } from "framer-motion";
+import { projectOgUrl } from "@/lib/og-url";
 
 /* ─── Types ─────────────────────────────────────────────────────────── */
 interface MetricItem {
@@ -282,27 +283,24 @@ export default function ProjectDetailClient({
       </section>
 
       {/* ══════════════════════════════════════════════════════════════
-          HERO IMAGE — full-bleed, no border, rounded-3xl
+          HERO IMAGE — full-bleed cinema banner
+          Always rendered: imageUrl if set, otherwise OG-generated cinema card (2100×900).
       ══════════════════════════════════════════════════════════════ */}
-      {project.imageUrl && (
-        <section className="w-full px-5 sm:px-10 xl:px-16 py-16 md:py-24">
-          <motion.div
-            {...scrollFadeUp(0)}
-            className="w-full relative aspect-[16/9] md:aspect-[21/9] rounded-3xl overflow-hidden shadow-2xl bg-card"
-          >
-            <Image
-              src={project.imageUrl}
-              alt={project.title}
-              fill
-              className="object-cover object-top"
-              placeholder="blur"
-              blurDataURL="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxIiBoZWlnaHQ9IjEiPjxyZWN0IHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9IiNmNGY0ZjUiLz48L3N2Zz4="
-              sizes="100vw"
-              priority
-            />
-          </motion.div>
-        </section>
-      )}
+      <section className="w-full px-5 sm:px-10 xl:px-16 py-16 md:py-24">
+        <motion.div
+          {...scrollFadeUp(0)}
+          className="w-full relative aspect-[16/9] md:aspect-[21/9] rounded-3xl overflow-hidden shadow-2xl bg-card"
+        >
+          <Image
+            src={project.imageUrl ?? projectOgUrl(project, "cinema")}
+            alt={`${project.title} — cover image`}
+            fill
+            className="object-cover object-top"
+            sizes="100vw"
+            priority
+          />
+        </motion.div>
+      </section>
 
       {/* ══════════════════════════════════════════════════════════════
           AT-A-GLANCE STRIP (computed, no data entry needed)
