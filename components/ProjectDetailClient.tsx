@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowLeft, ExternalLink, GitFork, ArrowRight, Briefcase, Clock } from "lucide-react";
+import { ChevronRight, ExternalLink, GitFork, ArrowRight, Briefcase, Clock } from "lucide-react";
 import { motion } from "framer-motion";
-import { projectOgUrl } from "@/lib/og-url";
+import { projectOgUrl, projectCoverUrl } from "@/lib/og-url";
 
 /* ─── Types ─────────────────────────────────────────────────────────── */
 interface MetricItem {
@@ -155,13 +155,24 @@ export default function ProjectDetailClient({
           {...fadeUp(0)}
           className="flex items-center justify-between pt-4 pb-6 border-b border-border"
         >
-          <Link
-            href="/projects"
-            className="inline-flex items-center gap-2 text-label text-muted-foreground hover:text-foreground transition-colors group"
-          >
-            <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1" />
-            Selected Work
-          </Link>
+          {/* Breadcrumb trail — Home / Projects / Project Title */}
+          <nav aria-label="Breadcrumb" className="flex items-center gap-1 text-label text-muted-foreground min-w-0">
+            <Link href="/" className="hover:text-foreground transition-colors shrink-0">
+              Home
+            </Link>
+            <ChevronRight className="w-3 h-3 shrink-0 opacity-40" />
+            <Link href="/projects" className="hover:text-foreground transition-colors shrink-0">
+              Projects
+            </Link>
+            <ChevronRight className="w-3 h-3 shrink-0 opacity-40" />
+            <span
+              className="text-foreground truncate max-w-[160px] sm:max-w-[260px] md:max-w-xs"
+              aria-current="page"
+              title={project.title}
+            >
+              {project.title}
+            </span>
+          </nav>
           <span className="text-label text-muted-foreground">
             Chapter {projectIndex}
           </span>
@@ -292,7 +303,7 @@ export default function ProjectDetailClient({
           className="w-full relative aspect-[16/9] md:aspect-[21/9] rounded-3xl overflow-hidden shadow-2xl bg-card"
         >
           <Image
-            src={project.imageUrl ?? projectOgUrl(project, "cinema")}
+            src={projectCoverUrl(project, "cinema")}
             alt={`${project.title} — cover image`}
             fill
             className="object-cover object-top"

@@ -11,7 +11,7 @@ import { getPaginatedTemplates } from "@/app/actions/projectActions";
 import { CollaborateCTA } from "./CollaborateCTA";
 import { ProjectCardSkeleton } from "./ProjectCardSkeleton";
 import { ChapterHero } from "./ChapterHero";
-import { projectOgUrl } from "@/lib/og-url";
+import { projectOgUrl, projectCoverUrl } from "@/lib/og-url";
 
 /* ── Types ─────────────────────────────────────────────────── */
 interface ProjectRecord {
@@ -27,58 +27,97 @@ interface ProjectRecord {
   isFeatured: boolean;
 }
 
-/* ── Animation helpers ──────────────────────────────────────── */
-const springTransition = {
-  type: "spring" as const,
-  stiffness: 200,
-  damping: 20,
+/* ── Animation config ───────────────────────────────────────── */
+// Smooth cubic-bezier easing — no bounce, no spring
+const easeTransition = {
+  duration: 0.55,
+  ease: [0.25, 0.1, 0.25, 1] as [number, number, number, number],
 };
 
-function FeaturedProjectCard({ proj, index, onFilter }: { proj: ProjectRecord, index: number, onFilter: (tech: string) => void }) {
+// Number characters used for the index flicker effect
+const DIGITS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+
+/** Micro-animation: cycles through random digits then lands on the real value */
+function FlickerNumber({ value, inView }: { value: string; inView: boolean }) {
+  const [displayed, setDisplayed] = useState(value);
+  const iterations = useRef(0);
+
+  useEffect(() => {
+    if (!inView) return;
+    iterations.current = 0;
+    const id = setInterval(() => {
+      iterations.current += 1;
+      if (iterations.current >= 8) {
+        setDisplayed(value);
+        clearInterval(id);
+      } else {
+        setDisplayed(DIGITS[Math.floor(Math.random() * DIGITS.length)]);
+      }
+    }, 40);
+    return () => clearInterval(id);
+  }, [inView, value]);
+
+  return <>{displayed}</>;
+}
+
+function FeaturedProjectCard({ proj, index, onFilter }: { proj: ProjectRecord; index: number; onFilter: (tech: string) => void }) {
   const prefersReducedMotion = useReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
-  
+  const [inView, setInView] = useState(false);
+
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],
   });
 
-  // 5% subtle parallax offset: -5% to +5%
-  const yOffset = useTransform(scrollYProgress, [0, 1], ["-5%", "5%"]);
+  // Deepened parallax: -8% to +8% — clearly perceptible but not distracting
+  const yOffset = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"]);
   const transformY = prefersReducedMotion ? "0%" : yOffset;
+
+  // Formatted index e.g. "01", "02"
+  const idxStr = String(index + 1).padStart(2, "0");
 
   return (
     <motion.article
       ref={ref}
-      initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: 30 }}
-      whileInView={prefersReducedMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
-      transition={{ ...springTransition, delay: prefersReducedMotion ? 0 : index * 0.1 }}
-      className="group relative flex flex-col md:flex-row gap-6 md:gap-10 items-center mb-24 last:mb-0"
+      // Pure opacity dissolve — no translation. Content doesn't "jump up".
+      initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0 }}
+      whileInView={prefersReducedMotion ? { opacity: 1 } : { opacity: 1 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ ...easeTransition, delay: prefersReducedMotion ? 0 : index * 0.12 }}
+      onAnimationComplete={() => setInView(true)}
+      className="group relative flex flex-col md:flex-row gap-6 md:gap-10 items-start md:items-center mb-24 last:mb-0"
     >
-      {/* Image Area - takes up ~60% on desktop */}
+      {/* Image Area — ~60% on desktop */}
       <div className="w-full md:w-3/5 aspect-[4/3] md:aspect-[16/10] relative rounded-2xl overflow-hidden border border-border/50 bg-muted/20">
+        {/* Subtle left-edge accent line that grows in on hover */}
+        <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-secondary scale-y-0 group-hover:scale-y-100 origin-bottom transition-transform duration-500 z-10 rounded-l-2xl" />
         <Link href={`/projects/${proj.slug}`} className="block w-full h-full relative overflow-hidden">
-          <motion.div style={{ y: transformY }} className="w-full h-[110%] -top-[5%] relative">
+          <motion.div style={{ y: transformY }} className="w-full h-[116%] -top-[8%] relative">
             <Image
-              src={proj.imageUrl ?? projectOgUrl(proj)}
+              src={projectCoverUrl(proj)}
               alt={`${proj.title} — cover image`}
               fill
-              className="object-cover transition-transform duration-700 group-hover:scale-105"
+              // More restrained scale on hover
+              className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
               sizes="(max-width: 768px) 100vw, 60vw"
             />
           </motion.div>
         </Link>
       </div>
 
-      {/* Content Area - takes up ~40% on desktop */}
+      {/* Content Area — ~40% on desktop */}
       <div className="w-full md:w-2/5 flex flex-col flex-1 py-4 md:py-8">
+        {/* Index counter with flicker on entry */}
+        <span className="text-xs font-mono text-muted-foreground/50 tracking-[0.2em] uppercase mb-4 select-none tabular-nums">
+          <FlickerNumber value={idxStr[0]} inView={inView} />
+          <FlickerNumber value={idxStr[1]} inView={inView} />
+          {" / Featured"}
+        </span>
+
         <div className="space-y-4">
           <Link href={`/projects/${proj.slug}`}>
-            <h3
-              className="text-headline text-foreground leading-snug group-hover:text-secondary transition-colors"
-              
-            >
+            <h3 className="text-headline text-foreground leading-snug group-hover:text-secondary transition-colors duration-300">
               {proj.title}
             </h3>
           </Link>
@@ -94,10 +133,7 @@ function FeaturedProjectCard({ proj, index, onFilter }: { proj: ProjectRecord, i
             {proj.techStack.map((tech) => (
               <button
                 key={tech}
-                onClick={(e) => {
-                  e.preventDefault();
-                  onFilter(tech);
-                }}
+                onClick={(e) => { e.preventDefault(); onFilter(tech); }}
                 className="badge hover:bg-foreground hover:text-background transition-colors bg-background"
               >
                 {tech}
@@ -109,23 +145,13 @@ function FeaturedProjectCard({ proj, index, onFilter }: { proj: ProjectRecord, i
         {(proj.githubUrls.length > 0 || proj.demoUrl) && (
           <div className="flex gap-3 pt-8 mt-auto">
             {proj.githubUrls.length > 0 && (
-              <a
-                href={proj.githubUrls[0]}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-outline flex-1 justify-center gap-2"
-              >
+              <a href={proj.githubUrls[0]} target="_blank" rel="noopener noreferrer" className="btn btn-outline flex-1 justify-center gap-2">
                 <GitFork className="w-4 h-4" />
                 Code
               </a>
             )}
             {proj.demoUrl && (
-              <a
-                href={proj.demoUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-primary flex-1 justify-center gap-2"
-              >
+              <a href={proj.demoUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary flex-1 justify-center gap-2">
                 <ExternalLink className="w-4 h-4" />
                 Live Demo
               </a>
@@ -265,14 +291,14 @@ function ProjectsContent({
       <section className="w-full border-t border-border px-5 sm:px-10 xl:px-16 py-16 md:py-24">
         <div className="max-w-6xl mx-auto">
           {/* Section header & Filter */}
+          {/* Filter Bar — pure fade, no y jump */}
           <motion.div
-            initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: 14 }}
-            whileInView={prefersReducedMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ ...springTransition }}
+            initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0 }}
+            whileInView={prefersReducedMotion ? { opacity: 1 } : { opacity: 1 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ ...easeTransition }}
             className="flex flex-col gap-8 mb-16"
           >
-            {/* Filter Bar */}
             <div className="flex flex-wrap items-center gap-2.5">
               <button
                 onClick={() => handleFilter(null)}
@@ -330,13 +356,15 @@ function ProjectsContent({
           {/* ── Other Projects Grid ── */}
           {templates.length > 0 && (
             <>
+              {/* Section heading — pure dissolve */}
               <motion.div
-                initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: 24 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ ...springTransition }}
+                initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0 }}
+                whileInView={prefersReducedMotion ? { opacity: 1 } : { opacity: 1 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ ...easeTransition }}
                 className="flex items-center justify-between pt-4 pb-6 border-b border-border mb-12 md:mb-16"
               >
-                <h2 className="text-headline text-xl text-foreground tracking-tight" >
+                <h2 className="text-headline text-xl text-foreground tracking-tight">
                   Templates &amp; Experiments.
                 </h2>
               </motion.div>
@@ -345,12 +373,14 @@ function ProjectsContent({
                 {templates.map((proj, index) => (
                   <motion.article
                     key={proj.id}
-                    initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: 10 }}
-                    whileInView={prefersReducedMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "150px" }}
+                    // Microscopic scale: card "materialises" rather than slides
+                    initial={prefersReducedMotion ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.98 }}
+                    whileInView={prefersReducedMotion ? { opacity: 1, scale: 1 } : { opacity: 1, scale: 1 }}
+                    viewport={{ once: true, margin: "100px" }}
                     transition={{
-                      ...springTransition,
-                      delay: prefersReducedMotion ? 0 : (index % 3) * 0.05,
+                      ...easeTransition,
+                      // 80ms stagger — readable without feeling slow
+                      delay: prefersReducedMotion ? 0 : (index % 3) * 0.08,
                     }}
                     className="card card-hover flex flex-col overflow-hidden group h-full"
                   >
@@ -360,10 +390,11 @@ function ProjectsContent({
                       className="h-40 w-full overflow-hidden border-b border-border/50 block relative shrink-0"
                     >
                       <Image
-                        src={proj.imageUrl ?? projectOgUrl(proj)}
+                        src={projectCoverUrl(proj)}
                         alt={`${proj.title} — cover image`}
                         fill
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        // Restrained zoom + subtle brightness lift
+                        className="object-cover transition-all duration-500 ease-out group-hover:scale-[1.03] group-hover:brightness-105"
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       />
                     </Link>

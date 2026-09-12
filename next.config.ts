@@ -8,6 +8,11 @@ const siteUrl = new URL(
 
 const nextConfig: NextConfig = {
   images: {
+    localPatterns: [
+      {
+        pathname: "/api/og/**",
+      },
+    ],
     remotePatterns: [
       {
         protocol: "https",
@@ -16,6 +21,14 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "res.cloudinary.com",
+      },
+      {
+        protocol: "https",
+        hostname: "api.microlink.io",
+      },
+      {
+        protocol: "https",
+        hostname: "iad.microlink.io",
       },
       // Allow next/image to serve OG-generated images from our own domain
       {

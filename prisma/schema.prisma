@@ -45,6 +45,8 @@ model Project {
   githubUrls String[] @default([])
   demoUrl   String?
   imageUrl  String?
+  cachedScreenshotUrl String?
+  screenshotUpdatedAt DateTime?
   category  String?
   isActive  Boolean   @default(true)
   isFeatured Boolean  @default(false)

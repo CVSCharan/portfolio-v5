@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { AdminEditCard } from "@/components/admin/AdminEditCard";
+import { regenerateProjectScreenshot } from "@/app/actions/screenshotActions";
 import {
   addProject,
   deleteProject,
@@ -29,6 +30,19 @@ function ProjectEditCard({
   const router = useRouter();
   const [formData, setFormData] = useState(project);
   const [isSaving, setIsSaving] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
+
+  const handleRegenerate = async () => {
+    setIsGenerating(true);
+    const res = await regenerateProjectScreenshot(project.id);
+    if (res.error) {
+      alert(res.error);
+    } else {
+      alert("Screenshot generated successfully!");
+    }
+    setIsGenerating(false);
+    router.refresh();
+  };
 
   // Check if form is dirty by comparing with original project prop
   const isDirty = JSON.stringify(formData) !== JSON.stringify(project);
@@ -110,10 +124,40 @@ function ProjectEditCard({
         </div>
         <div className="space-y-2">
           <label className="text-label text-muted-foreground mb-1.5 block">Live Demo URL</label>
+          <div className="flex gap-2">
+            <input
+              type="text"
+              value={formData.demoUrl || ""}
+              onChange={(e) => setFormData({ ...formData, demoUrl: e.target.value })}
+              className="flex-1 px-4 py-2.5 bg-background border border-border rounded-lg focus:border-foreground focus:ring-1 focus:ring-foreground/20 outline-none transition-colors text-foreground"
+            />
+            {project.demoUrl && (
+              <button
+                type="button"
+                onClick={handleRegenerate}
+                disabled={isGenerating || isDirty}
+                className="px-4 py-2.5 bg-secondary text-secondary-foreground rounded-lg hover:bg-secondary/80 disabled:opacity-50 whitespace-nowrap transition-colors"
+                title={isDirty ? "Save changes first" : "Generate screenshot from live URL"}
+              >
+                {isGenerating ? "Generating..." : "Regenerate Screenshot"}
+              </button>
+            )}
+          </div>
+        </div>
+        <div className="space-y-2">
+          <label className="text-label text-muted-foreground mb-1.5 block flex items-center justify-between">
+            <span>Manual Image URL Override</span>
+            {project.cachedScreenshotUrl && (
+              <span className="text-xs text-green-500">
+                (Cached screenshot available)
+              </span>
+            )}
+          </label>
           <input
             type="text"
-            value={formData.demoUrl || ""}
-            onChange={(e) => setFormData({ ...formData, demoUrl: e.target.value })}
+            value={formData.imageUrl || ""}
+            onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
+            placeholder="Optional - overrides screenshot/OG card"
             className="w-full px-4 py-2.5 bg-background border border-border rounded-lg focus:border-foreground focus:ring-1 focus:ring-foreground/20 outline-none transition-colors text-foreground"
           />
         </div>

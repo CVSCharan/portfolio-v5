@@ -12,15 +12,20 @@ const JAKARTA_URL =
   "https://fonts.gstatic.com/s/plusjakartasans/v12/LDIbaomQNQcsA88c7O9yZ4KMCoOg4IA6-91aHEjcWuA_qU7NSg.ttf";
 
 // Module-scope cache — reused for all requests on the same Edge instance
-let fontCache: { bricolage: ArrayBuffer; jakarta: ArrayBuffer } | null = null;
+let fontCache: { bricolage: ArrayBuffer | null; jakarta: ArrayBuffer | null } | null = null;
 
 async function loadFonts() {
   if (fontCache) return fontCache;
-  const [bricolage, jakarta] = await Promise.all([
-    fetch(BRICOLAGE_URL).then((r) => r.arrayBuffer()),
-    fetch(JAKARTA_URL).then((r) => r.arrayBuffer()),
-  ]);
-  fontCache = { bricolage, jakarta };
+  try {
+    const [bricolage, jakarta] = await Promise.all([
+      fetch(BRICOLAGE_URL).then((r) => r.arrayBuffer()),
+      fetch(JAKARTA_URL).then((r) => r.arrayBuffer()),
+    ]);
+    fontCache = { bricolage, jakarta };
+  } catch (err) {
+    console.error("Failed to load OG fonts:", err);
+    fontCache = { bricolage: null, jakarta: null };
+  }
   return fontCache;
 }
 
@@ -45,13 +50,10 @@ export async function GET(req: NextRequest) {
 
   const title = searchParams.get("title") ?? "Project";
   const desc = searchParams.get("desc") ?? null;
-  const tagsRaw = searchParams.get("tags") ?? "";
   const ratio = searchParams.get("ratio") === "cinema" ? "cinema" : "default";
 
-  // Decode individually-encoded tags
-  const tags = tagsRaw
-    ? tagsRaw.split(",").map((t) => decodeURIComponent(t)).slice(0, 5)
-    : [];
+  // Use getAll to avoid asymmetric encode/decode issues with commas inside tags
+  const tags = searchParams.getAll("tag").slice(0, 5);
 
   const { width, height } = SIZES[ratio];
   const fonts = await loadFonts();
@@ -119,7 +121,10 @@ export async function GET(req: NextRequest) {
         {/* ── Title ────────────────────────────────────────── */}
         <div
           style={{
-            display: "flex",
+            display: "-webkit-box",
+            WebkitLineClamp: 3,
+            WebkitBoxOrient: "vertical",
+            overflow: "hidden",
             flexWrap: "wrap",
             fontSize: titleSize,
             fontFamily: "'Bricolage Grotesque', sans-serif",
@@ -220,18 +225,26 @@ export async function GET(req: NextRequest) {
       width,
       height,
       fonts: [
-        {
-          name: "Bricolage Grotesque",
-          data: fonts.bricolage,
-          weight: 700,
-          style: "normal",
-        },
-        {
-          name: "Plus Jakarta Sans",
-          data: fonts.jakarta,
-          weight: 400,
-          style: "normal",
-        },
+        ...(fonts.bricolage
+          ? [
+              {
+                name: "Bricolage Grotesque",
+                data: fonts.bricolage,
+                weight: 700 as const,
+                style: "normal" as const,
+              },
+            ]
+          : []),
+        ...(fonts.jakarta
+          ? [
+              {
+                name: "Plus Jakarta Sans",
+                data: fonts.jakarta,
+                weight: 400 as const,
+                style: "normal" as const,
+              },
+            ]
+          : []),
       ],
       headers: {
         "Cache-Control": "public, max-age=31536000, immutable",
